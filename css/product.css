@@ -1,0 +1,126 @@
+body {
+    background: #EEEEEE;
+}
+
+.row {
+    justify-content: center;
+}
+
+.show-product {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.show-product li {
+    margin: 15px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    background: #f6f6f6;
+    transition: 0.3s ease;
+    overflow: hidden;
+    border-radius: 15px;
+}
+.show-product li:hover
+{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.show-product .image-product {
+    transition: 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+.show-product .image-product .buy-now{
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    transition: 0.3s ease;
+}
+
+.show-product .image-product:hover {
+    cursor: pointer;
+    scale: 1.15;
+    filter: drop-shadow(2px 2px 4px #000);
+}
+
+.show-product .image-product:hover .buy-now {
+    transform: translateX(-50%) scale(1);
+}
+
+.show-product .image-product:hover ~ .info-product {
+    opacity: 0;
+    /* display: none; */
+}
+
+.show-product li .info-product {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.show-product li .info-product .name-product {
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    height: 55px;
+    font-size: 17px;
+    line-height: 1.5;
+    margin-bottom: 0;
+    transition: 0.3s ease;
+    color: #333;
+}
+
+.show-product li .info-product .name-product:hover {
+    cursor: pointer;
+    scale: 1.1;
+}
+
+.show-product li .info-product .price-product {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: #eb9090;
+    font-size: 20px;
+    text-shadow: 2px 2px 4px #f4b1b1;  
+}
+
+.show-product .group-btn-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.show-product .group-btn-page i {
+    font-size: 35px;
+    color: #eb9090;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.show-product .group-btn-page i:hover {
+    scale: 1.3;
+}
+
+.show-product .group-btn-page input {
+    margin: 0 20px;
+    font-size: 20px;
+    height: 40px;
+    width: 50px;
+    border-radius: 10px;
+    padding: 5px;
+    text-align: center;
+    outline: none;
+    border: 2px solid #eb9090;
+    color: #eb9090;
+    font-weight: bold;  
+}

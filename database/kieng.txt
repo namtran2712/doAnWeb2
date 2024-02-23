@@ -1,0 +1,28 @@
+61,4,2,Kiềng cưới Vàng 18K đính đá ECZ Trầu Cau,2,./img/kieng/mimg-61.png
+60,341,929
+62,4,2,Kiềng cưới Vàng 18K Trầu Cau,2,./img/kieng/mimg-62.png
+50,550,000
+63,4,2,Kiềng Vàng trắng Ý 18K,3,./img/kieng/mimg-63.png
+22,870,000
+64,4,2,Kiềng Vàng Ý trắng 18K,3,./img/kieng/mimg-64.png
+35,410,800
+65,4,1,Kiềng bạc Ý PNJSilver kiểu đai xoắn tròn,2,./img/kieng/mimg-65.png
+1,245,000
+66,4,2,Kiềng cưới Vàng 24K,1,./img/kieng/mimg-66.png
+21,733,000
+67,4,2,Kiềng Vàng Ý 18K,3,./img/kieng/mimg-67.png
+50,995,600
+68,4,2,Kiềng Vàng trắng Ý 18K,3,./img/kieng/mimg-68.png
+60,710,800
+69,4,2,Kiềng Vàng trắng Ý 18K,2,./img/kieng/mimg-69.png
+46,190,000
+70,4,2,Kiềng Vàng Ý,3,./img/kieng/mimg-70.png
+46,190,000
+71,4,1,Vòng Kiềng Bạc Bảng Dẹp Đính Đá,3,./img/kieng/mimg-71.png
+4,490,000
+72,4,1,Vòng Kiềng Bạc Moments Khóa Tròn,3,./img/kieng/mimg-72.png
+2,990,000
+73,4,1,Vòng Kiềng Bạc Siganture Khóa Mở,3,./img/kieng/mimg-73.png
+3,290,000
+74,4,1,Vòng Kiềng Moments Khóa Tròn Mở Chữ C,3,./img/kieng/mimg-74.png
+3,290,000

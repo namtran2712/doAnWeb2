@@ -1,0 +1,40 @@
+81,2,1,Dây Chuyền Bạc Game Of Thrones x Pandora Mặt Hình Rồng Đính Pha Lê Đỏ,2,./img/daychuyen/mimg-81.png
+6,290,000
+82,2,1,Dây Chuyền Bạc Disney x Pandora Mặt Dây Xe Bí Ngô,1,./img/daychuyen/mimg-82.png
+4,790,000
+83,2,1,Dây Chuyền Bạc Pandora Khóa Hình Trái Tim,3,./img/daychuyen/mimg-83.png
+5,390,000
+84,2,1,Dây Chuyền Bạc Pandora Mạ Vàng 14k Mặt Bông Hoa Đính Đá,3,./img/daychuyen/mimg-84.png
+8,090,000
+85,2,1,Dây Chuyền Bạc Pandora Mạ Vàng 14k Mặt Tròn Đính Đá,3,./img/daychuyen/mimg-85.png
+8,090,000
+86,2,1,Dây Chuyền Bạc Pandora Mặt Cây Gia Đình Và Mặt Trăng,3,./img/daychuyen/mimg-86.png
+3,890,000
+87,2,1,Dây Chuyền Bạc Pandora Mặt Hoa Đính Đá Xanh,3,./img/daychuyen/mimg-87.png
+3,890,000
+88,2,1,Dây Chuyền Bạc Pandora Mặt Ngôi Sao Và Mặt Trăng,3,./img/daychuyen/mimg-88.png
+3,290,000
+89,2,1,Dây Chuyền Bạc Pandora Mặt Tròn Đính Đá,3,./img/daychuyen/mimg-89.png
+3,290,000
+90,2,1,Dây Chuyền Bạc Pandora Mặt Tròn Lồng Vào Nhau Đính Đá,2,./img/daychuyen/mimg-90.png
+3,890,000
+91,2,1,Dây Chuyền Bạc Pandora ME Mạ Vàng Hồng 14K,3,./img/daychuyen/mimg-91.png
+7,790,000
+92,2,1,Dây Chuyền Bạc Pandora ME Với Các Mắt Nối,3,./img/daychuyen/mimg-92.png
+7,190,000
+93,2,1,Dây Chuyền Bạc Pandora Moments Mạ Vàng 14K Mặt Trái Tim Đính Đá,2,./img/daychuyen/mimg-93.png
+7,190,000
+94,2,1,Dây Chuyền Bạc Pandora Moments Mạ Vàng Hồng 14K Mặt Trái Tim,3,./img/daychuyen/mimg-94.png
+2,990,000
+95,2,1,Dây Chuyền Bạc Pandora Moments Mặt Chữ Love,2,./img/daychuyen/mimg-95.png
+2,990,000
+96,2,1,Dây Chuyền Bạc Pandora Moments Mặt Dây Chuyền Mở,3,./img/daychuyen/mimg-96.png
+4,190,000
+97,2,1,Dây Chuyền Bạc Pandora Moments Mặt Trái Tim Nhiều Màu,3,./img/daychuyen/mimg-97.png
+3,890,000
+98,2,1,Dây Chuyền Bạc Pandora Signature Ba Mặt Tròn Đính Đá,2,./img/daychuyen/mimg-98.png
+4,190,000
+99,2,1,Dây Chuyền Bạc Pandora Timeless Mặt Họa Tiết Hoa Đính Đá,2,./img/daychuyen/mimg-99.png
+3,290,000
+100,2,1,Dây Chuyền Pandora Moments Mặt Dây Ba Vòng Tròn Đan Xen,3,./img/daychuyen/mimg-100.png
+2,690,000
