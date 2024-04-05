@@ -223,6 +223,10 @@ ul {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
+.show-detail-product {
+    margin: 70px 0;
+}
+
 .detail-product .comment-product {
     display: flex;
     justify-content: center;

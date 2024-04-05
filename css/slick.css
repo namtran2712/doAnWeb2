@@ -1,0 +1,94 @@
+.slick-arrow {
+    position: absolute;
+    top: 40%;
+    padding: 12px 20px;
+    border-radius: 50%;
+    z-index: 10;
+    background: #fff;
+    border: 1px solid #333;
+}
+
+.slick-arrow.slick-next {
+    right: 0;
+    transform: translateX(-50%);
+
+
+}
+.slick-arrow.slick-prev {
+    left: 0;
+    transform: translateX(50%);
+}
+
+/* Loại bỏ dấu chấm mặc định */
+.slick-dots {
+    list-style: none;
+    margin: 20px 0;
+    padding: 0px;
+    text-align: center;
+}
+
+/* Tạo dấu chấm tùy chỉnh */
+.slick-dots li {
+    display: inline-block;
+    margin: 0 5px;
+    /* Khoảng cách giữa các dấu chấm */
+}
+
+.slick-dots li button {
+    background-color: #ccc;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    border: none;
+    font-size: 0;
+}
+
+.slick-dots li button:hover {
+    background-color: #999;
+}
+
+.slick-dots .slick-active button {
+    background: #333;
+}
+
+.slideanim {
+    visibility: hidden;
+}
+
+.slide {
+    /* The name of the animation */
+    animation-name: slide;
+    -webkit-animation-name: slide;
+    /* The duration of the animation */
+    animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    /* Make the element visible */
+    visibility: visible;
+}
+
+/* Go from 0% to 100% opacity (see-through) and specify the percentage from when to slide in the element along the Y-axis */
+@keyframes slide {
+    0% {
+        opacity: 0;
+        transform: translateY(70%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+@-webkit-keyframes slide {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(70%);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: translateY(0%);
+    }
+}

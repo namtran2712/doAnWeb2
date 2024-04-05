@@ -40,7 +40,7 @@ willClose: () => {
         init ();
         
         function init () {
-            $.ajax({
+                $.ajax({
                 type: "GET",
                 url: "./database/getData.php?type=countPage&item=" + obj.items,
                 dataType: "json",
