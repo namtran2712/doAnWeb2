@@ -11,7 +11,6 @@
         $result = mysqli_query($connect, $sql);
         $totalProduct = (int) mysqli_fetch_array($result)[0];
         $totalPage = ceil($totalProduct/$items);
-        
         echo json_encode($totalPage);
     }
     else if ($type == "loadData") {
