@@ -44,12 +44,19 @@
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="#">Trang chủ</a>
                             </li>
-                            <li class="nav-item mx-lg-2"><a href="" class="nav-link">Sản phẩm</a></li>
-                            <li class="nav-item mx-lg-2"><a href="" class="nav-link">Nhẫn</a></li>
-                            <li class="nav-item mx-lg-2"><a href="" class="nav-link">Vòng tay</a></li>
-                            <li class="nav-item mx-lg-2"><a href="" class="nav-link">Kiềng</a></li>
-                            <li class="nav-item mx-lg-2"><a href="" class="nav-link">Bông tai</a></li>
-                            <li class="nav-item mx-lg-2"><a href="" class="nav-link">Dây chuyền</a></li>
+                            <?php
+                            include("./database/connect.php");
+                            $sql =  "select * from category";
+                            $result = mysqli_query($connect, $sql);
+                            ?>
+                            <?php
+                            while ($row = mysqli_fetch_assoc($result))
+                                echo ' <li class="nav-item">
+                                <a class="nav-link " aria-current="page" href="">' . $row["CATEGORY_NAME"] . '</a>
+                                </li>'
+                            ?>
+
+
                         </ul>
 
                     </div>
@@ -176,7 +183,18 @@
                 </div>
             </div>
         </div>
-        <div class="show-product" style = "display :none" >
+        <div class="show-product" style="display :none">
+            <div class="decription ">
+                <div class="imgBg" style="max: width 1600px;">
+                    <picture>
+                        <img src="img/Decription1.png" alt="nhan    ">
+                    </picture>
+                </div>                        
+                <div class="particularDecription">
+                    <h1>Nhẫn</h1>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis quasi repudiandae tenetur officia ab odio ducimus ipsam, numquam provident officiis reprehenderit nihil non? Tempore esse, quia similique voluptatem accusamus culpa.</p>
+                </div>
+            </div>
             <ul class="row list-product">
 
             </ul>
@@ -186,6 +204,7 @@
                 <input type="text" value="1" name="current-page" id="current-page">
                 <i class="fa-solid fa-circle-right go-next"></i>
             </div>
+            <span class="text-center infoPage" style="color:gray ;font: size 18px; "></span>
         </div>
 
     </div>
@@ -237,7 +256,7 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>

@@ -37,7 +37,7 @@ body {
         text-transform: none;
         border-bottom: 2px solid #EEEEEE;
     }
-    
+
     .info-staff img {
         width: 40%;
         margin-bottom: 15px;
@@ -57,7 +57,7 @@ body {
         background: rgba(0, 0, 0, 0.25);
         color: #fff;
     }
-    
+
     a.active {
         color: #eb9090;
         background: #33176e;
@@ -75,7 +75,7 @@ body {
 
 .container-fluid {
     padding: 0;
-    
+
     .header {
         position: relative;
         z-index: 1;
@@ -91,7 +91,7 @@ body {
             left: 20px;
             border-radius: 20px;
             font-size: 40px;
-            
+
             i {
                 display: block;
                 border-radius: 20px;
@@ -115,12 +115,162 @@ body {
         padding: 5px;
         overflow: hidden;
 
+        .my-modal {
+            .modal-header {
+                justify-content: center;
+            }
+
+            .modal-body {
+                form {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+
+                    .form-group {
+                        margin: 10px 0;
+                        width: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+
+                        .title-text {
+                            width: 67%;
+
+                            label {
+                                margin: 5px 0;
+                                font-size: 18px;
+                                font-weight: bolder;
+                            }
+                        }
+
+                        .input-text {
+                            width: 70%;
+                            position: relative;
+
+                            input {
+                                width: 100%;
+                                outline: none;
+                                border: 1px solid #333;
+                                border-radius: 5px;
+                                padding: 5px 10px;
+                            }
+
+                            i {
+                                position: absolute;
+                                top: 50%;
+                                right: 4%;
+                                transform: translateY(-50%);
+                                font-size: 15px;
+                            }
+                        }
+                    }
+
+                    .form-group-product {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        flex-direction: column;
+                        margin: 10px 0;
+
+                        input {
+                            width: 95%;
+                            padding: 3px 5px;
+                            outline: none;
+                            border-radius: 5px;
+                        }
+                    }
+
+                    .form-group-product.row {
+                        flex-direction: row;
+
+                        div {
+                            select {
+                                border: 1px solid #ced4da;
+                                padding: 3px 5px;
+                                outline: none;
+                                border-radius: 5px;
+                                width: 100%;
+                                cursor: pointer;
+                            }
+                        }
+
+                        div.col-md-1 {
+                            position: relative;
+
+                            i {
+                                position: absolute;
+                                font-size: 20px;
+                                right: 20px;
+                                color: #198754 !important;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                            }
+
+                            i:hover {
+                                opacity: 0.8;
+                            }
+                        }
+
+                        button {
+                            position: relative;
+
+                            i {
+                                position: absolute;
+                                right: 10px;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                font-weight: bold;
+                                font-size: 20px;
+                                transition: all 0.4s ease;
+                            }
+
+                            i.active {
+                                top: 30%;
+                                transform: rotate(180deg);
+                            }
+                        }
+
+                        .img {
+                            display: none;
+                            position: relative;
+                            margin-top: 10px;
+
+                            .update-img {
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                transform: translateX(-50%);
+                            }
+
+                            .delete-img {
+                                position: absolute;
+                                top: 40%;
+                                left: 50%;
+                                transform: translateX(-50%);
+                            }
+                        }
+                    }
+                }
+            }
+
+            .modal-footer {
+                justify-content: center;
+
+                .btn {
+                    padding: 5px 40px;
+                }
+            }
+        }
+
         .crud {
             padding: 10px 0;
             display: flex;
             justify-content: center;
             align-items: center;
             border-bottom: 3px solid #FFCAD4;
+
             div {
                 padding: 10px 15px;
                 margin: 0 20px;
@@ -138,7 +288,7 @@ body {
                 scale: 1.1;
             }
         }
-    
+
         .list-item {
             .title {
                 font-size: 17px;
@@ -153,9 +303,15 @@ body {
                 align-items: center;
                 border-bottom: 2px solid #FFCAD4;
 
-                
+                select {
+                    cursor: pointer;
+                }
+
+                input {
+                    cursor: pointer;
+                }
             }
-            
+
             .item:last-child {
                 border: none;
             }
@@ -163,7 +319,7 @@ body {
 
         .show-more {
             text-align: center;
-            visibility: hidden;
+            /* visibility: hidden; */
         }
     }
 }

@@ -83,7 +83,9 @@ $header = '<div class="container-fluid">
 
 <body>
     <div class="wrapper">
-        
+        <div class="decription">
+            
+        </div>
         <div class="container-fluid show-product">
             <ul class="row list-product">
 
@@ -94,6 +96,7 @@ $header = '<div class="container-fluid">
                 <input type="text" value="1" name="current-page" id="current-page">
                 <i class="fa-solid fa-circle-right go-next"></i>
             </div>
+         
         </div>
     </div>
     <script src="./js/paging.js"></script>

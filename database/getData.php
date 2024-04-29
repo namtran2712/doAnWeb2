@@ -11,7 +11,6 @@
         $result = mysqli_query($connect, $sql);
         $totalProduct = (int) mysqli_fetch_array($result)[0];
         $totalPage = ceil($totalProduct/$items);
-        
         echo json_encode($totalPage);
     }
     else if ($type == "loadData") {
@@ -56,7 +55,7 @@
             }
 
             $sql="SELECT *
-            FROM IMAGES 
+            FROM IMAGES     
             WHERE ID_PRODUCT=$id";
 
             $result=mysqli_query($connect,$sql);
