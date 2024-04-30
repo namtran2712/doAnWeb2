@@ -1,6 +1,6 @@
 
 (function ($) {
-    $.fn.dataProduct = function (options, $category) {
+    $.fn.dataProduct = function (options) {
         //====================================================
         // cac gia tri mac dinh cua options
         //====================================================
@@ -13,7 +13,6 @@
             txtCurrentPage: "#current-page",
             goNext: ".go-next",
             goPrevious: ".go-previous",
-            category: $category
         };
         $.extend(options, defaults);
         var showArea = $(options.showArea)
@@ -21,34 +20,35 @@
         var btnGoNext = $(options.goNext)
         var btnGoPrevious = $(options.goPrevious)
         var infoPage = $(".infoPage")
+       
         init()
 
         function init() {
             $.ajax({
-                url: "database/productDao.php?type=0&items=" + options.items + "&category=" + options.category,
+                url: "database/productDao.php?type=0&items=" + options.items ,
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
                     options.totalPage = data
-                    loadData(options.currentPage, $category)
-                    setInfoPage (options) 
+                    loadData(options.currentPage)
+                    setInfoPage(options)
                 }
 
             })
-            btnGoNext.off ("click")
-            btnGoPrevious.off ("click")
-            btnGoNext.click (function(e){
+            btnGoNext.off("click")
+            btnGoPrevious.off("click")
+            btnGoNext.click(function (e) {
                 goNext();
-                
-            })  
-            btnGoPrevious.click (function(e){
+
+            })
+            btnGoPrevious.click(function (e) {
                 goPrevious();
             })
-            $(txtCurrentPage).keyup(function (e) { 
+            $(txtCurrentPage).keyup(function (e) {
                 if (e.keyCode == 13) {
-                    var valueText = $(this).val ()
-                    valueText = parseInt (valueText)
-                    if (valueText < 1 || valueText > options.totalPage || isNaN (valueText)) {
+                    var valueText = $(this).val()
+                    valueText = parseInt(valueText)
+                    if (valueText < 1 || valueText > options.totalPage || isNaN(valueText)) {
                         Swal.fire({
                             title: "Vui lòng nhập > 0 và bé hơn hoặc bằng " + options.totalPage,
                             width: 600,
@@ -62,23 +62,23 @@
                               no-repeat
                             `
                         });
-                        setCurrentPage (options.currentPage)
+                        setCurrentPage(options.currentPage)
                     }
                     else {
                         window.scrollTo({
                             top: 0,
                             behavior: "instant"
                         });
-                        setCurrentPage (valueText);
+                        setCurrentPage(valueText);
                         options.currentPage = valueText;
-                        txtCurrentPage.blur ();
-                        loadData (options.currentPage,options.category)
+                        txtCurrentPage.blur();
+                        loadData(options.currentPage)
                     }
                 }
             });
-        }   
-        function setInfoPage (options){
-            infoPage.text("Page " +options.currentPage +" of " +options.totalPage)
+        }
+        function setInfoPage(options) {
+            infoPage.text("Page " + options.currentPage + " of " + options.totalPage)
         }
 
         function createProductItem(data) {
@@ -99,18 +99,10 @@
             });
 
         }
-        function loadData(page, category) {
-            console.log (category)
-            var url
-            if (category == "Sản phẩm") {
-                url = "./database/productDao.php?type=3&items=" + options.items + "&currentPage=" + page
-            }
-            else
-                url = "./database/productDao.php?type=2&items=" + options.items + "&currentPage=" + page + "&category=" + category
-
+        function loadData(page) {
             $.ajax({
                 type: "GET",
-                url: url,
+                url: "./database/productDao.php?type=2&items=" + options.items + "&currentPage=" + page,
                 dataType: "json",
                 success: function (data) {
                     console.log(data)
@@ -119,21 +111,18 @@
                     $(".buy-now").click(function (e) {
                         e.preventDefault();
                         var id = $(this).data("id")
-                        // console.log (id)
                         getData(id)
                     });
 
                     $(".image-product img").click(function (e) {
                         e.preventDefault();
                         var id = $(this).data("id")
-                        // console.log (id)
                         getData(id)
                     });
 
                     $(".name-product").click(function (e) {
                         e.preventDefault();
                         var id = $(this).data("id")
-                        // console.log (id)
                         getData(id)
                     });
 
@@ -157,7 +146,7 @@
         }
 
         function goNext() {
-        console.log (options)
+            console.log(options)
             if (options.currentPage == options.totalPage) {
                 return;
             }
@@ -167,8 +156,8 @@
             });
             options.currentPage++;
             setCurrentPage(options.currentPage);
-            loadData(options.currentPage,options.category);
-            setInfoPage (options) 
+            loadData(options.currentPage);
+            setInfoPage(options)
 
 
         }
@@ -183,39 +172,22 @@
             });
             options.currentPage--;
             setCurrentPage(options.currentPage);
-            loadData(options.currentPage,options.category);
-            setInfoPage (options) 
+            loadData(options.currentPage);
+            setInfoPage(options)
         }
 
     }
 })(jQuery);
 
 $(document).ready(function () {
-    $category = ""
+    $options = {}
+    $(".list-product").dataProduct($options)
+    // $(".navbar-nav .nav-item a").click(function (e) {
 
-    $(".navbar-nav .nav-item a").click(function (e) {
-        e.preventDefault()
-        $(".active").removeClass("active")
-        $(this).addClass("active")
-        $category = $(this).html()
-        console.log($category)
-        if ($(this).html() == 'Trang chủ') {
-            $(".homeFrame").show()
-            $(".show-product").hide()
-        }
-        else {
-            $(".homeFrame").hide()
-            $(".show-product").show()
+    //     $(".active").removeClass("active")
+    //     $(this).addClass("active")
 
-        }
-
-
-
-
-        $options = {}
-        console.log($category)
-        $(".list-product").dataProduct($options, $category)
-    })
+    // })
 
 
 })

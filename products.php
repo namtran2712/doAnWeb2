@@ -1,57 +1,3 @@
-<?php
-$header = '<div class="container-fluid">
-
-     <!-- start navbar -->
-     <nav class="navbar bg-body-tertiary fixed-top navbar-expand-lg scroll ">
-         <div class="container-fluid">
-             <div class="navLogo d-flex">
-                 <button class="navbar-toggler me-sm-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                     <span class="navbar-toggler-icon"></span>
-                 </button>
-                 <a class="navbar-brand" href="#">
-                     <h3>logo</h3>
-                 </a>
-             </div>
-
-             <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                 <div class="offcanvas-header">
-                     <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                 </div>
-                 <div class="offcanvas-body">
-                     <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
-                         <li class="nav-item">
-                             <a class="nav-link active" aria-current="page" href="#">Trang chủ</a>
-                         </li>
-                         <li class="nav-item mx-lg-2"><a href="" class="nav-link">Nhẫn</a></li>
-                         <li class="nav-item mx-lg-2"><a href="" class="nav-link">Vòng</a></li>
-                         <li class="nav-item mx-lg-2"><a href="" class="nav-link">Kiềng</a></li>
-                         <li class="nav-item mx-lg-2"><a href="" class="nav-link">Khuyên tai</a></li>
-                         <li class="nav-item mx-lg-2"><a href="" class="nav-link">Dây chuyền</a></li>
-                     </ul>
-
-                 </div>
-             </div>
-             <div class="navbar-right d-flex  justify-content-end">
-                 <form class="d-flex formSearch" role="search">
-                     <input class="form-control py-2 px-5 " size="25" type="search" placeholder="Search" aria-label="Search" id="search-bar">
-                     <div class="iconForSearchBar mb-2 ">
-                         <i class="fa-solid fa-magnifying-glass px-2 py-2"></i>
-                     </div>
-
-                 </form>
-                 <a href="" class="btn-login btn btn-success mx-2">Login</a>
-             </div>
-         </div>
-         <!-- empty-div -->
-         <div class="borderbottom">
-
-         </div>
-
-     </nav>
-     <!-- end navbar -->
- </div>'
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -77,14 +23,19 @@ $header = '<div class="container-fluid">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- css -->
-    <link rel="stylesheet" href="./css/product.css">
-    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" media="all">
+    <link rel="stylesheet" href="css/slick.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" href="css/product.css">
 </head>
 
 <body>
     <div class="wrapper">
         <div class="decription">
-            
+
         </div>
         <div class="container-fluid show-product">
             <ul class="row list-product">
@@ -96,11 +47,19 @@ $header = '<div class="container-fluid">
                 <input type="text" value="1" name="current-page" id="current-page">
                 <i class="fa-solid fa-circle-right go-next"></i>
             </div>
-         
+
         </div>
     </div>
-    <script src="./js/paging.js"></script>
-
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="js/navmenu.js"></script>
+    <script src="js/product.js"></script>
+    
 </body>
 
 </html>
