@@ -50,13 +50,12 @@
                             $result = mysqli_query($connect, $sql);
                             ?>
                             <?php
-                            while ($row = mysqli_fetch_assoc($result))
-                                echo ' <li class="nav-item">
-                                <a class="nav-link " aria-current="page" href="">' . $row["CATEGORY_NAME"] . '</a>
-                                </li>'
-                            ?>
-
-
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                echo '<li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="products.php?type=2&category='.$row["CATEGORY_NAME"].'&idCategory='.$row["ID_CATEGORY"] .'">'.$row["CATEGORY_NAME"].'</a>
+                            </li>';
+                            }
+                            ?>  
                         </ul>
 
                     </div>
