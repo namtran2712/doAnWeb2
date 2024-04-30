@@ -24,31 +24,130 @@
     <div class="container-fluid">
 
         <!-- start navbar -->
-     <?php include ("navbar.php") ?>
+        <?php include("navbar.php") ?>
         <!-- end navbar -->
     </div>
     <!-- container holder banner -->
-    <div id="wrapper" class="bg-gray container-fluid">
+    <div id="wrapper" class="bg-gray">
+        <div class="homeFrame container-fluid">
+            <div class="container-fluid px-auto mt-4 ">
+                <!-- start banner -->
+                <div class="baner-container">
+                    <div class="img_banner">
+                        <img src="img/banner1.png" class="img-fluid" alt="">
+                    </div>
+                    <div class="img_banner">
+                        <img src="img/banner2.png" class="img-fluid" alt="">
+                    </div>
+                </div>
+                <!-- end banner  -->
+            </div>
+
+            <!-- container holder collection  -->
+
+            <div class="container slideanim" id="about">
+                <div class="row justify-content-center">
+                    <div class="col-md-4 col-sm-12 mx-3 my-3 ">
+                        <img src="img/collect1.jpg" alt="" class="img-fluid">
+                    </div>
+                    <div class="col-md-5 col-sm-12 mx-3 my-3 px-0">
+                        <div class="row ">
+                            <div class="col-12 ">
+                                <img src="img/collection.jpg" alt="" class="img-fluid" style="overflow:hidden;">
+                            </div>
+                            <div class="collection-about justify-content-center text-center mt-3 ">
+                                <h3>Đeo trang sức là cách thể hiện bạn mà không cần một lời nói nào.</h3>
+                                <p>
+                                    <small>
+                                        <i>
+                                            Cuộc đời đó có bao lâu mà hững hờ, hãy cứ đeo trang sức như chưa từng được đeo.
+                                        </i>
+                                    </small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- container hodler best seller products -->
+            <div class="container-fluid mt-4">
+                <h1 class="text-center display-6 fw-bolder text-uppercase ">Sản phẩm bán chạy
+                </h1>
+                <div class="container slideanim" id="productBestSeller">
+                </div>
+            </div>
+
+            <!-- container bst -->
+            <div class="container-fluid mt-4 px-2 mx-2" id="BST">
+                <div class="row slideanim ">
+                    <div class="col-md-4 col-sm-12 d-flex justify-content-center align-self-center">
+                        <h1 class="text-uppercase text-center display-1 fw-bolder ">BST</h2>
+                    </div>
+                    <div class="col-md-8 col-sm-12 ">
+                        <div class="row d-flex justify-content-center align-self-center flex-grow-1">
+                            <div class="col-3 flex-grow-1">
+                                <img src="img/bst1.jpg" class="img-fluid" alt="vvv">
+                                <h2 class="text-center text-uppercase fw-bolder">
+                                    Be love
+                                </h2>
+                            </div>
+                            <div class="col-3 flex-grow-1">
+                                <img src="img/bst2.jpg" class="img-fluid" alt="">
+                                <h2 class="text-center text-uppercase fw-bolder">
+                                    Be love
+                                </h2>
+                            </div>
+                            <div class="col-3 flex-grow-1">
+                                <img src="img/bst3.jpg" alt="" class="img-fluid">
+                                <h2 class="text-center text-uppercase fw-bolder">
+                                    Be love
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="row mt-3 d-flex justify-content-center align-self-center flex-grow-1 slideanim">
+                            <div class="col-3 flex-grow-1">
+                                <img src="img/bst4.jpg" alt="" class="img-fluid">
+                                <h2 class="text-center text-uppercase fw-bolder">
+                                    Be love
+                                </h2>
+                            </div>
+                            <div class="col-3 flex-grow-1">
+                                <img src="img/bst5.jpg" alt="" class="img-fluid">
+                                <h2 class="text-center text-uppercase fw-bolder">
+                                    Be love
+                                </h2>
+                            </div>
+                            <div class="col-3 flex-grow-1">
+                                <img src="img/bst6.jpg" alt="" class="img-fluid">
+                                <h2 class="text-center text-uppercase fw-bolder">
+                                    Be love
+                                </h2>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
         <script>
-            $(".navbar-nav .nav-item a").click(function(e){
-                var href = $(this).attr ("href")
-                var link =href.substring (1,href.length)
+            $(".navbar-nav .nav-item a").click(function(e) {
+                var href = $(this).attr("href")
+                var link = href.substring(1, href.length)
                 var name = $(this).data("name");
                 var id = $(this).data("id");
-                console.log (name)
-                console.log (id)
                 $.ajax({
                     type: "GET",
-                    url: "./database/categoryDao.php?type=2&name=" + name +"&id=" +id,
+                    url: "./database/categoryDao.php?type=2&name=" + name + "&id=" + id,
                     dataType: "html",
-                    success: function (data) {
+                    success: function(data) {
                         // console.log (data)
                         $("#wrapper").load(link)
                     }
                 });
 
             })
-        </script>   
+        </script>
 
     </div>
     <!-- footer  -->
@@ -105,7 +204,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="js/slickslider.js"></script>
     <script src="js/navmenu.js"></script>
-    <!-- <script src="js/product.js"></script> -->
+    <script src="js/product.js"></script>
     <script src="js/main.js"></script>
 </body>
 

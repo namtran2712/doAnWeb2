@@ -29,6 +29,7 @@
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
+                    console.log (data)
                     options.totalPage = data
                     loadData(options.currentPage)
                     setInfoPage(options)
@@ -44,7 +45,7 @@
             btnGoPrevious.click(function (e) {
                 goPrevious();
             })
-            $(txtCurrentPage).keyup(function (e) {
+            txtCurrentPage.keyup(function (e) {
                 if (e.keyCode == 13) {
                     var valueText = $(this).val()
                     valueText = parseInt(valueText)
@@ -182,12 +183,12 @@
 $(document).ready(function () {
     $options = {}
     $(".list-product").dataProduct($options)
-    // $(".navbar-nav .nav-item a").click(function (e) {
+    $(".navbar-nav .nav-item a").click(function (e) {
 
-    //     $(".active").removeClass("active")
-    //     $(this).addClass("active")
+        $(".active").removeClass("active")
+        $(this).addClass("active")
 
-    // })
+    })
 
 
 })

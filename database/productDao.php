@@ -5,7 +5,7 @@ session_start();
 function getTotalPage($connect, $items)
 {
     if (isset($_SESSION["category"])) {
-        if ($_SESSION["category"]["name"] == "Sản phẩm") {
+        if ($_SESSION["category"]["name"] == "sản phẩm") {
             $sql = "SELECT COUNT(ID_PRODUCT) 
             FROM PRODUCTS
             ";
@@ -28,10 +28,10 @@ function getProduct($connect, $items, $currentPage)
 {
     if (isset($_SESSION["category"])) {
         $category = $_SESSION["category"]["name"];
-        if ($category == "Sản phẩm") {
-            selectAll($connect);
-        } 
-        else {
+        if ($category == "sản phẩm") {
+
+            selectAll($connect, $items, $currentPage);
+        } else {
             $offset = ($currentPage - 1) * $items;
             $sql = "SELECT DISTINCT PRODUCTS.ID_PRODUCT, PRODUCT_NAME, MAIN_IMAGE, PRICE 
         FROM PRODUCTS JOIN PARTICULAR_PRODUCTS ON PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT
@@ -126,7 +126,7 @@ if ($_GET["type"] == 1) {
 }
 
 if ($_GET["type"] == 2) {
-    getProduct( $connect, $_GET["items"],$_GET["currentPage"]);
+    getProduct($connect, $_GET["items"], $_GET["currentPage"]);
 }
 
 if ($_GET["type"] == 3) {
