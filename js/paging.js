@@ -187,7 +187,7 @@ willClose: () => {
                 dataType: "html",
                 success: function (data) 
                 {
-                    window.location.href="./detailProduct.php"
+                    window.location.href = "./detailProduct.php?id=" + id;
                 }
             });
         }

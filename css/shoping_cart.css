@@ -20,6 +20,7 @@ a {
 
 .col-lg-12 {
     width: 100%;
+
 }
 
 .shoping-cart {
@@ -34,10 +35,13 @@ a {
 .shoping__cart__table table {
     width: 100%;
     text-align: center;
+    border-collapse: collapse;
 }
+
 
 .shoping__cart__table table thead tr {
     border-bottom: 1px solid #ebebeb;
+    box-shadow: 0 4px 6px -6px rgba(0,0,0,0.5);
 }
 
 .shoping__cart__table table thead th {
@@ -45,6 +49,7 @@ a {
     font-weight: 700;
     color: #1c1c1c;
     padding-bottom: 20px;
+    padding-top: 20px;
 }
 
 .shoping__cart__table table thead th.shoping__product {
@@ -66,7 +71,7 @@ a {
 
 .shoping__cart__table table tbody tr td.shoping__cart__item img {
     display: inline-block;
-    margin-right: 25px;
+    margin-right: 20px;
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__item h5 {
@@ -79,6 +84,7 @@ a {
     color: #1c1c1c;
     font-weight: 700;
     width: 100px;
+    text-align: center; /* Căn giữa văn bản theo chiều ngang */
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__total {
@@ -121,19 +127,11 @@ a {
     height: 25px;
 } */
 
-.primary-btn.cart-btn {
-    color: #6f6f6f;
-    padding: 14px 30px 12px;
-    background: #f5f5f5;
-}
 
 .primary-btn.cart-btn span {
     font-size: 14px;
 }
 
-.primary-btn.cart-btn.cart-btn-right {
-    float: right;
-}
 
 .shoping__discount {
     margin-top: 45px;
@@ -152,9 +150,9 @@ a {
     border: 1px solid #cccccc;
     font-size: 16px;
     color: #b2b2b2;
-    text-align: center;
     display: inline-block;
     margin-right: 15px;
+    padding-left: 10px;
 }
 
 .shoping__discount form input::placeholder {
@@ -226,12 +224,6 @@ a {
     font-weight: 700;
     background: #002d5c;
     letter-spacing: 2px;
-}
-
-.primary-btn.cart-btn {
-    color: #6f6f6f;
-    padding: 14px 30px 12px;
-    background: #f5f5f5;
 }
 
 .primary-btn.cart-btn span {
@@ -319,4 +311,19 @@ select {
 .cart_item {
     display: flex;
     align-items: center;
+}
+.container_cartnull {
+    width: 100%;
+    background-color: #f8f9f9;
+    color: #333;
+    display: flex; /* Sử dụng flexbox */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    height: 200px; /* Đặt chiều cao của div là 100% chiều cao của viewport */
+    margin-top: 20px;
+}
+
+.container_cartnull p {
+    margin: 0; /* Loại bỏ margin mặc định của thẻ <p> */
+    
 }
