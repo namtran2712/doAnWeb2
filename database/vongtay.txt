@@ -1,0 +1,40 @@
+21,5,1,vòng bạc pandora timeless đính đá xanh dương,2,./img/vongtay/mimg-21.png
+3,290,000
+22,5,1,vòng bạc pandora moment khóa bướm,2,./img/vongtay/mimg-22.png
+3,290,000
+23,5,1,vòng tenis bạc pandora hình trái tim đính đá đỏ,3,./img/vongtay/mimg-23.png
+3,290,000
+24,5,2,vòng pandora moment mạ vàng 14k đính đá,3,./img/vongtay/mimg-24.png
+6,890,000
+25,5,2,vòng pandora timeless mạ vàng hồng đính đá đá hồng,3,./img/vongtay/mimg-25.png
+4,790,000
+26,5,1,vòng bạc pandora me với các hạt mắt nối,3,./img/vongtay/mimg-26.png
+3,890,000
+27,5,2,vòng tenis mạ vàng đính đá,3,./img/vongtay/mimg-27.png
+3,290,000
+28,5,2,vòng kiềng bạc padora signature mạ vàng hồng 14k,3,./img/vongtay/mimg-28.png
+5,690,000
+29,5,1,vòng bạc mickey x pandora khóa chuột mickey,2,./img/vongtay/mimg-29.png
+4,190,000
+30,5,1,vòng bạc padora moment khóa mặt trăng,3,./img/vongtay/mimg-30.png
+3,590,000
+31,5,2,vòng pandora moment mạ vàng 14k đính đá,3,./img/vongtay/mimg-31.png
+6,890,000
+32,5,2,vòng pandora me mạ vàng 14k mắc xích,3,./img/vongtay/mimg-32.png
+7,190,000
+33,5,2,vòng bạc pandora reflex mạ vàng 14k dạng dẹp,3,./img/vongtay/mimg-33.png
+7,490,000
+34,5,2,vòng bạc pandora mạ vàng hồng 14k dạng chuỗi,3,./img/vongtay/mimg-34.png
+5,390,000
+35,5,2,vòng bạc pandora mạ vàng hồng 14k mắt xích,3,./img/vongtay/mimg-35.png
+7,490,000
+36,3,2,vòng kiềng pandora signature mạ vàng hồng 14k đính đá,3,./img/vongtay/mimg-36.png
+7,790,000
+37,5,1,vòng bạc pandora moments khoá ngôi sao đính đá,3,./img/vongtay/mimg-37.png
+3,590,000
+38,5,2,vòng bạc pandora reflexion mạ vàng hồng 14k dạng dẹp,3,./img/vongtay/mimg-38.png
+5,690,000
+39,5,1,vòng bạc pandora timless đính đá trong suốt,3,./img/vongtay/mimg-39.png
+3,290,000
+40,5,1,vòng bạc pandora moment dây gai khóa trái tim,3,./img/vongtay/mimg-40.png
+3,290,000

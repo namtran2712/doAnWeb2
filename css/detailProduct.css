@@ -1,0 +1,304 @@
+body {
+    background: #EEEEEE;
+}
+
+
+ul {
+    padding-left: 0;
+}
+
+.show-img-product
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.show-img-product .main-img {
+    margin: 10px;
+    
+}
+
+.show-img-product .main-img {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    overflow: hidden;
+    background-color: #f6f6f6;
+}
+
+.show-img-product .main-img img {
+    transition: 0.3s ease;
+}
+
+.show-img-product .main-img:hover img{
+    cursor: pointer;
+    scale: 1.2;
+    filter: drop-shadow(2px 2px 4px #000);
+}
+
+.show-img-product .sub-img {
+    margin-top: 20px;
+    padding: 10px;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    padding: 0;
+}
+
+.show-img-product .sub-img li {
+    padding: 10px;
+}
+
+.show-img-product .sub-img .img-fluid {
+    width: 100%;
+    height: auto;
+    background-color: #f6f6f6;
+    cursor: pointer;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    transition: 0.3s ease;
+}
+
+.show-img-product .sub-img .img-fluid:hover {
+    
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.show-info-product
+{
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+}
+.show-info-product div
+{
+    display:  flex;
+    margin: 10px 0;
+    justify-content: left;
+    flex-direction: row;
+}
+
+.show-info-product .title h1 
+{
+    font-size: 35px;
+}
+.show-info-product .rating
+{
+    display:  flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+}
+.show-info-product .rating .star
+{
+    color: gold;
+    font-size: 20px;
+    margin-right: 30px;
+}
+.show-info-product .rating span
+{
+    font-size: 25px;
+    color: #EE99C2;
+    
+}
+.show-info-product .rating span:nth-child(2)
+{
+    margin-right: 30px;
+    
+}
+.show-info-product .price
+{
+    font-size: 30px;
+}
+.show-info-product .price .price-after
+{
+    margin-right: 50px;
+    color: #FF407D;
+}
+
+.show-info-product .endow
+{
+    flex-direction: column;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;   
+    overflow: hidden;   
+}
+.show-info-product .endow .title
+{
+    font-size:15px;
+    font-weight: bold;
+    padding: 10px;
+    margin: 0;
+    text-decoration: underline;
+    color: #CCD3CA;
+    background-color: #50727B;
+}
+.show-info-product .endow .decribe{
+    padding: 10px;
+    text-align: center;
+    font-size: 20px;
+}
+.show-info-product .endow .decribe i
+{
+    margin: 5px;
+}
+.show-info-product .endow .decribe span
+{
+    color: blue;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.show-info-product .size
+{
+    flex-direction: column;
+    font-size: 20px;
+}
+.show-info-product .size span
+{
+    margin-left: 8px;
+}
+.show-info-product .size .group-btn-size .btn-size
+{
+    width: 40px;
+    margin: 0 10px;
+    padding: 5px;
+    background-color: white;
+    transition: 0.3s ease;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    border: none;
+    border-radius: 5px;
+}
+.show-info-product .size .group-btn-size .btn-size:hover
+{
+    scale: 1.3;
+    color: #FF407D;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    
+}
+.show-info-product .size .group-btn-size .btn-size.selected {
+    background-color: #FF407D;
+    color: white;
+    scale: 1.1;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.show-info-product .add-product
+{
+    align-items: center;
+}
+.show-info-product .add-product .quantity-product
+{
+    margin-right: 50px;
+}
+.show-info-product .add-product .quantity-product button
+{
+    width: 50px;
+    height: 50px;
+    border: none;
+    margin: 0 10px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    background-color: white;
+    font-size: x-large;
+    color: #FF407D;
+    border-radius: 10px;
+}
+.show-info-product .add-product .quantity-product button:hover {
+    opacity: 0.6;
+}
+.show-info-product .add-product .quantity-product input
+{
+    outline: none;
+    width: 70px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    font-size: 25px;
+    text-align: center;
+    color: #FF407D  ;
+}
+.show-info-product .add-product .buy-now
+{
+    padding: 5px 10px;
+    font-size: larger;
+    height: 50px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.show-detail-product {
+    margin: 70px 0;
+}
+
+.detail-product .comment-product {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #B5C0D0;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.detail-product .comment-product .title {
+    font-size: 20px;
+    padding: 5px;
+    text-transform: uppercase;
+    border-bottom: 2px solid;
+}
+
+.detail-product .comment-product .list-comment {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.detail-product .comment-product .list-comment .comment {
+    width: 100%;
+    margin: 15px 0;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.detail-product .comment-product .list-comment .comment .user-and-evaluate {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.detail-product .comment-product .list-comment .comment .user-and-evaluate .user {
+    margin-right: 10px;
+    font-size: 17px;
+}
+
+.detail-product .comment-product .list-comment .comment .user-and-evaluate .star {
+    color: gold;   
+}
+
+.detail-product .comment-product .list-comment .comment .content-product {
+    width: 100%;
+    overflow: scroll;
+}
+
+.detail-product .comment-product .list-comment .comment .content-product span {
+    width: 100%;
+    white-space: normal;
+}
+
+::-webkit-scrollbar {
+    border-radius: 10px;
+  }
+
+::-webkit-scrollbar-thumb {
+border-radius: 10px;
+}
+
+@media (max-width: 1180px) {
+    .show-info-product div
+{
+    display:  flex;
+    margin: 5px 0;
+    justify-content: left;
+    flex-direction: row;
+}
+}

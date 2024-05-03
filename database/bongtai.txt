@@ -1,0 +1,40 @@
+41,3,1,Hoa Tai Bạc Pandora Timeless Đính Đá Tròn Vầng Sáng Halo,2,./img/bongtai/mimg-41.png
+3,590,000
+42,3,1,Hoa Tai Bạc Pandora Timeless Dạng Rơi Chuỗi Đá,1,./img/bongtai/mimg-42.png
+4,190,000
+43,3,2,Hoa Tai Bạc Mạ Vàng Hồng 14k Đính Đá Trong Suốt,2,./img/bongtai/mimg-43.png
+4,790,000
+44,3,2,Hoa Tai Bạc Disney x Pandora Mạ Vàng 14K Hình Vỏ Sò,2,./img/bongtai/mimg-44.png
+3,890,000
+45,3,2,Hoa Tai Bạc Pandora Timeless Họa Tiết Cơn Sóng,1,./img/bongtai/mimg-45.png
+4,790,000
+46,3,2,Hoa Tai Bạc Pandora Timeless Mạ Vàng Hồng Hình Bông Hoa,2,./img/bongtai/mimg-46.png
+4,190,000
+47,3,1,Hoa Tai Bạc Pandora Pha Lê Đỏ,2,./img/bongtai/mimg-47.png
+2,390,000
+48,3,1,Hoa Tai Bạc Pandora Moments Pha Lê Xanh Dương,2,./img/bongtai/mimg-48.png
+2,390,000
+49,3,2,Hoa Tai Bạc Pandora Mạ Vàng 14k Đính Đá,2,./img/bongtai/mimg-49.png
+3,290,000
+50,3,2,Hoa Tai Bạc Pandora Moments Mạ Vàng Hồng 14K Họa Tiết Lông Vũ,2,./img/bongtai/mimg-50.png
+3,290,000
+51,3,1,Hoa Tai Bạc Pandora Timeless Đính Đá Tròn Vầng Sáng Halo,2,./img/bongtai/mimg-51.png
+5,090,000
+52,3,2,Hoa Tai Bạc Marvel x Pandora Mạ Vàng 14K Đính Đá Vô Cực,2,./img/bongtai/mimg-52.png
+5,090,000
+53,3,2,Hoa Tai Bạc Nút Pandora Mạ Vàng Hồng 14k,2,./img/bongtai/mimg-53.png
+4,190,000
+54,3,1,Hoa Tai Bạc Pandora Moments Vương Miện Đính Đá,1,./img/bongtai/mimg-54.png
+4,190,000
+55,3,2,Bông tai cưới Vàng 24K PNJ Hoa Duyên ,2,./img/bongtai/mimg-55.png
+9,735,000
+56,3,2,Bông tai cưới Vàng 24K PNJ Em Về Tinh Khôi,2,./img/bongtai/mimg-56.png
+9,735,000
+57,3,2,Bông tai cưới Vàng 24K PNJ Bốn Mùa Yêu,1,./img/bongtai/mimg-57.png
+11,516,000
+58,3,2,Bông tai cưới Vàng 24K PNJ Long Phụng Sum Vầy,2,./img/bongtai/mimg-58.png
+11,619,000
+59,3,2,Bông tai cưới Vàng 24K PNJ Mật Ngọt Hạnh Phúc,1,./img/bongtai/mimg-59.png
+8,512,000
+60,3,3,Bông tai Kim cương Vàng trắng 14K,1,./img/bongtai/mimg-60.png
+32,870,000

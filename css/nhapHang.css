@@ -1,0 +1,71 @@
+
+.row
+{
+    margin: 0;
+    padding: 0;
+}
+.container-fluid
+{
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+
+.list-product-receipt
+{
+    border-radius: 10px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    max-height: 690px;
+    overflow-y: scroll;
+    .header-list-product
+    {
+        border-bottom: 2px solid #FFCAD4;
+    }
+    .item-product-receipt
+    {
+        border-bottom: 2px solid #FFCAD4;
+
+        .name-product-item
+        {
+            cursor: pointer;
+        }
+        .name-product-item:hover
+        {
+            color: green;
+        }
+    }
+}
+
+.in4-product
+{
+    border-radius: 10px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    .form-group
+    {
+        input
+        {
+            margin: 3px;
+        }
+    }
+}
+
+.list-receipt
+{
+    border-radius: 10px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    .list-item-receipt
+    {
+        min-height: 100px;
+        max-height: 460px;
+        overflow-y: scroll;
+    }
+    .header-list-receipt
+    {
+
+        border-bottom: 2px solid #FFCAD4;
+    }
+    .item-receipt
+    {
+        border-bottom: 2px solid #FFCAD4;
+    }
+}
