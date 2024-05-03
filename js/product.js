@@ -20,16 +20,16 @@
         var btnGoNext = $(options.goNext)
         var btnGoPrevious = $(options.goPrevious)
         var infoPage = $(".infoPage")
-       
+
         init()
 
         function init() {
             $.ajax({
-                url: "database/productDao.php?type=0&items=" + options.items ,
+                url: "database/productDao.php?type=0&items=" + options.items,
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
-                    console.log (data)
+                    console.log(data)
                     options.totalPage = data
                     loadData(options.currentPage)
                     setInfoPage(options)
@@ -177,18 +177,15 @@
             setInfoPage(options)
         }
 
+        
     }
+    
 })(jQuery);
 
 $(document).ready(function () {
     $options = {}
     $(".list-product").dataProduct($options)
-    $(".navbar-nav .nav-item a").click(function (e) {
-
-        $(".active").removeClass("active")
-        $(this).addClass("active")
-
-    })
+    
 
 
 })

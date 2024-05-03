@@ -118,6 +118,26 @@ function getProductById($id, $connect)
         echo json_encode($total);
     }
 }
+
+function getProductBestSeller ($connect,$items)
+{
+        $sql ="SELECT *
+        FROM particular_products JOIN products ON particular_products.ID_PRODUCT = products.ID_PRODUCT
+        GROUP BY particular_products.ID_PRODUCT
+        ORDER BY products.QUANTITY_SOLD DESC
+        LIMIT 12";
+    $result= mysqli_query($connect,$sql);
+    $listProduct =[];
+    
+    while ($row = mysqli_fetch_assoc($result)){
+        $listProduct[] =$row;
+    }
+
+    // echo print_r($listProduct);
+    echo json_encode( $listProduct);
+}
+
+
 if ($_GET["type"] == 0) {
     getTotalPage($connect, $_GET["items"]);
 }
@@ -132,3 +152,8 @@ if ($_GET["type"] == 2) {
 if ($_GET["type"] == 3) {
     selectAll($connect, $_GET["items"], $_GET["currentPage"]);
 }
+
+if ($_GET["type"]==4){
+    getProductBestSeller($connect,$_GET["items"]);
+}
+

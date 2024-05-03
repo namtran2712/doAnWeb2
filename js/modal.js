@@ -39,6 +39,45 @@ $(document).ready(function () {
         return modal;
     }
 
+    function modalUserAdd() {
+        var modal = `
+        <div class="container-fluid">
+            <form action="">
+                <div class="form-group">
+                    <div class="title-text">
+                        <label for="full-name">Tên người dùng</label>
+                    </div>
+                    <div class="input-text">
+                        <input type="text" name="full-name" id="full-name" class="form-control">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="title-text">
+                        <label for="phone-number">Số điện thoại</label>
+                    </div>
+                    <div class="input-text">
+                        <input type="text" name="phone-number" id="phone-number" class="form-control">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="title-text">
+                        <label for="birthday">Ngày sinh</label>
+                    </div>
+                    <div class="input-text">
+                        <input type="date" name="birthday" id="birthday" class="form-control">
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        `
+        return modal;
+    }
+
     function modalProduct(id) {
         return new Promise((resolve, reject) => {
             $.when(
@@ -155,7 +194,7 @@ $(document).ready(function () {
 
                 var bodySize = `
                             <div class="form-group-product col-sm-12 col-md-12 col-lg-12 row">
-                                <div class="col-sm-5 col-md-5 col-lg-5">
+                                <div class="col-sm-4 col-md-4 col-lg-4">
                                     <label for="size-product">Kích cỡ</label>
                                     <select name="size-product" id="size-product">
                 `
@@ -177,8 +216,9 @@ $(document).ready(function () {
                 });
 
                 var bodyPrice = `
-                    <div class="col-sm-1 col-md-1 col-lg-1">
-                        <i class="fa-solid fa-circle-plus"></i>
+                    <div class="col-sm-2 col-md-2 col-lg-2">
+                        <i class="add-size fa-solid fa-circle-plus"></i>
+                        <input type="text" inputmode="numeric" name="add-size" id="add-size" class="form-control" style="display:none">
                     </div>
                     <div class="col-sm-6 col-md-6 col-lg-6">
                         <label for="price-product">Giá</label>
@@ -208,7 +248,7 @@ $(document).ready(function () {
                         Ảnh chính
                         <i class="fa-solid fa-chevron-down"></i>
                     </button>
-    
+
                     <div class="img col-sm-12 col-md-12 col-lg-12">
                         <img src="${dataProduct[0]["product"]["MAIN_IMAGE"]}" class="img-fluid" alt="">
                         <button type="button" class="btn btn-success update-img">Sửa ảnh</button>
@@ -231,6 +271,9 @@ $(document).ready(function () {
                                         <button type="button" class="btn btn-success update-img">Sửa ảnh</button>
                                         <button type="button" class="btn btn-danger delete-img">Xóa ảnh</button>
                                     </div>
+                                </div>
+                                <div class="form-group-product col-sm-12 col-md-12 col-lg-12 row">
+                                    <button type="button" class="btn btn-success add-img">Thêm ảnh mới</button>
                                 </div>
                             </form>
                         </div>
@@ -262,11 +305,64 @@ $(document).ready(function () {
         })
     }
 
+    function modalFormLogin() {
+        var modal = `
+        <div class="form-group">
+            <input type="text" name="username" id="username" placeholder="Tên đăng nhập" required
+                class="form-control">
+            <i class="fa-solid fa-user"></i>
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" id="password" placeholder="Mật khẩu" required
+                class="form-control">
+            <i class="fa-solid fa-lock"></i>
+        </div>
+        `
+        return modal;
+    }
+
+    function modalFormRegister() {
+        var modal = `
+        <div class="form-group">
+            <input type="text" name="fullname" id="fullname" placeholder="Họ và tên" required
+                class="form-control">
+        </div>
+
+        <div class="form-group">
+            <input type="text" name="phone-number" id="phone-number" placeholder="Số điện thoại"
+                required class="form-control">
+            <i class="fa-solid fa-phone"></i>
+        </div>
+
+        <div class="form-group">
+            <input type="date" name="birthday" id="birthday" placeholder="Ngày sinh" required
+                class="form-control">
+            <i class="fa-solid fa-cake-candles"></i>
+        </div>
+
+        <div class="form-group">
+            <input type="text" name="username" id="username" placeholder="Tên đăng nhập" required
+                class="form-control">
+            <i class="fa-solid fa-user"></i>
+        </div>
+
+        <div class="form-group">
+            <input type="password" name="password" id="password" placeholder="Mật khẩu" required
+                class="form-control">
+            <i class="fa-solid fa-lock"></i>
+        </div>
+        `;
+        return modal;
+    }
+
     if (typeof module !== 'undefined' && module.exports) {
-        module.exports = { modalUser, modalProduct };
+        module.exports = { modalUser, modalUserAdd, modalProduct, modalFormLogin, modalFormRegister };
     }
     else {
         window.modalUser = modalUser;
+        window.modalUserAdd = modalUserAdd;
         window.modalProduct = modalProduct;
+        window.modalFormLogin = modalFormLogin;
+        window.modalFormRegister = modalFormRegister;
     }
 });

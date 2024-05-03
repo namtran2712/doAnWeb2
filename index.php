@@ -15,11 +15,35 @@
     <link rel="stylesheet" href="css/slick.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
     <link rel="stylesheet" href="css/product.css">
+    <link rel="stylesheet" href="css/login.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href=".css/userAddress.css">
 </head>
 
 <body>
+
+    <div class="modal fade my-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="">
+                    <div class="modal-header">
+                        <h5 class="text-animation text-gradient modal-title" id="myModalLabel">Đăng nhập</h5>
+                    </div>
+
+                    <div class="modal-body">
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn-register btn btn-danger">Đăng kí</button>
+                        <button class="login btn btn-primary">Đăng nhập</button>
+                        <button class="register btn btn-primary">Đăng kí</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- container holder navbar -->
     <div class="container-fluid">
 
@@ -130,6 +154,8 @@
                 </div>
             </div>
         </div>
+
+
         <script>
             $(".navbar-nav .nav-item a").click(function(e) {
                 var href = $(this).attr("href")
@@ -141,8 +167,10 @@
                     url: "./database/categoryDao.php?type=2&name=" + name + "&id=" + id,
                     dataType: "html",
                     success: function(data) {
-                        // console.log (data)
-                        $("#wrapper").load(link)
+                        if (link == "")
+                            window.location.href = "http://localhost/Doan"
+                        else
+                            $("#wrapper").load(link)
                     }
                 });
 
@@ -204,8 +232,11 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="js/slickslider.js"></script>
     <script src="js/navmenu.js"></script>
-    <script src="js/product.js"></script>
+    <!-- <script src="js/product.js"></script> -->
     <script src="js/main.js"></script>
+    <script src="js/login.js"> </script>
+    <script src="js/productBestseller.js"> </script>
+
 </body>
 
 </html>

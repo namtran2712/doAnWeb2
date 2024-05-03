@@ -1,0 +1,63 @@
+.my-modal {
+    --bs-modal-margin: 8rem;
+
+    form {
+        padding: 10px;
+
+        .modal-header {
+            justify-content: center;
+            border-bottom: none;
+
+            .text-animation {
+                background: linear-gradient(to right, #f44336, #e91e63, #9c27b0, #673ab7, #3f51b5, #2196f3, #03a9f4, #00bcd4, #009688, #4caf50, #8bc34a, #cddc39, #ffeb3b, #ffc107, #ff9800, #ff5722);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-size: 400% 400%;
+                animation: gradient-animation 1s ease infinite;
+            }
+
+            @keyframes gradient-animation {
+                0% {
+                    background-position: 0% 50%;
+                }
+
+                50% {
+                    background-position: 100% 50%;
+                }
+
+                100% {
+                    background-position: 0% 50%;
+                }
+            }
+
+            h5 {
+                font-size: 24px;
+            }
+        }
+
+        .modal-body {
+            padding: 0 10px;
+
+            .form-group {
+                margin: 20px 0;
+                position: relative;
+
+                i {
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    right: 15px;
+                }
+
+                #password~i {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .modal-footer {
+            justify-content: center;
+            border-top: none;
+        }
+    }
+}

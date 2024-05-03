@@ -10,6 +10,25 @@ $(document).ready(function () {
 
     });
 
+
+
+    $(window).scroll(function () {
+        $(".slideanim").each(function () {
+            var pos = $(this).offset().top;
+
+            var winTop = $(window).scrollTop();
+            if (pos < winTop + 600) {
+                $(this).addClass("slide");
+            }
+        });
+    });
+});
+window.onload = function () {
+    window.scrollTo(0, 0); // Di chuyển trang lên đầu
+};
+
+
+function bestsellerSlick() {
     $('#productBestSeller').slick({
         slidesToShow: 4,
         slidesToScroll: 1,
@@ -44,8 +63,6 @@ $(document).ready(function () {
 
     });
 
-
-
     $(window).scroll(function () {
         $(".slideanim").each(function () {
             var pos = $(this).offset().top;
@@ -56,10 +73,7 @@ $(document).ready(function () {
             }
         });
     });
-});
-window.onload = function() {
-    window.scrollTo(0, 0)   ; // Di chuyển trang lên đầu
-};
+}
 
 
 

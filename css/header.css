@@ -41,7 +41,9 @@
     outline: none;
     box-shadow: none;
 }
-
+.navbar-right .info {
+    padding: 20px;
+}
 .borderbottom {
     position: absolute;
     content: "";
