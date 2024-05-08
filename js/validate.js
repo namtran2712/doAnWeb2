@@ -67,6 +67,10 @@
                 break
             }
         }
+        if(price<0)
+            {
+                check=false;
+            }
         return check;
     }
 

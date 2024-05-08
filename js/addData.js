@@ -232,5 +232,89 @@ $(document).ready(function () {
                     });
                 })
         }
+        else if(table=="phanQuyen")
+            {
+                modalAddAu().then(function(modal)
+                {
+                    $(".modal-body").empty();
+                    $(".modal-body").append(modal)
+                    $(".my-modal").modal("show")
+                    $(".modal-footer .btn-success").click(function (e) { 
+                        e.preventDefault();
+                        var name=$("#nameAu").val();
+                        if(checkEmpty(["#nameAu"]))
+                        {
+                            Swal.fire({
+                                title: "Không được để rỗng tên!!!",
+                                text: "",
+                                icon: "error"
+                            });
+                        }
+                        else
+                        {
+                            $.get("database/authoriesDao.php?type=4&name="+name,
+                                function (data) {
+                                    if(data==1)
+                                    {
+                                        Swal.fire({
+                                            title: "Chắc chưa?",
+                                            showDenyButton: true,
+                                            showCancelButton: false,
+                                            confirmButtonText: "Thêm",
+                                            denyButtonText: `Hủy`
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                var checked=$(".check__box input:checked")
+                                                $.get("./database/authoriesDao.php?type=5&name="+name,
+                                                    function (data) {
+                                                        if(data==1)
+                                                        {
+                                                            var idAu=0
+                                                            $.get("./database/authoriesDao.php?type=11", 
+                                                                function (data) {
+                                                                    console.log(data)
+                                                                    idAu=data
+                                                                    $.each(checked, function (i, val) { 
+                            
+                                                                        var idTask=$(val).data("task")
+                                                                        var idAc=$(val).data("action")
+                                                                        $.get("./database/authoriesDao.php?type=7&idAu="+idAu+"&idTask="+idTask+"&idAc="+idAc,
+                                                                            function (data) {
+                                                                                console.log(data)
+                                                                            },
+                                                                            "html"
+                                                                        );
+        
+                                                                    });
+                                                                    Swal.fire("Thêm thành công!", "", "success");
+                                                                    $(".my-modal").modal("hide")
+                                                                },
+                                                                "html"
+                                                            );
+
+                                                        }
+
+                                                    },
+                                                    "html"
+                                                );
+                                                
+                                            }
+                                        });
+                                    }
+                                    else
+                                    {
+                                        Swal.fire({
+                                            title: "",
+                                            text: "Tên nhóm quyền đã tồn tại!!",
+                                            icon: "error"
+                                        });
+                                    }
+                                },
+                                "html"
+                            );
+                        }
+                    });
+                })
+            }
     });
 });

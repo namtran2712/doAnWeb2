@@ -13,7 +13,6 @@
         if(isset($_SESSION['receipt'][$id]))
         {
             $_SESSION['receipt'][$id]['quantity']+=$quantity;
-            $_SESSION['totalReceipt']+=$_SESSION['receipt'][$id]['price']=$price*$quantity;
         }
         else
         {
@@ -21,7 +20,7 @@
             $_SESSION['receipt'][$id]['size']=$size;
             $_SESSION['receipt'][$id]['price']=$price;
             $_SESSION['receipt'][$id]['quantity']=$quantity;
-            $_SESSION['totalReceipt']+=$_SESSION['receipt'][$id]['price']=$price*$_SESSION['receipt'][$id]['quantity']=$quantity;
+            $_SESSION['totalReceipt']+=$_SESSION['receipt'][$id]['price']*$_SESSION['receipt'][$id]['quantity'];
         }
     }
     $type=$_GET['type'];

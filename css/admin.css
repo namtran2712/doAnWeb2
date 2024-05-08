@@ -300,9 +300,6 @@ body {
             align-items: center;
             border-bottom: 3px solid #FFCAD4;
 
-            .create {
-                display: none;
-            }
 
             div {
                 padding: 10px 15px;
@@ -492,3 +489,4 @@ body {
 
     }
 }
+

@@ -108,7 +108,7 @@
             <li id="nhapHang" data-id="8"><a href="#"
                     class="list-group-item list-group-item-action py-3 fw-bold fs-7 text-right">
                     <i class="fas fa-regular fa-money-bill-transfer mx-2"></i> Nhập hàng</a></li>
-            <li id="phanQuyen" data-id="1"><a href="#"
+            <li id="phanQuyen" data-id="1" style=" display:block;"><a href="#"
                     class="list-group-item list-group-item-action py-3 fw-bold fs-7 text-right">
                     <i class="fas fa-solid fa-user-gear mx-2"></i> Phân quyền</a></li>
             <li id="logout" style="display: block;"><a href="#"
@@ -137,7 +137,7 @@
                         </div>
 
                         <div class="modal-body">
-
+                            
                         </div>
 
                         <div class="modal-footer">

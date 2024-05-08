@@ -28,7 +28,7 @@ $(document).ready(function () {
 
             var obj = {};
             var type = $("a.active").parent().attr("id");
-            console.log($(".list-group-item.list-group-item-action"))
+            // console.log($(".list-group-item.list-group-item-action"))
             $(".list-item").Paging(obj, type);
 
             $(".btn-show-sidebar").click(function (e) {

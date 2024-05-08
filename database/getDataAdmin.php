@@ -95,6 +95,18 @@
         }
         echo json_encode($receipts);
     }
+    function loadAuthorize ($connect) {
+        $sql = "SELECT *
+        FROM AUTHORIZES ";
+        $result = mysqli_query($connect, $sql);
+        $receipts = [];
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $receipts[] = $row;
+            }
+        }
+        echo json_encode($receipts);
+    }
     function loadBill($connect)
     {
         $sql="SELECT * 
@@ -184,6 +196,10 @@
     elseif ($type=="hoaDon")
     {
         loadBill($connect);
+    }
+    elseif ($type=="phanQuyen")
+    {
+        loadAuthorize($connect);
     }
 
 ?>

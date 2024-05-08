@@ -9,7 +9,6 @@
         }
 
         obj = Default;
-
         var showMore = `
         <button class="btn btn-outline-dark m-2">Xem thêm nội dung</button>
         `
@@ -40,27 +39,13 @@
                 dataType: "html",
                 success: function (data) {
                     obj.totalPage = data
-                    if (type == "phanQuyen") {
-                        $(".list-item").empty()
-                    }
-                    else {
-                        dataEmpty()
-                    }
                     if (type == "sanPham") {
-                        $(".crud .create").css("display", "block")
                         loadDataProduct(obj.currentPage)
                     }
                     else if (type == "khachHang" || type == "nhanVien") {
-                        if (type == "khachHang") {
-                            $(".crud .create").css("display", "none")
-                        }
-                        else {
-                            $(".crud .create").css("display", "block")
-                        }
                         loadDataUser(obj.currentPage)
                     }
                     else if (type == "taiKhoan") {
-                        $(".crud .create").css("display", "none")
                         loadDataAccount(obj.currentPage)
                     }
                     else if (type == "hoaDon") {
@@ -70,10 +55,9 @@
                         loadDataReceipt(obj.currentPage)
                     }
                     else if (type == "phanQuyen") {
-                        $(".list-item").children().first().empty();
-                        $(".phanQuyen").css('display', 'flex');
-                        $(".crud").css('display', 'none');
+                        loadAuthoryze(obj.currentPage)
                     }
+                    
                     else if (type == "nhapHang") {
                         $(".list-item").children().first().empty();
                         $(".nhapHang").css('display', 'flex');
@@ -414,6 +398,76 @@
                 }
             });
         }
+        
+        function loadAuthoryze(page) {
+            $.ajax({
+                type: "GET",
+                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page,
+                dataType: "json",
+                success: function (data) {
+                    // console.log(data)
+
+                    if (page == 1 || page == 0) {
+                        if (type == "khachHang") {
+                            var title = `
+                                <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Tên nhóm quyền</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Người tạo</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Ngày tạo</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Người thay đổi</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Ngày thay đổi</span>
+                                <span class="col-sm-1 col-md-1 col-lg-1">Chọn</span>
+                            `
+                        }
+                        else {
+                            var title = `
+                                <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Tên nhóm quyền</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Người tạo</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Ngày tạo</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Người thay đổi</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Ngày thay đổi</span>
+                                <span class="col-sm-1 col-md-1 col-lg-1">Chọn</span>
+                            `
+                        }
+                        $(".list-item").children().first().empty();
+                        $(".list-item").children().first().append(title);
+                    }
+
+                    $.each(data, function (i, val) {
+
+                        $.ajax({
+                            type: "GET",
+                            url: "./database/userDao.php?type=100&id="+val['ID_ADMIN_ADD'],
+                            dataType: "json",
+                            success: function (admin) {
+                                $.ajax({
+                                    type: "GET",
+                                    url: "./database/userDao.php?type=100&id="+val['ID_ADMIN_UPDATE'],
+                                    dataType: "json",
+                                    success: function (response) {
+                                        
+                                        var item = `
+                                        <div class="item row">
+                                                <span class="id-au col-sm-1 col-md-1 col-lg-1">${val['ID_AUTHORIZE']}</span>
+                                                <span class="name-au col-sm-2 col-md-2 col-lg-2">${val['AUTHORIZE_NAME']}</span>
+                                                <span class="staff-cr col-sm-2 col-md-2 col-lg-2">${admin['FULLNAME']}</span>
+                                                <span class="day-cr col-sm-2 col-md-2 col-lg-2">${val['CREATE_AT']}</span>
+                                                <span class="staff-up col-sm-2 col-md-2 col-lg-2">${response['FULLNAME']}</span>
+                                                <span class="day-up col-sm-2 col-md-2 col-lg-2">${val['UPDATE_AT']}</span>
+                                                <input type="checkbox" name="" id="" class="col-sm-1 col-md-1 col-lg-1">
+                                        </div>
+                                        `
+                                        $(".list-item").append(item)
+                                    }
+                                });}
+                        });
+
+                    });
+                }
+            });
+        }
+
 
 
     }

@@ -20,9 +20,9 @@
         $task = [];
         if (isset($_SESSION["accountCurrent"])) {
             $id = $_SESSION["accountCurrent"]["idAccount"];
-            $sql = "SELECT PARTICULAR_TASKS.ID_TASK
-            FROM PARTICULAR_TASKS JOIN ACCOUNTS
-            ON PARTICULAR_TASKS.ID_AUTHORIZE = ACCOUNTS.ID_AUTHORIZE
+            $sql = "SELECT PARTICULAR_AUTHORIZE.ID_TASK
+            FROM PARTICULAR_AUTHORIZE JOIN ACCOUNTS
+            ON PARTICULAR_AUTHORIZE.ID_AUTHORIZE = ACCOUNTS.ID_AUTHORIZE
             WHERE ACCOUNTS.ID_ACCOUNT = $id";
             
             $result = mysqli_query($connect, $sql);
@@ -45,10 +45,10 @@
             echo json_encode($authories);
         } 
     }
-    function selectParticularTask($connect,$id)
+    function selectParticularAu($connect,$id)
     {
         $sql="SELECT * 
-        FROM particular_tasks
+        FROM particular_authorize
         WHERE ID_AUTHORIZE=$id";
         $result=mysqli_query($connect,$sql);
         if ($result->num_rows > 0) {
@@ -86,8 +86,10 @@
 
     function insertAu($connect,$name)
     {
-        $sql="INSERT INTO AUTHORIZES (AUTHORIZE_NAME)
-        VALUES('$name')";
+        session_start();
+        $id= $_SESSION["accountCurrent"]["idAccount"];
+        $sql="INSERT INTO AUTHORIZES (AUTHORIZE_NAME,ID_ADMIN_ADD,ID_ADMIN_UPDATE)
+        VALUES('$name',$id,$id)";
         if(mysqli_query($connect,$sql))
         {
             echo 1;
@@ -95,6 +97,20 @@
         else
         {
             echo 0;
+        }
+    }
+    function getLastId ($connect) {
+        $sql = "SELECT id_authorize
+        FROM authorizes
+        ORDER BY id_authorize DESC
+        LIMIT 1";
+        $result = mysqli_query($connect, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            $id = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $id[] = $row;
+            }
+            return $id[0]["id_authorize"];
         }
     }
     function deletePtTask($connect,$id)
@@ -110,10 +126,10 @@
               echo 0;
           }
     }
-    function insertPtTask($connect,$idAu,$idTask)
+    function insertPtAu($connect,$idAu,$idTask,$idAction)
     {
-        $sql="INSERT INTO PARTICULAR_TASKS (ID_TASK,ID_AUTHORIZE)
-        VALUES($idTask,$idAu)";
+        $sql="INSERT INTO PARTICULAR_AUTHORIZE (ID_TASK,ID_AUTHORIZE,ID_ACTION)
+        VALUES($idTask,$idAu,$idAction)";
           if(mysqli_query($connect,$sql))
           {
               echo 1;
@@ -146,7 +162,7 @@
     }
     else if($_GET['type']==3)
     {
-        selectParticularTask($connect,$_GET['id']);
+        selectParticularAu($connect,$_GET['id']);
     }
     else if($_GET['type']==4)
     {
@@ -169,7 +185,7 @@
     }
     else if($_GET['type']==7)
     {
-        insertPtTask($connect,$_GET['idAu'],$_GET['idTask']);
+        insertPtAu($connect,$_GET['idAu'],$_GET['idTask'],$_GET['idAc']);
     }
     else if($_GET['type']==8)
     {
@@ -181,6 +197,9 @@
     }
     else if ($_GET["type"] == 10) {
         echo getTaskAccountCurrent($connect);
+    }
+    else if ($_GET["type"] == 11) {
+        echo getLastId($connect);
     }
     
     

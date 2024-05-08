@@ -109,11 +109,11 @@ $(document).ready(function () {
                                 icon: "success",
                                 title: "Thêm sản phẩm vào giỏ hàng thành công !!!",
                                 showConfirmButton: false,
-                                timer: 500
+                                timer: 1000
                               });
                               setTimeout(() => {
                                 window.location.href="shoping_cart.php";
-                            }, 100);
+                            }, 1100);
                         }
                     });
                 }
