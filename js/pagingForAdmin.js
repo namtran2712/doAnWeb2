@@ -449,7 +449,7 @@
                                         
                                         var item = `
                                         <div class="item row">
-                                                <span class="id-au col-sm-1 col-md-1 col-lg-1">${val['ID_AUTHORIZE']}</span>
+                                                <span class="id-item col-sm-1 col-md-1 col-lg-1">${val['ID_AUTHORIZE']}</span>
                                                 <span class="name-au col-sm-2 col-md-2 col-lg-2">${val['AUTHORIZE_NAME']}</span>
                                                 <span class="staff-cr col-sm-2 col-md-2 col-lg-2">${admin['FULLNAME']}</span>
                                                 <span class="day-cr col-sm-2 col-md-2 col-lg-2">${val['CREATE_AT']}</span>

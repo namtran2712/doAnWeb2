@@ -115,7 +115,7 @@
     }
     function deletePtTask($connect,$id)
     {
-        $sql="DELETE FROM PARTICULAR_TASKS
+        $sql="DELETE FROM PARTICULAR_AUTHORIZE
         WHERE ID_AUTHORIZE=$id";
           if(mysqli_query($connect,$sql))
           {
@@ -151,6 +151,34 @@
           {
               echo 0;
           }
+    }
+    function updateAu($connect,$id)
+    {
+        session_start();
+        $idAdmin= $_SESSION["accountCurrent"]["idAccount"];
+        $sql="UPDATE AUTHORIZES SET ID_ADMIN_UPDATE=$idAdmin,UPDATE_AT=NOW()
+        WHERE ID_AUTHORIZE=$id";
+            if(mysqli_query($connect,$sql))
+            {
+                echo 1;
+            }
+            else
+            {
+                echo 0;
+            }
+    }
+    function getAu($connect,$id)
+    {
+        $sql="SELECT * 
+        FROM authorizes
+        WHERE ID_AUTHORIZE=$id";
+        $result=mysqli_query($connect,$sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $authories=$row;
+            }
+            echo json_encode($authories);
+        } 
     }
 
     if($_GET['type']==1)
@@ -200,6 +228,12 @@
     }
     else if ($_GET["type"] == 11) {
         echo getLastId($connect);
+    }
+    else if ($_GET["type"] == 12) {
+        echo getAu($connect,$_GET['id']);
+    }
+    else if ($_GET["type"] == 13) {
+        echo updateAu($connect,$_GET['id']);
     }
     
     

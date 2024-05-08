@@ -697,7 +697,7 @@ $(document).ready(function () {
             })
         })
     }
-    function modalUpAu()
+    function modalUpAu(id)
     {
         return new Promise(function(resolve,reject)
         {
@@ -709,22 +709,17 @@ $(document).ready(function () {
                 }),
                 $.ajax({
                     type: "GET",
-                    url: "./database/authoriesDao.php?type=3",
-                    dataType: "json",
-                }),
-                $.ajax({
-                    type: "GET",
-                    url: "./database/authoriesDao.php?type=9",
+                    url: "./database/authoriesDao.php?type=12&id="+id,
                     dataType: "json",
                 })
-            ).done(function(data)
+            ).done(function(listTask,Au)
             {
                 var modalHead=`
                 <div class="container-fluid row">
                     <div class="form-row container-fluid row my-3">
                         <div class="form-group col-md-12">
                         <label for="nameAu">Tên Nhóm quyền</label>
-                        <input type="text" class="form-control my-2 bg-white mb-5" id="nameAu" >
+                        <input type="text" class="form-control my-2 bg-white mb-5" id="nameAu" value="${Au[0]['AUTHORIZE_NAME']}">
                         </div>
                     </div>
                         <div class="col-sm-3 col-md-3 col-lg-3 fs-5 text-primary"></div>
@@ -734,14 +729,14 @@ $(document).ready(function () {
                         <div class="col-sm-2 col-md-2 col-lg-2 fs-5 text-primary text-center">Readonly</div>
                     `
                     var modalTail=''
-                    $.each(data, function (i, val) { 
+                    $.each(listTask[0], function (i, val) {
                      var tmp=
                      `
                             <div class="col-sm-3 col-md-3 col-lg-3 fs-5 text-primary text-right py-1">${val['TASK_NAME']}</div>
-                            <div class="check__box col-sm-2 col-md-2 col-lg-2 d-flex justify-content-center py-1"><input type="checkbox" data-task=${val['ID_TASK']} data-action=1></input></div>
-                            <div class="check__box col-sm-2 col-md-2 col-lg-2 d-flex justify-content-center py-1"><input type="checkbox" data-task=${val['ID_TASK']} data-action=2></input></div>
-                            <div class="check__box col-sm-2 col-md-2 col-lg-2 d-flex justify-content-center py-1"><input type="checkbox" data-task=${val['ID_TASK']} data-action=3></input></div>
-                            <div class="check__box col-sm-2 col-md-2 col-lg-2 d-flex justify-content-center py-1"><input type="checkbox" data-task=${val['ID_TASK']} data-action=4></input></div>
+                            <div class="check__box col-sm-2 col-md-2 col-lg-2 d-flex justify-content-center py-1"><input type="checkbox" id="${val['ID_TASK']}-1"  data-task=${val['ID_TASK']} data-action=1></input></div>
+                            <div class="check__box col-sm-2 col-md-2 col-lg-2 d-flex justify-content-center py-1"><input type="checkbox" id="${val['ID_TASK']}-2"  data-task=${val['ID_TASK']} data-action=2></input></div>
+                            <div class="check__box col-sm-2 col-md-2 col-lg-2 d-flex justify-content-center py-1"><input type="checkbox" id="${val['ID_TASK']}-3"  data-task=${val['ID_TASK']} data-action=3></input></div>
+                            <div class="check__box col-sm-2 col-md-2 col-lg-2 d-flex justify-content-center py-1"><input type="checkbox" id="${val['ID_TASK']}-4"  data-task=${val['ID_TASK']} data-action=4></input></div>
                      `
                     modalTail+=tmp
                 });
