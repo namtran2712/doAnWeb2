@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" media="all">
     <link rel="stylesheet" href="./css/user.css">
     <link rel="stylesheet" href="./css/userAddress.css">
+    <link rel="stylesheet" href="./css/userOrderDetail.css">
+    <link rel="stylesheet" href="./css/userOrder.css">
 
 </head>
 
@@ -119,7 +121,7 @@
 
                         </div>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Đơn mua</a>
+                            <a class="nav-link" href="#userOrder.php">Đơn mua</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link btn btn-error btn-logout" href="">Đăng xuất</a>

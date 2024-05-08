@@ -1,5 +1,7 @@
 // Tạo option cho ngày (mặc định từ 1 đến 31)
 
+
+
 function initInfo() {
     $.ajax({
         type: "get",
@@ -64,4 +66,40 @@ $(document).ready(function () {
     createMonthOptions();
     createYearOptions();
     initInfo()
+    $.getScript("./js/validate.js");
+    $("#saveButton").click(function (e) {
+        e.preventDefault()
+        var check = true;
+        var phone = $("#phone").val()
+        var fullname = checkName($("#fullname").val())
+        if (checkEmpty['#fullname']|| fullname==false) {
+            $("#fullname").addClass("border border-danger")
+            check = false;
+            
+        }
+        
+        if (checkEmpty['#phone'] || checkPhone(phone) == false) {
+            $("#phone").addClass("border border-danger")
+            check = false;
+        }
+        if (check) {
+            $("#phone").removeClass ("border border-danger")
+            $("#fullname").removeClass ("border border-danger")
+            $.ajax({
+                type: "POST",
+                url: "./database/userDao.php?type=190",
+                data: {
+                    fullname: fullname,
+                    phone: phone
+                },
+                dataType: "html",
+                success: function (response) {
+                    alert (1);
+                    console.log(response)
+                    initInfo()
+                }
+            });
+        }
+
+    })
 })

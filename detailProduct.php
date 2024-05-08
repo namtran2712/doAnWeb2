@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="./css/detailProduct.css">
 </head>
 <body>
+    <?php include ("navbar.php")?>
     <div class="container detail-product">
         <div class="show-detail-product row">
             <div class="show-img-product col-md-12 col-sm-12 col-lg-5">

@@ -10,7 +10,7 @@
 <div class="main-content">
     <div class="overlay" id="overlay"></div>
 
-    <div class="centered-form" id="centeredForm">
+    <div class="centered-form" id="centeredForm" style="display: none;">
         <div class="top-title">
             <h2 id="user-info">Địa chỉ</h2>
         </div>
@@ -18,7 +18,7 @@
         <form id="addAddressForm">
             <div class="nameAndPhone">
                 <input readonly type="text" id="fullname" class=".form-control-plaintext" name="name">
-                <input readonly type="text" id="phone" name="phone"  class=".form-control-plaintext">
+                <input readonly type="text" id="phone" name="phone" class=".form-control-plaintext">
             </div>
             <input type="text" id="addressNote" name="address" placeholder="Địa chỉ cụ thể" required>
             <input type="text" id="address" name="address" placeholder="Tỉnh/ Thành Phố, Quận/ Huyện, Phường/ Xã" required>
@@ -52,10 +52,32 @@
         <div class="btnAction">
             <button class="back-button" id="backButton">Trở lại</button>
             <button class="btnAdd" type="submit">Thêm</button>
+            <button class="btnRepair" type="submit">Sửa</button>
         </div>
     </div>
+   
     <div class="addressContainer">
-
+        <div class="address">
+            <div class="addressInfo">
+                <div class="nameAndPhone">
+                    <p class="name">111</p>
+                    <p> 11</p>
+                </div>
+                <div class="addressDetails me-3">
+                    <p>1111</p>
+                </div>
+                <div class="setDefault me-3">
+                    <span class="border border-danger"> Mặc định </span>
+                </div>
+            </div>
+            <div class="button-container">
+                <div class="btnTop">
+                    <button class="btnUpdate" data-id=${valueOfElement.ID_USER_SHIPPING_ADDRESS}>Cập nhật</button>
+                    <button class="btnDelete" data-id=${valueOfElement.ID_USER_SHIPPING_ADDRESS}>Xóa</button>
+                </div>
+                <button class="btnDefault">Thiết lập mặc định</button>
+            </div>
+        </div>
     </div>
 </div>
 <script src="./js/userAddress.js"></script>

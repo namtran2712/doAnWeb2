@@ -1,9 +1,7 @@
-
-
 $(document).ready(function () {
     $(".showPage").load("userInfo.php")
     $(".btn-logout").click(function (e) {
-        e.preventDefault();
+        e.preventDefault(); 
         $.ajax({
             type: "GET",
             url: "./database/accountDao.php?type=3",
@@ -15,7 +13,7 @@ $(document).ready(function () {
 
 
     });
-    $("#userController a").click(function () {
+    $(".nav-item a").click(function () {
         var href = $(this).attr("href")
         var link = href.substring(1, href.length)
         $.ajax({

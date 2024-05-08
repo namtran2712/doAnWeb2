@@ -1370,6 +1370,9 @@ addAddressButton.addEventListener('click', function () {
     // Hiển thị overlay và form khi nút được click
     overlay.style.display = 'block';
     centeredForm.style.display = 'block';
+    $(".btnRepair").hide();
+    $(".btnAdd").show();
+
 });
 
 // Xử lý sự kiện submit của form
@@ -1406,50 +1409,101 @@ function loadDataAddress() {
         url: "./database/userDao.php?type=197&idAccount=" + $idAccount,
         dataType: "json",
         success: function (data) {
-            console.log(data)
             $(".addressContainer").empty();
             $.each(data, function (indexInArray, valueOfElement) {
                 var div = `
-                <div class="address">
-                <div class="addressInfo">
-                    <div class="nameAndPhone">
-                        <p class="name">${$fullname}</p>
-                        <p>${$phone}</p>
+                <div class="address ">
+                    <div class="addressInfo">
+                        <div class="nameAndPhone">
+                            <p class="name">${$fullname}</p>
+                            <p>${$phone}</p>
+                        </div>
+                        <div class="addressDetails me-3">
+                            <p>${valueOfElement.SHIPPING_ADDRESS}</p>
+                        </div>
+                        <div class="setDefault mt-5 text-danger" data-id=${valueOfElement.ID_USER_SHIPPING_ADDRESS}>
+                            
+                        </div>           
                     </div>
-                    <div class="addressDetails me-3">
-                        <p>${valueOfElement.SHIPPING_ADDRESS}</p>
+                    
+                    <div class="button-container">
+                        <div class="btnTop">
+                            <button class="btnUpdate" data-id=${valueOfElement.ID_USER_SHIPPING_ADDRESS}>Cập nhật</button>
+                            <button class="btnDelete" data-id =${valueOfElement.ID_USER_SHIPPING_ADDRESS}>Xóa</button>
+                        </div>
+                        <button class="btnDefault">Thiết lập mặc định</button>
                     </div>
                 </div>
-                <div class="button-container">
-                    <div class="btnTop">
-                        <button class="btnUpdate" data-id=${valueOfElement.ID_USER_SHIPPING_ADDRESS}>Cập nhật</button>
-                        <button class="btnDelete" data-id =${valueOfElement.ID_USER_SHIPPING_ADDRESS}>Xóa</button>
-                    </div>
-                    <button class="btnDefault">Thiết lập mặc định</button>
-                </div>
-            </div>
                 `
                 $(".addressContainer").append(div);
+
 
             });
             $(".btnDelete").off("click")
             $(".btnDelete").click(function () {
                 var idAddress = $(".btnDelete").data("id")
-                alert(1)
                 $.ajax({
                     type: "GET",
                     url: "./database/userDao.php?type=196&idAddress=" + idAddress,
                     dataType: "html",
                     success: function (response) {
-                        console.log(1);
-                        if (response==1)
+                        if (response == 1)
                             loadDataAddress()
                     }
                 });
             })
+
+
+            $(".btnDefault").off("click")
+            $(".btnDefault").click(function () {
+                $(".setDefault").html('<span class ="border border-danger"> Mặc định </span>')
+            })
+
+            $(".btnUpdate").off("click")
+            $(".btnUpdate").click(function () {
+                overlay.style.display = 'block';
+                centeredForm.style.display = 'block';
+                var idAddress = $(".btnUpdate").data("id")
+                $.ajax({
+                    type: "GET",
+                    url: "./database/userDao.php?type=189&idAddress=" + idAddress,
+                    dataType: "json",
+                    success: function (response) {
+                        arraySlipAddress= (response.SHIPPING_ADDRESS.split(", "))
+                        $("#addressNote").val(arraySlipAddress[0]);
+
+                        // cộng 2 để bỏ qua ", " 
+                        $("#address").val(response.SHIPPING_ADDRESS.substring(arraySlipAddress[0].length+2));
+
+
+                    }
+                });
+                $(".btnRepair").show();
+                $(".btnAdd").hide ();
+                $(".btnRepair").click (function (){
+                    if (checkEmpty(["#addressNote"])) {
+                        $("#addressNote").addClass("border border-danger")
+                    }
+                    if (checkEmpty(["#address"])) {
+                        $("#address").addClass("border border-danger")
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        url: "./database/userDao.php?type=188",
+                        data: {
+                            idAddress :idAddress,
+                            address: $("#addressNote").val()+ ", " + $("#address").val () 
+                        },
+                        dataType: "html",
+                        success: function (response) {
+                           console.log (response)
+                        }
+                    });
+                })
+
+            })
         }
-
-
     });
 }
 
@@ -1518,7 +1572,7 @@ function updateAddress(city, district) {
 // Hàm mở tab và hiển thị phần ul tương ứng
 function openTab(evt, tabName) {
     var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
+    tabcontent = document.getElementsByClassName("#addressDropdown tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
     }
@@ -1577,7 +1631,7 @@ $(document).ready(function () {
                 url: "./database/userDAO.php?type=199",
                 data: {
                     idAccount: $idAccount,
-                    shipingAddress: ($("#addressNote").val() + " " + $("#address").val())
+                    shipingAddress: ($("#addressNote").val() + ", " + $("#address").val())
 
                 },
                 dataType: "html",

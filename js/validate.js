@@ -15,6 +15,8 @@
     }
 
     function checkName(name) {
+        if (name.length <= 0)
+            return false;
         for (i = 0; i < name.length; i++) {
             var ascii = name.charCodeAt(i)
             if (ascii > 32 && ascii < 65 ||

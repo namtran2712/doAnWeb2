@@ -57,6 +57,7 @@ function getAddressUser($connect, $idUser)
     }
     // echo print_r($address);
     echo json_encode($address);
+
 }
 
 function insertAddress($connect, $idUser, $address)
@@ -67,23 +68,53 @@ function insertAddress($connect, $idUser, $address)
 }
 
 
-function removeAddress ($connect,$idAddress)
+function removeAddress($connect, $idAddress)
 {
     $sql = "DELETE FROM user_shipping_address WHERE ID_USER_SHIPPING_ADDRESS = $idAddress";
     return mysqli_query($connect, $sql);
 }
 
+ 
+function getAddressById ($connect ,$idAddress)
+{
+    $sql ="Select * from user_shipping_address where ID_USER_SHIPPING_ADDRESS = $idAddress";
+    $result = mysqli_query($connect,$sql);
+    $row = mysqli_fetch_assoc($result);
+    echo json_encode($row);
+}
+function editUser($connect, $idUser, $fullname, $phone)
+{
+    $sql = "
+    UPDATE users 
+    SET FULLNAME = '$fullname',  PHONE_NUMBER='$phone'
+    WHERE users.ID_USER = $idUser
+    ";
+    return mysqli_query($connect,$sql);
+}
 
+function updateAddressUser ($connect,$idAddress,$address)
+{
+    $sql ="
+        update user_shipping_address 
+        set SHIPPING_ADDRESS ='$address'
+        where ID_USER_SHIPPING_ADDRESS ='$idAddress'
+    ";
+    return mysqli_query($connect,$sql);
+}
 
-
-
+session_start();
 if ($_GET["type"] == 200) {
-    session_start();
     getUserByID($connect, $_SESSION["accountCurrent"]["idUser"]);
 } else if ($_GET["type"] == 199) {
     echo insertAddress($connect, $_POST["idAccount"], $_POST["shipingAddress"]);
 } else if ($_GET["type"] == 197) {
-    getAddressUser($connect,$_GET["idAccount"]);
+    getAddressUser($connect, $_GET["idAccount"]);
 } else if ($_GET["type"] == 196) {
-    echo removeAddress($connect,$_GET["idAddress"]);
+    echo removeAddress($connect, $_GET["idAddress"]);
+}else if ($_GET["type"]==190){
+    echo editUser($connect,$_SESSION["accountCurrent"]["idUser"],$_POST["fullname"],$_POST["phone"]);
+}else if ($_GET["type"]==189){
+    echo getAddressById($connect,$_GET["idAddress"]);
+}else if ($_GET["type"]==188){
+    echo updateAddressUser($connect,$_POST["idAddress"],$_POST["address"]);
 }

@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $(".size .group-btn-size .btn-size").eq(0).addClass("selected");
-
+    
     var text =$(".price-after b span").text();
     text=parseInt(text);
     $(".price-after b span").text(text.toLocaleString("de-DE"));

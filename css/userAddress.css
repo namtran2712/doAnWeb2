@@ -215,7 +215,7 @@
 }
 
 
-.centered-form .btnAction .btnAdd {
+.centered-form .btnAction .btnAdd  , .btnRepair{
     display: block;
     padding: 10px;
     background-color: #007bff;
@@ -224,7 +224,9 @@
     border-radius: 5px;
     cursor: pointer;
 }
-
+.btnRepair {
+    display: none;
+}
 .btnAction {
     display: flex;
     justify-content: flex-end;
@@ -292,7 +294,7 @@
     color: #333; /* Màu chữ khi tab được chọn */
 }
 
-.tabcontent {
+#addressDropdown .tabcontent {
     display: none;
     border-top: none;
 }

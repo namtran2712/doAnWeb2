@@ -157,3 +157,4 @@ if ($_GET["type"]==4){
     getProductBestSeller($connect,$_GET["items"]);
 }
 
+        
