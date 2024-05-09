@@ -14,6 +14,8 @@ $(document).ready(function () {
 
     });
     $(".nav-item a").click(function () {
+        $(".nav-item a.active").removeClass ("active")
+        $(this).addClass ("active")
         var href = $(this).attr("href")
         var link = href.substring(1, href.length)
         $.ajax({

@@ -1,17 +1,17 @@
 <?php
-    session_start();
+session_start();
 
-    if(!empty($_SESSION["serializedProduct"]))
-    {
-        $serializedProduct=$_SESSION["serializedProduct"];
-        $product=unserialize($serializedProduct);
+if (!empty($_SESSION["serializedProduct"])) {
+    $serializedProduct = $_SESSION["serializedProduct"];
+    $product = unserialize($serializedProduct);
 
-        $serializedSubImg=$_SESSION["subImg"];
-        $sub_img=unserialize($serializedSubImg);
-    }
+    $serializedSubImg = $_SESSION["subImg"];
+    $sub_img = unserialize($serializedSubImg);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,13 +25,17 @@
     <!-- font awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- css -->
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/detailProduct.css">
+    <link rel="stylesheet" href="./css/header.css">
 </head>
+
 <body>
-    <?php include ("navbar.php")?>
+    <?php include "navbar.php" ?>
+
     <div class="container detail-product">
         <div class="show-detail-product row">
             <div class="show-img-product col-md-12 col-sm-12 col-lg-5">
@@ -39,14 +43,14 @@
                 <div class="main-img">
                     <img src="<?php echo $product[0]["MAIN_IMAGE"] ?>" alt="" class="img-fluid">
                 </div>
-                
-                
+
+
                 <ul class="sub-img">
                     <?php foreach ($sub_img as $key => $value) { ?>
 
-                    <li class="col-md-3 col-sm-3 col-lg-3">
-                        <img src="<?php echo $value["LINK_IMAGE"] ?>" class="img-fluid" alt="">
-                    </li>
+                        <li class="col-md-3 col-sm-3 col-lg-3">
+                            <img src="<?php echo $value["LINK_IMAGE"] ?>" class="img-fluid" alt="">
+                        </li>
                     <?php  } ?>
                 </ul>
             </div>
@@ -63,7 +67,7 @@
                         <i class="fa-solid fa-star"></i>
                     </div>
                     <span>Đánh giá(<span class="evaluate">1000</span>)</span>
-                    
+
                     <span>Đã bán(<span class="quantity-sold"><?php echo $product[0]["QUANTITY_SOLD"] ?></span>)</span>
 
                     <span>Còn(<span class="quantity-sold"><?php echo $product[0]["QUANTITY_REMAIN"] ?></span>)</span>
@@ -87,20 +91,20 @@
                 <div class="size">
                     <span>Chọn kích cỡ:</span>
                     <div class="group-btn-size">
-                        <?php  foreach ($product as $key => $value) { ?>
+                        <?php foreach ($product as $key => $value) { ?>
 
-                        <button class="btn-size" data-price="<?php echo $value["PRICE"] ?>"><?php echo $value["SIZE"] ?></button>
+                            <button class="btn-size" data-price="<?php echo $value["PRICE"] ?>"><?php echo $value["SIZE"] ?></button>
 
-                        <?php }?>
+                        <?php } ?>
                     </div>
                 </div>
                 <div class="add-product">
-                     <div class="quantity-product">
+                    <div class="quantity-product">
                         <button class="decrease">-</button>
                         <input type="text" name="quantity" id="quantity" value="1" readonly>
                         <button class="increase">+</button>
-                     </div>
-                     <button class="btn btn-danger btn-sm buy-now">Mua ngay</button>
+                    </div>
+                    <button class="btn btn-danger btn-sm buy-now">Mua ngay</button>
                 </div>
             </div>
         </div>
@@ -140,7 +144,7 @@
                         <p>loremloeads;lfasdlkfjsadlkfjsaldk;fjlasjflsdajfl;asdjfhasdkfjsldkjfahdjkfaeuhdglkjerahgkdvjsoido</p>
                     </div>
                 </div>
-                <div class="comment">   
+                <div class="comment">
                     <div class="user-and-evaluate">
                         <span class="user">ABCDEFJ</span>
                         <div class="star">
@@ -155,11 +159,13 @@
                         <p>loremloeads;lfasdlkfjsadlkfjsaldk;fjlasjflsdajfl;asdjfhasdkfjsldkjfahdjkfaeuhdglkjerahgkdvjsoido</p>
                     </div>
                 </div>
-            </div>  
+            </div>
         </div>
 
     </div>
 
     <script src="./js/detailProduct.js"></script>
+    <script src="./js/login.js"></script>
 </body>
+
 </html>

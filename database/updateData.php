@@ -23,6 +23,16 @@
                 echo "Đã xóa product có id: " . $tmp . "<br>";
             }
         }
+        else if ($table == "phieuNhap") {
+            $sql = "DELETE FROM RECEIPTS WHERE ID_RECEIPT=";
+            $i = 0;
+            while (count($id) > $i) {
+                $tmp = (int) $id[$i];
+                mysqli_query($connect, $sql . $tmp);
+                $i+=1;
+                echo "Đã xóa receipts có id: " . $tmp . "<br>";
+            }
+        }
     }
     function updateDataUser ($id,$user,$connect) {
         $fullname = $user['fullname'];
@@ -35,6 +45,27 @@
         WHERE ID_USER = $id";
         return mysqli_query($connect, $sql);
     }
+    function handleImage () {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_FILES['file'])) {
+                $file = $_FILES['file'];
+                $targetDir = "../imgNew/";
+        
+                $targetFilePath = $targetDir . basename($file['name']);
+        
+                if (move_uploaded_file($file['tmp_name'], $targetFilePath)) {
+                    
+                    echo substr ($targetFilePath,1, strlen($targetFilePath));
+                } else {
+                    echo "Failed to upload file.";
+                }
+            } else {
+                echo "No file was sent.";
+            }
+        } else {
+            echo "Invalid request method.";
+        }
+    }
 
     if ($_GET["type"] == "delete") {
         $id = $_POST["id"];
@@ -45,6 +76,9 @@
         $id = (int) $_POST["id"];
         $user = $_POST["user"];
         echo updateDataUser($id, $user,$connect);
+    }
+    elseif ($_GET["type"] == 1) {
+        handleImage();
     }
 
 ?>

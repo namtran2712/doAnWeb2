@@ -23,7 +23,11 @@ function encodeStatus($status)
             return "unknown"; // Giá trị mặc định hoặc không hợp lệ
     }
 }
-
+function changeState($connect, $idBill, $status)
+{
+    $sql = " UPDATE bills SET STATUS_BILL=$status WHERE  ID_BILL=$idBill";   
+    return mysqli_query($connect, $sql);
+}
 // Kiểm tra xem yêu cầu có chứa tham số 'status' không
 if (isset($_GET['status'])) {
     // Lấy giá trị của tham số 'status' từ yêu cầu
@@ -40,7 +44,7 @@ if (isset($_GET['status'])) {
                     FROM bills b
                     LEFT JOIN particular_bills pb ON b.ID_BILL = pb.ID_BILL
                     GROUP BY b.ID_BILL, b.TOTAL_BILL;";
-        } 
+        }
         // hoàn thành
         else if ($status == 3) {
             $sql = "SELECT b.ID_BILL, b.STATUS_BILL, b.TOTAL_BILL, COUNT(pb.ID_PRODUCT) AS TOTAL_PRODUCTS
@@ -83,4 +87,9 @@ if (isset($_GET['status'])) {
 } else {
     // Trường hợp không có tham số 'status' trong yêu cầu, trả về thông báo lỗi
     echo "No status parameter provided";
+}
+
+if (isset($_POST ["type"]) and $_POST ["type"]==200 )
+{  
+    echo changeState($connect,$_POST["idBill"],encodeStatus($_POST["status"]));
 }

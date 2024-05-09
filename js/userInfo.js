@@ -95,7 +95,6 @@ $(document).ready(function () {
                 dataType: "html",
                 success: function (response) {
                     alert (1);
-                    console.log(response)
                     initInfo()
                 }
             });

@@ -71,7 +71,6 @@
             $serializedSubImg=serialize($sub_img);
             $_SESSION["serializedProduct"]=$serializedProduct;
             $_SESSION["subImg"]=$serializedSubImg;
-
         }
 }
 

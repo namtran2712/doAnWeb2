@@ -1497,7 +1497,6 @@ function loadDataAddress() {
                         },
                         dataType: "html",
                         success: function (response) {
-                           console.log (response)
                         }
                     });
                 })

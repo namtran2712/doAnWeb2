@@ -19,5 +19,22 @@ $(document).ready(function () {
         $(this).addClass("active")
 
     })
-
+    $(".cart").click(function (e) { 
+        e.preventDefault();
+        $.ajax({
+            type: "GET",
+            url: "database/accountDao.php?type=2",
+            dataType: "text",
+            success: function (response) {
+                if(response)
+                {
+                    window.location.href="shoping_cart.php"
+                }
+                else
+                {
+                    alert("Vui lòng đăng nhập để xem giỏ hàng !!!")
+                }
+            }
+        });
+    });
 })

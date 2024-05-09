@@ -14,9 +14,15 @@
         return /^\d{10}$/.test(phoneNumber) && phoneNumber[0] === '0';
     }
 
+    function checkUsername(username) {
+        return /^[a-zA-Z0-9_]{3,16}$/.test(username);
+    }
+
+    function checkPassword(password) {
+        return password.length >= 8;
+    }
+
     function checkName(name) {
-        if (name.length <= 0)
-            return false;
         for (i = 0; i < name.length; i++) {
             var ascii = name.charCodeAt(i)
             if (ascii > 32 && ascii < 65 ||
@@ -61,11 +67,15 @@
                 break
             }
         }
+        if(price<0)
+            {
+                check=false;
+            }
         return check;
     }
 
     if (typeof module !== 'undefined' && module.exports) {
-        module.exports = { checkEmpty, checkPhone, checkName, checkAge, checkPrice };
+        module.exports = { checkEmpty, checkPhone, checkName, checkAge, checkPrice, checkUsername, checkPassword };
     }
     else {
         window.checkEmpty = checkEmpty;
@@ -73,5 +83,7 @@
         window.checkAge = checkAge;
         window.checkName = checkName;
         window.checkPrice = checkPrice;
+        window.checkPassword = checkPassword;
+        window.checkUsername = checkUsername;
     }
 })();

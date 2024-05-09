@@ -12,11 +12,11 @@
         function init() {
             $.ajax({
                 type: "GET",
-                url: "./database/productDao.php?type=4&items=12",
+                url: "./database/productDao.php?type=6&items=12",
                 dataType: "json",
                 success: function (data) {
                     createCard(data)
-                    // console.log (data)
+                    console.log (data)
 
                     $(".card-img-top").click(function (e) {
                         e.preventDefault();
@@ -35,7 +35,7 @@
         function createCard(data) {
             $.each(data, function (i, valueOfElement) {
                 var card = `
-                <div class="card mx-2 " style="width: 300px; ">
+                <div class="card mx-2  " style="width: 300px; ">
                     <img src="${valueOfElement.MAIN_IMAGE}" class="card-img-top img-fluid" alt="" data-id=${valueOfElement.ID_PRODUCT}>
                     <div class="card-body ">
                         <div class="title-name">
@@ -63,7 +63,7 @@
                 url: "./database/getData.php?id=" + id + "&type=processDP",
                 dataType: "html",
                 success: function (data) {
-                    window.location.href = "./detailProduct.php"
+                    window.location.href = "./detailProduct.php?id="+id;
                 }
             });
         }

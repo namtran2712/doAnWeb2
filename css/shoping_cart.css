@@ -34,10 +34,13 @@ a {
 .shoping__cart__table table {
     width: 100%;
     text-align: center;
+    border-collapse: collapse;
 }
+
 
 .shoping__cart__table table thead tr {
     border-bottom: 1px solid #ebebeb;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 .shoping__cart__table table thead th {
@@ -45,10 +48,11 @@ a {
     font-weight: 700;
     color: #1c1c1c;
     padding-bottom: 20px;
+    padding-top: 20px;
 }
 
 .shoping__cart__table table thead th.shoping__product {
-    text-align: left;
+    text-align: center;
 }
 
 .shoping__cart__table table tbody tr td {
@@ -59,14 +63,14 @@ a {
 
 .shoping__cart__table table tbody tr td.shoping__cart__item {
     width: 630px;
-    text-align: left;
+    text-align: center;
     /* display: flex;
     align-items: center; */
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__item img {
     display: inline-block;
-    margin-right: 25px;
+    margin-right: 20px;
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__item h5 {
@@ -79,6 +83,7 @@ a {
     color: #1c1c1c;
     font-weight: 700;
     width: 100px;
+    text-align: center; /* Căn giữa văn bản theo chiều ngang */
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__total {
@@ -149,12 +154,13 @@ a {
 .shoping__discount form input {
     width: 255px;
     height: 46px;
-    border: 1px solid #cccccc;
+    border: 1px solid #FFCAD4;
     font-size: 16px;
     color: #b2b2b2;
-    text-align: center;
     display: inline-block;
     margin-right: 15px;
+    padding-left: 10px;
+    border-radius: 10px;
 }
 
 .shoping__discount form input::placeholder {
@@ -165,19 +171,27 @@ a {
     padding: 15px 30px 11px;
     font-size: 12px;
     letter-spacing: 4px;
-    background: #6f6f6f;
+    border-radius: 10px;
+    color: white;
+    background: #FFCAD4;
+    cursor: pointer;
+    border: none;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 .shoping__checkout {
     width: 50%;
-    background: #f5f5f5;
+    background: #FFCAD4;
+    color: white;
+    border-radius: 10px;
     padding: 30px;
     padding-top: 20px;
     margin-top: 50px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 .shoping__checkout h5 {
-    color: #1c1c1c;
+    color: white;
     font-weight: 700;
     font-size: 20px;
     margin-bottom: 28px;
@@ -189,7 +203,7 @@ a {
 
 .shoping__checkout ul li {
     font-size: 16px;
-    color: #1c1c1c;
+    color: white;
     font-weight: 700;
     list-style: none;
     overflow: hidden;
@@ -224,14 +238,10 @@ a {
     color: #ffffff;
     text-transform: uppercase;
     font-weight: 700;
-    background: #002d5c;
+    background: #9b354b;
+    border-radius: 10px;
     letter-spacing: 2px;
-}
-
-.primary-btn.cart-btn {
-    color: #6f6f6f;
-    padding: 14px 30px 12px;
-    background: #f5f5f5;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 .primary-btn.cart-btn span {
@@ -243,9 +253,14 @@ a {
 }
 
 .primary-btn.cart-btn {
-    color: #6f6f6f;
+    color: white;
     padding: 14px 30px 12px;
-    background: #f5f5f5;
+    background: #FFCAD4;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;   
+}
+.shoping__cart__item__close
+{
+    cursor: pointer;
 }
 
 /* Medium Device = 1200px */
@@ -289,8 +304,8 @@ select {
     text-align: center;
     line-height: 35px;
     /* Căn giữa theo chiều cao mới */
-    background-color: #f0f0f0;
-    color: #333;
+    background-color: #FFCAD4;
+    color: white;
     font-weight: bold;
     text-decoration: none;
     border-radius: 5px;
@@ -319,4 +334,19 @@ select {
 .cart_item {
     display: flex;
     align-items: center;
+}
+.container_cartnull {
+    width: 100%;
+    background-color: #FFCAD4;
+    color: white;
+    display: flex; /* Sử dụng flexbox */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    height: 200px; /* Đặt chiều cao của div là 100% chiều cao của viewport */
+    margin-top: 20px;
+}
+
+.container_cartnull p {
+    margin: 0; /* Loại bỏ margin mặc định của thẻ <p> */
+    
 }

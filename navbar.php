@@ -1,4 +1,4 @@
-<nav class="navbar bg-body-tertiary fixed-top navbar-expand-lg scroll ">
+    <nav class="navbar bg-body-tertiary fixed-top navbar-expand-lg scroll " id="parent">
     <div class="container-fluid">
         <div class="navLogo d-flex">
             <button class="navbar-toggler me-sm-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">

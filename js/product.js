@@ -20,7 +20,6 @@
         var btnGoNext = $(options.goNext)
         var btnGoPrevious = $(options.goPrevious)
         var infoPage = $(".infoPage")
-
         init()
 
         function init() {
@@ -138,7 +137,7 @@
                 url: "./database/getData.php?id=" + id + "&type=processDP",
                 dataType: "html",
                 success: function (data) {
-                    window.location.href = "./detailProduct.php"
+                    window.location.href = "./detailProduct.php?id="+id;
                 }
             });
         }

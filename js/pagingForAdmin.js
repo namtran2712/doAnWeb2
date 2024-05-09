@@ -1,3 +1,5 @@
+
+
 (function ($) {
     $.fn.Paging = function (obj, type) {
         var Default = {
@@ -7,7 +9,6 @@
         }
 
         obj = Default;
-
         var showMore = `
         <button class="btn btn-outline-dark m-2">Xem thêm nội dung</button>
         `
@@ -16,7 +17,6 @@
 
         $(".content .show-more").children('button').click(function (e) {
             e.preventDefault();
-            console.log(obj)
             obj.currentPage++
             if (type == "sanPham")
                 loadDataProduct(obj.currentPage)
@@ -48,20 +48,56 @@
                     else if (type == "taiKhoan") {
                         loadDataAccount(obj.currentPage)
                     }
+                    else if (type == "hoaDon") {
+                        loadDataBill(obj.currentPage)
+                    }
+                    else if (type == "phieuNhap") {
+                        loadDataReceipt(obj.currentPage)
+                    }
+                    else if (type == "phanQuyen") {
+                        loadAuthoryze(obj.currentPage)
+                    }
+                    
+                    else if (type == "nhapHang") {
+                        $(".list-item").children().first().empty();
+                        $(".nhapHang").css('display', 'flex');
+                        $(".crud").css('display', 'none');
+                    }
+
+                    if (type != "phanQuyen" && type != "nhapHang") {
+                        $(".crud").css('display', 'flex');
+                    }
+                    if (type != "phanQuyen") {
+                        $(".phanQuyen").css('display', 'none');
+                    }
+                    if (type != "nhapHang") {
+                        $(".nhapHang").css('display', 'none');
+                    }
                     if (obj.currentPage == obj.totalPage || obj.totalPage == 0) {
                         $(".content .show-more").children('button').css('display', 'none');
                     }
                 }
             });
         }
-
+        function dataEmpty() {
+            if (obj.totalPage == 0) {
+                var item = `
+                <div class="item row">
+                    <marquee behavior="scroll" direction="left" scrollamount="15" scrolldelay="50" loop="infinite" onmouseover="this.stop()" onmouseout="this.start()" class="notification">
+                        Hiện không có thông tin nào
+                    </marquee>
+                </div>
+                `
+                $(".list-item").append(item)
+            }
+        }
         function loadDataProduct(page) {
             $.ajax({
                 type: "GET",
                 url: "./database/getDataAdmin.php?type=sanPham&item=" + obj.items + "&page=" + page,
                 dataType: "json",
                 success: function (data) {
-                    if (page == 1) {
+                    if (page == 1 || obj.currentPage == 0) {
                         var title = `
                             <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
                             <span class="col-sm-3 col-md-3 col-lg-3">Tên sản phẩm</span>
@@ -178,7 +214,8 @@
                 url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page,
                 dataType: "json",
                 success: function (data) {
-                    if (page == 1) {
+                    console.log(data)
+                    if (page == 1 || page == 0) {
                         if (type == "khachHang") {
                             var title = `
                                 <span class="col-sm-2 col-md-2 col-lg-2">ID</span>
@@ -229,8 +266,8 @@
                             <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
                             <span class="col-sm-2 col-md-2 col-lg-2">Vai trò</span>
                             <span class="col-sm-2 col-md-2 col-lg-2">Người sử dụng</span>
-                            <span class="col-sm-2 col-md-2 col-lg-2">username</span>
-                            <span class="col-sm-2 col-md-2 col-lg-2">password</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Username</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Password</span>
                             <span class="col-sm-2 col-md-2 col-lg-2">Tình trạng</span>
                             <span class="col-sm-1 col-md-1 col-lg-1">Chọn</span>
                         `
@@ -263,6 +300,175 @@
                 }
             });
         }
+
+        function loadDataBill(page) {
+            $.ajax({
+                type: "GET",
+                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page,
+                dataType: "text",
+                success: function (data) {
+                    console.log(data);
+                    if (page == 1) {
+                        var title = `
+                            <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Tên khách hàng</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Tên nhân viên</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Thời gian</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Tổng hóa đơn</span>
+                            <span class="col-sm-1 col-md-1 col-lg-1">Trạng thái</span>
+                            <span class="col-sm-1 col-md-1 col-lg-1">Chi tiết</span>
+                            <span class="col-sm-1 col-md-1 col-lg-1">Chọn</span>
+                        `
+                        $(".list-item").children().first().empty();
+                        $(".list-item").children().first().append(title);
+                    }
+
+                    $.each(data, function (i, val) {
+                        $.ajax({
+                            type: "GET",
+                            url: "",
+                            data: "data",
+                            dataType: "dataType",
+                            success: function (response) {
+
+                            }
+                        });
+                        var item = `
+                        <div class="item row">
+                            <span class="id-item col-sm-1 col-md-1 col-lg-1">${val.ID_ACCOUNT}</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">${val.AUTHORIZE_NAME}</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">${val.FULLNAME}</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">${val.USERNAME}</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">${val.PASS_WORD}</span>
+                            <span class="col-sm-1 col-md-1 col-lg-1">${val.ID_ACCOUNT}</span>
+                            <span class="col-sm-1 col-md-1 col-lg-1">${val.ID_ACCOUNT}</span>
+                            <input type="checkbox" name="" id="" class="col-sm-1 col-md-1 col-lg-1">
+                        </div>
+                        `
+
+                        $(".list-item").append(item)
+                    });
+                }
+            });
+        }
+        function loadDataReceipt(page) {
+            $.ajax({
+                type: "GET",
+                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page,
+                dataType: "json",
+                success: function (data) {
+                    console.log(obj)
+                    console.log(data)
+                    if (page == 1 || page == 0) {
+                        var title = `
+                            <span class="col-sm-1 col-md-1 col-lg-2">ID</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Tên nhân viên</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Thời gian</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Tổng hóa đơn</span>
+                            <span class="col-sm-1 col-md-1 col-lg-2">Chi tiết</span>
+                            <span class="col-sm-1 col-md-1 col-lg-2">Chọn</span>
+                        `
+                        $(".list-item").children().first().empty();
+                        $(".list-item").children().first().append(title);
+                    }
+
+                    $.each(data, function (i, val) {
+                        var item = `
+                        <div class="item row">
+                        <span class="id-item col-sm-1 col-md-1 col-lg-2">${val.ID_RECEIPT}</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">${val.FULLNAME}</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">${val.DATE_RECEIPT}</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">${parseInt(val.TOTAL_PRICE).toLocaleString("de-DE") + "đ"}</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2" ><i class="fas fa-solid fa-eye detail-receipt" data-id=${val.ID_RECEIPT}></i></span>
+                            <input type="checkbox" name="" id="" class="col-sm-1 col-md-1 col-lg-2">
+                        </div>
+                        `
+
+                        $(".list-item").append(item)
+                    });
+
+                    $(".detail-receipt").click(function (e) {
+                        e.preventDefault();
+                        var id = $(this).data('id');
+                        var modalContent = ``;
+                        $(".my-modal").modal('show')
+
+                    });
+                }
+            });
+        }
+        
+        function loadAuthoryze(page) {
+            $.ajax({
+                type: "GET",
+                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page,
+                dataType: "json",
+                success: function (data) {
+                    // console.log(data)
+
+                    if (page == 1 || page == 0) {
+                        if (type == "khachHang") {
+                            var title = `
+                                <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Tên nhóm quyền</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Người tạo</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Ngày tạo</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Người thay đổi</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Ngày thay đổi</span>
+                                <span class="col-sm-1 col-md-1 col-lg-1">Chọn</span>
+                            `
+                        }
+                        else {
+                            var title = `
+                                <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Tên nhóm quyền</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Người tạo</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Ngày tạo</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Người thay đổi</span>
+                                <span class="col-sm-2 col-md-2 col-lg-2">Ngày thay đổi</span>
+                                <span class="col-sm-1 col-md-1 col-lg-1">Chọn</span>
+                            `
+                        }
+                        $(".list-item").children().first().empty();
+                        $(".list-item").children().first().append(title);
+                    }
+
+                    $.each(data, function (i, val) {
+
+                        $.ajax({
+                            type: "GET",
+                            url: "./database/userDao.php?type=100&id="+val['ID_ADMIN_ADD'],
+                            dataType: "json",
+                            success: function (admin) {
+                                $.ajax({
+                                    type: "GET",
+                                    url: "./database/userDao.php?type=100&id="+val['ID_ADMIN_UPDATE'],
+                                    dataType: "json",
+                                    success: function (response) {
+                                        
+                                        var item = `
+                                        <div class="item row">
+                                                <span class="id-au col-sm-1 col-md-1 col-lg-1">${val['ID_AUTHORIZE']}</span>
+                                                <span class="name-au col-sm-2 col-md-2 col-lg-2">${val['AUTHORIZE_NAME']}</span>
+                                                <span class="staff-cr col-sm-2 col-md-2 col-lg-2">${admin['FULLNAME']}</span>
+                                                <span class="day-cr col-sm-2 col-md-2 col-lg-2">${val['CREATE_AT']}</span>
+                                                <span class="staff-up col-sm-2 col-md-2 col-lg-2">${response['FULLNAME']}</span>
+                                                <span class="day-up col-sm-2 col-md-2 col-lg-2">${val['UPDATE_AT']}</span>
+                                                <input type="checkbox" name="" id="" class="col-sm-1 col-md-1 col-lg-1">
+                                        </div>
+                                        `
+                                        $(".list-item").append(item)
+                                    }
+                                });}
+                        });
+
+                    });
+                }
+            });
+        }
+
+
+
     }
 
 

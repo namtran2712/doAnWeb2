@@ -17,7 +17,6 @@ function displayDeliveryInfo(idBill) {
         },
         
         success: function (response) {
-            console.log(response);
             if (Array.isArray(response) && response.length === 1) {
                 appendInfo(response[0]);
             }
@@ -52,7 +51,6 @@ function displayProductList(idBill) {
                 appendProduct(productList, response);
             }
             updateTotalPrice();
-            console.log(response);
         },
         error: function (xhr, status, error) {
             console.error("Ajax request failed: " + status + ", " + error);
@@ -296,7 +294,7 @@ document.getElementById('receive').addEventListener('click', function () {
 document.querySelector (".back-button").addEventListener ("click",function()
 {
     window.location.href = ("user.php#userOrder.php")
-
+    
 });
 
 

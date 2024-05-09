@@ -8,11 +8,11 @@ function openTab(event, tabName) {
     var i, tablinks;
 
     // Lấy tất cả các phần tử tab button và loại bỏ lớp 'active' khỏi chúng
+
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tablinks.length; i++) {
         tablinks[i].classList.remove("active");
     }
-
     // Thêm lớp 'active' cho tab button được chọn
     event.currentTarget.classList.add("active");
 
@@ -20,6 +20,13 @@ function openTab(event, tabName) {
     // Cập nhật nội dung của tab content dựa trên trạng thái đơn hàng tương ứng
     displayOrders(dataTabValue);
 }
+
+function changeTab(tabName) {
+    $(".tab .active").removeClass("active")
+    $(".tablinks[data-tab='" + tabName + "']").addClass("active");
+    displayOrders(tabName)
+}
+
 
 // Hàm cập nhật nội dung của tab content dựa trên trạng thái đơn hàng
 function displayOrders(dataTabValue) {
@@ -33,7 +40,6 @@ function displayOrders(dataTabValue) {
             status: dataTabValue
         },
         success: function (response) {
-
             // Xóa nội dung hiện tại của tab content
             tabContent.empty();
 
@@ -43,6 +49,7 @@ function displayOrders(dataTabValue) {
                 appendOrderToTabContent(tabContent, order);
             });
 
+            console.log(response);
         },
         error: function (xhr, status, error) {
             console.error("Ajax request failed: " + status + ", " + error);
@@ -70,7 +77,6 @@ function decodeStatus($status_code) {
 }
 
 function appendOrderToTabContent(tabContent, order) {
-    console.log (order)
     // Lấy các thuộc tính của đơn hàng từ đối tượng order
     var statusBill = decodeStatus(order.STATUS_BILL);
     var totalProduct = order.TOTAL_PRODUCTS;
@@ -102,7 +108,7 @@ function appendOrderToTabContent(tabContent, order) {
     // btn CANCEL
     if (order.STATUS_BILL == 0) {
         var divBtn = $("<div>").addClass("btn");
-        alert (1)
+
         var cancelBtn = $("<button>").addClass("btnCancel").text("Yêu cầu hủy");
         divBtn.append(cancelBtn);
     }
@@ -129,7 +135,6 @@ function displayOneProduct(idBill) {
 
     // Tìm phần tử <div> có id là "product-info" trong phần tử <li> đã tìm được
     var divProductInfo = li_IdBill.find('#product-info');
-    console.log (divProductInfo)
 
     // Thực hiện gọi Ajax để lấy dữ liệu từ tập tin PHP
     $.ajax({
@@ -139,7 +144,6 @@ function displayOneProduct(idBill) {
             idBill: idBill
         },
         success: function (response) {
-            console.log (response)
             // Kiểm tra xem response có phải là một mảng hay không
             if (Array.isArray(response)) {
 
@@ -179,7 +183,6 @@ $('#tabContent').on('click', 'li.order', function () {
     // Lấy giá trị của thuộc tính data-idbill của phần tử <li> được click
     var idBill = $(this).attr('data-idbill');
 
-    console.log(idBill);
 
     // Kiểm tra xem idBill có tồn tại hay không
     if (idBill) {
@@ -189,26 +192,33 @@ $('#tabContent').on('click', 'li.order', function () {
 });
 
 $('#tabContent').on('click', 'li.order .btn', function (event) {
-    // Ngăn chặn sự kiện click của nút "Hủy" từ lan truyền lên đến phần tử li.order
     event.stopPropagation();
-
-    // Lấy giá trị của thuộc tính data-idbill từ phần tử li.order
     var idBill = $(this).closest('li.order').attr('data-idbill');
-
-    // Kiểm tra xem idBill có tồn tại hay không
     if (idBill) {
         cancelOrder(idBill);
-        $('.btnCancel').text("Đã gửi yêu cầu hủy");
-        // Tìm tất cả các button có class "btnCancel" và thêm class "active" để đổi màu
-        $('.btnCancel').addClass('active');
+        $(this).text("Đã gửi yêu cầu hủy");
+        $(this).prop('disabled', true);
 
-        // Vô hiệu hóa tất cả các button có class "btnCancel" để ngăn chúng click được
-        $('.btnCancel').prop('disabled', true);
 
     }
 });
 
 function cancelOrder(idBill) {
+    $.ajax({
+        type: "POST",
+        url: "./database/get_orders.php",
+        data: {
+            type: 200,
+            idBill: idBill,
+            status: 'canceled'
+        },
+        dataType: "html",
+        success: function (response) {
+            console.log(response)
+            changeTab("canceled")
+
+        }
+    });
     alert("thực hiện gửi yêu cầu hủy đến ADMIN!");
 }
 

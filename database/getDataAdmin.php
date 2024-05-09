@@ -11,12 +11,12 @@
             if ($userType == "Nhân viên") {
                 $sql = $sql . " JOIN ACCOUNTS
                 ON ACCOUNTS.ID_USER = USERS.ID_USER
-                WHERE ID_AUTHORIZE <> 2";
+                WHERE ID_AUTHORIZE <> 1";
             }
             else {
                 $sql = $sql . " JOIN ACCOUNTS
                 ON ACCOUNTS.ID_USER = USERS.ID_USER
-                WHERE ID_AUTHORIZE = 2";
+                WHERE ID_AUTHORIZE = 1";
             }
         }
         // echo $sql;
@@ -35,17 +35,17 @@
             $sql = "SELECT * 
             FROM USERS JOIN ACCOUNTS 
             ON USERS.ID_USER = ACCOUNTS.ID_USER
-            WHERE ID_AUTHORIZE = 2
+            WHERE ID_AUTHORIZE = 1
             LIMIT $offset, $item";
             // echo $sql;
             $result = mysqli_query($connect, $sql);
+            $users = [];
             if (mysqli_num_rows($result) > 0) {
-                $users = [];
                 while ($row = mysqli_fetch_assoc($result)) {
                     $users[] = $row;
                 }
-                echo json_encode($users);
             }
+            echo json_encode($users);
         }
         else {
             $currentPage = $_GET['page'];
@@ -54,16 +54,16 @@
             $sql = "SELECT * 
             FROM USERS JOIN ACCOUNTS 
             ON USERS.ID_USER = ACCOUNTS.ID_USER
-            WHERE ID_AUTHORIZE <> 2
+            WHERE ID_AUTHORIZE <> 1
             LIMIT $offset, $item";
             $result = mysqli_query($connect, $sql);
+            $users = [];
             if (mysqli_num_rows($result) > 0) {
-                $users = [];
                 while ($row = mysqli_fetch_assoc($result)) {
                     $users[] = $row;
                 }
-                echo json_encode($users);
             }
+            echo json_encode($users);
         }
     }
 
@@ -73,12 +73,53 @@
         ON accounts.ID_AUTHORIZE = authorizes.ID_AUTHORIZE
         JOIN users ON accounts.ID_USER = users.ID_USER";
         $result = mysqli_query($connect, $sql);
+        $accounts = [];
         if (mysqli_num_rows($result) > 0) {
-            $accounts = [];
             while ($row = mysqli_fetch_assoc($result)) {
                 $accounts[] = $row;
             }
-            echo json_encode($accounts);
+        }
+        echo json_encode($accounts);
+    }
+    function loadReceipt ($connect) {
+        $sql = "SELECT *
+        FROM RECEIPTS JOIN ACCOUNTS
+        ON RECEIPTS.ID_STAFF = ACCOUNTS.ID_ACCOUNT
+        JOIN users ON accounts.ID_USER = users.ID_USER";
+        $result = mysqli_query($connect, $sql);
+        $receipts = [];
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $receipts[] = $row;
+            }
+        }
+        echo json_encode($receipts);
+    }
+    function loadAuthorize ($connect) {
+        $sql = "SELECT *
+        FROM AUTHORIZES ";
+        $result = mysqli_query($connect, $sql);
+        $receipts = [];
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $receipts[] = $row;
+            }
+        }
+        echo json_encode($receipts);
+    }
+    function loadBill($connect)
+    {
+        $sql="SELECT * 
+        FROM bills ";
+        $result=mysqli_query($connect,$sql);
+        if(mysqli_num_rows($result)>0)
+        {
+            $bill = [];
+            while($row = mysqli_fetch_assoc($result))
+            {
+                $bill[]=$row;
+            }
+            echo json_encode($bill);
         }
     }
 
@@ -137,8 +178,8 @@
                 "particular" => $particularProduct
             ];
             // echo print_r($total);
-            echo json_encode($total);
         }
+        echo json_encode($total);
     }
     else if ($type == "khachHang") {
         loadUser("Khách hàng", $connect);
@@ -148,6 +189,17 @@
     }
     else if ($type == "taiKhoan") {
         loadAccount ($connect);
+    }
+    else if ($type == "phieuNhap") {
+        loadReceipt ($connect);
+    }
+    elseif ($type=="hoaDon")
+    {
+        loadBill($connect);
+    }
+    elseif ($type=="phanQuyen")
+    {
+        loadAuthorize($connect);
     }
 
 ?>

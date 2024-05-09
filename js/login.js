@@ -78,14 +78,35 @@ $(document).ready(function () {
                             showConfirmButton: false,
                             timer: 1500
                         });
+                        
                     }
-                    else {
+                    else if (data == 0) {
                         Swal.fire({
                             title: "",
                             text: "Vui lòng kiểm tra lại tên đăng nhập hoặc mật khẩu!!",
                             icon: "error"
                         });
                     }
+                    else if (data == 2) {
+                        Swal.fire({
+                            title: "",
+                            text: "Tài khoản của bạn đã bị khóa!",
+                            icon: "warning"
+                        });
+                    }
+                    else if (data == 3) {
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: "Đăng nhập thành công",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        setTimeout(() => {
+                            window.location.href = "admin.php"
+                        }, 1600);
+                    }
+                    console.log (data)
                 }
             });
         }
