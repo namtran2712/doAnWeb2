@@ -11,7 +11,6 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-top: 120px;
 }
 
 .show-product li {
@@ -124,4 +123,8 @@ body {
     border: 2px solid #eb9090;
     color: #eb9090;
     font-weight: bold;  
+}
+.card-img-overlay{
+    font-size: 16px;
+    color: #333;
 }

@@ -1,3 +1,7 @@
+.navbar .container-fluid {
+    padding: 0 70px;
+}
+
 .formSearch {
     position: relative;
 }
@@ -40,6 +44,10 @@
 .navbar .navbar-toggler:focus {
     outline: none;
     box-shadow: none;
+}
+
+.navbar-right .info {
+    padding: 20px;
 }
 
 .navbar-right {
@@ -135,5 +143,10 @@
         transition: 0.3s ease-in-out;
     }
 
+
+}
+
+#parent {
+    transition: top 0.3s ease-in-out, opacity 0.3s ease-in-out;
 
 }

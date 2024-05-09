@@ -1,4 +1,4 @@
-// import { modalDetailReceipt } from "./modal.js";
+
 
 (function ($) {
     $.fn.Paging = function (obj, type) {
@@ -133,7 +133,6 @@
                     curPage = [];
 
                     var endItem = [];
-
 
                     $.each(data, function (i, val) {
                         if (i == "product") {

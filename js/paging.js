@@ -179,24 +179,24 @@
 //         }
 
         
-        function getData (id)
-        {
-            $.ajax({
-                type: "GET",
-                url: "./database/getData.php?id=" + id +"&type=processDP",
-                dataType: "html",
-                success: function (data) 
-                {
-                    window.location.href="./detailProduct.php"
-                }
-            });
-        }
-    }   
-}) (jQuery);
+//         function getData (id)
+//         {
+//             $.ajax({
+//                 type: "GET",
+//                 url: "./database/getData.php?id=" + id +"&type=processDP",
+//                 dataType: "html",
+//                 success: function (data) 
+//                 {
+//                     window.location.href="./detailProduct.php"
+//                 }
+//             });
+//         }
+//     }   
+// }) (jQuery);
 
 
-$(document).ready(function () {
-    var obj = {};
-    $(".show-product").paging (obj)
-});
+// $(document).ready(function () {
+//     var obj = {};
+//     $(".show-product").paging (obj)
+// });
 

@@ -49,7 +49,6 @@ $(document).ready(function () {
                 // Tính tổng tiền
                 var totalElement = $(this).closest('tr').find('.shoping__cart__total');
                 var totalPrice = inputPrice * inputElement.val(); // Nhân giá của size với số lượng
-                console.log(totalPrice.toLocaleString('de-DE') + 'đ')
                 totalElement.text(totalPrice.toLocaleString('de-DE') + 'đ'); // Hiển thị tổng tiền đã định dạng
             
                 // Lấy thông tin sản phẩm
@@ -180,7 +179,6 @@ $(document).ready(function () {
                     },
                     success: function (response) {
                         $('tr[data-id-product="' + productId + '"][data-size="' + size + '"]').remove();
-                        console.log(response);
                         checkout()
                     },
                     error: function (xhr, status, error) {

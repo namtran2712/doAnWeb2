@@ -8,7 +8,10 @@ window.addEventListener("scroll", function () {
         div[0].style.visibility = "hidden"
     }
 })
-
+$(".navbar-brand").click(function () {
+    window.location.href = "./index.php"
+    
+})
 $(document).ready(function () {
     $(".navbar-nav .nav-item a").click(function (e) {
 

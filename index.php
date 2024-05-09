@@ -16,13 +16,14 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
     <link rel="stylesheet" href="css/product.css">
     <link rel="stylesheet" href="css/login.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="css/userAddress.css">
 </head>
 
 <body>
-<div class="modal fade my-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal fade my-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form action="">
@@ -164,8 +165,10 @@
                     url: "./database/categoryDao.php?type=2&name=" + name + "&id=" + id,
                     dataType: "html",
                     success: function(data) {
-                        // console.log (data)
-                        $("#wrapper").load(link)
+                        if (link == "")
+                            window.location.href = "http://localhost/Doan"
+                        else
+                            $("#wrapper").load(link)
                     }
                 });
 
@@ -227,9 +230,11 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="js/slickslider.js"></script>
     <script src="js/navmenu.js"></script>
-    <script src="js/product.js"></script>
+    <!-- <script src="js/product.js"></script> -->
     <script src="js/main.js"></script>
-    <script src="js/login.js"></script>
+    <script src="js/login.js"> </script>
+    <script src="js/productBestseller.js"> </script>
+
 </body>
 
 </html>

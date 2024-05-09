@@ -26,12 +26,16 @@ if (!empty($_SESSION["serializedProduct"])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- css -->
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/detailProduct.css">
+    <link rel="stylesheet" href="./css/header.css">
 </head>
 
 <body>
+    <?php include "navbar.php" ?>
+
     <div class="container detail-product">
         <div class="show-detail-product row">
             <div class="show-img-product col-md-12 col-sm-12 col-lg-5">
@@ -43,6 +47,7 @@ if (!empty($_SESSION["serializedProduct"])) {
 
                 <ul class="sub-img">
                     <?php foreach ($sub_img as $key => $value) { ?>
+
                         <li class="col-md-3 col-sm-3 col-lg-3">
                             <img src="<?php echo $value["LINK_IMAGE"] ?>" class="img-fluid" alt="">
                         </li>
@@ -99,7 +104,7 @@ if (!empty($_SESSION["serializedProduct"])) {
                         <input type="text" name="quantity" id="quantity" value="1" readonly>
                         <button class="increase">+</button>
                     </div>
-                    <button class="btn btn-danger btn-sm buy-now" data-id=<?php echo $value["ID_PRODUCT"] ?>>Mua ngay</button>
+                    <button class="btn btn-danger btn-sm buy-now">Mua ngay</button>
                 </div>
             </div>
         </div>
@@ -160,6 +165,7 @@ if (!empty($_SESSION["serializedProduct"])) {
     </div>
 
     <script src="./js/detailProduct.js"></script>
+    <script src="./js/login.js"></script>
 </body>
 
 </html>

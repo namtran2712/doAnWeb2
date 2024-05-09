@@ -193,12 +193,10 @@ body {
                         }
                     }
 
-
                     .form-group-product.row {
                         flex-direction: row;
 
                         div {
-
                             select {
                                 border: 1px solid #ced4da;
                                 padding: 3px 5px;
@@ -299,7 +297,6 @@ body {
             justify-content: center;
             align-items: center;
             border-bottom: 3px solid #FFCAD4;
-
 
             div {
                 padding: 10px 15px;

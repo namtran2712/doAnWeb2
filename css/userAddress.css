@@ -1,0 +1,313 @@
+/* styles.css */
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.top-content {
+    display: flex;
+    /* Sử dụng Flexbox */
+    align-items: center;
+    /* Căn chỉnh phần tử theo trục dọc */
+    border-bottom: 1px solid #ccc;
+    padding: 20px;
+}
+
+#user-info {
+    margin-right: auto;
+    /* Đẩy h2 sang trái cùng */
+    margin-bottom: 0;
+    /* Loại bỏ margin dưới mặc định */
+}
+
+#addAddress {
+    background-color: #FFCAD4;
+    border: none;
+    color: black;
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: opacity 0.2s;
+    /* Hiệu ứng khi hover */
+}
+
+#addAddress:hover {
+    opacity: 0.7;
+    /* Làm mờ button khi hover */
+}
+
+.menu-item {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: Arial, sans-serif;
+    /* Font chữ */
+}
+
+.menu-item img {
+    vertical-align: middle;
+    /* Căn hình ảnh giữa văn bản */
+    margin-right: 10px;
+    /* Khoảng cách giữa hình ảnh và văn bản */
+}
+
+/* Định dạng chung */
+.main-content {
+    padding: 20px;
+}
+
+.address {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 25px;
+}
+
+.addressInfo {
+    flex: 1;
+    /* Để addressInfo có độ rộng linh hoạt */
+}
+
+.addressInfo>* {
+    margin-bottom: 10px;
+    /* Khoảng cách dưới của mỗi phần tử con */
+}
+
+.addressInfo .nameAndPhone {
+    display: flex;
+    align-items: center;
+}
+
+.addressInfo .nameAndPhone .name {
+    border-right: 1px solid #ccc;
+    font-size: 20px;
+    font-weight: bold;
+    padding-right: 5px;
+    margin-right: 5px;
+
+}
+
+.addressInfo .nameAndPhone p:last-child {
+    color: rgba(0, 0, 0, .54);
+}
+
+.addressInfo .addressDetails p {
+    color: rgba(0, 0, 0, .54);
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    /* Đưa các button xuống hàng */
+    gap: 5px;
+    /* Khoảng cách giữa các button */
+}
+
+.button-container .btnTop {
+    display: flex;
+}
+
+.button-container .btnDefault {
+    padding: 10px 20px;
+    color: black;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+    /* Khoảng cách giữa các nút */
+    margin-bottom: 5px;
+    /* Khoảng cách giữa các dòng */
+    width: fit-content;
+    /* Thiết lập kích thước dựa vào nội dung */
+    margin-left: auto;
+    transition: opacity 0.3s;
+    /* Hiệu ứng khi hover */
+}
+
+.button-container .btnDefault:hover {
+    opacity: 0.7;
+    /* Làm mờ button khi hover */
+}
+
+
+.btnUpdate {
+    margin-left: auto;
+    border: none;
+    color: #08f;
+    background-color: transparent;
+    cursor: pointer;
+    width: fit-content;
+
+}
+
+.btnUpdate:hover {
+    color: #0056b3;
+}
+
+.btnDelete {
+    border: none;
+    color: #08f;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0 20px;
+    width: fit-content;
+}
+
+.btnDelete:hover {
+    color: #0056b3;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Màu nền mờ với độ mờ là 50% */
+    z-index: 999;
+    /* Đảm bảo overlay hiển thị phía trên mọi nội dung khác */
+    display: none;
+    /* Ẩn overlay ban đầu */
+}
+
+.centered-form {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    z-index: 1000;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 90%; /* Sử dụng một phần trăm chiều rộng */
+    max-width: 420px; /* Có thể thay đổi giá trị tối đa nếu cần */
+}
+
+
+
+.centered-form form {
+    margin-bottom: 10px;
+}
+.centered-form .top-title {
+    padding-bottom: 15px;
+}
+.centered-form input {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+
+.centered-form .btnAction .btnAdd  , .btnRepair{
+    display: block;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btnRepair {
+    display: none;
+}
+.btnAction {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.centered-form button:hover {
+    opacity: 0.7;
+}
+
+.centered-form .nameAndPhone {
+    display: flex;
+    gap: 15px;
+}
+
+.back-button {
+    display: block;
+    background-color: transparent;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.back-button:hover {
+    background-color: #f0f0f084;
+    opacity: 0.7;
+}
+
+#addressDropdown {
+    display: none;
+    /* position: absolute; */
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-height: 150px;
+    overflow-y: auto;
+    bottom: 10px;
+}
+
+.tab {
+    display: flex;
+    align-items: stretch; /* Các phần tử con co giãn để phù hợp với chiều cao của container cha */
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+
+.tab button {
+    background-color: inherit;
+    flex-shrink: 0; /* Ngăn các button co lại khi không có đủ không gian */
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 20px;
+}
+
+.tab button:hover {
+    background-color: #ddd;
+}
+
+.tab button.active {
+    background-color: #ccc; /* Màu nền khi tab được chọn */
+    color: #333; /* Màu chữ khi tab được chọn */
+}
+
+#addressDropdown .tabcontent {
+    display: none;
+    border-top: none;
+}
+.tabcontent li {
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: transparent;
+    cursor: pointer;
+    list-style-type: none; /* Xóa dấu chấm ở đầu */
+}
+
+#cityList li:hover {
+    background-color: #ddd;
+    opacity: 0.7; /* Làm mờ văn bản khi hover */
+}
+

@@ -1,5 +1,6 @@
 
 $(document).ready(function () {
+
     $.getScript("./js/validate.js", function (script, textStatus, jqXHR) {
         console.log("Tải thành công validate trong login.js")
     });
@@ -54,12 +55,22 @@ $(document).ready(function () {
                 },
                 dataType: "html",
                 success: function (data) {
-                    console.log(data)
                     if (data == 1) {
+                        $.ajax({
+                            type: "get",
+                            url: "./database/accountDao.php?type=100",
+                            dataType: "json",
+                            success: function (data) {
+                                var a = `
+                                <a href="user.php" data-id=${data.idUser} >${data.username}</a>
+                                `
+                                $(".info").append(a)
+                            }
+                        });
                         $('.btn-login').off('click');
-                        $(".btn-login").text("Log out");
-                        $(".btn-login").attr("class", "btn-logout btn btn-danger mx-2")
                         $(".my-modal").modal("hide")
+                        $(".info").empty();
+
                         Swal.fire({
                             position: "top-end",
                             icon: "success",
@@ -67,9 +78,7 @@ $(document).ready(function () {
                             showConfirmButton: false,
                             timer: 1500
                         });
-                        setTimeout(() => {
-                            location.reload()
-                        }, 1600);
+                        
                     }
                     else if (data == 0) {
                         Swal.fire({
@@ -97,6 +106,7 @@ $(document).ready(function () {
                             window.location.href = "admin.php"
                         }, 1600);
                     }
+                    console.log (data)
                 }
             });
         }
@@ -110,8 +120,19 @@ $(document).ready(function () {
             success: function (data) {
                 if (data == 1) {
                     $('.btn-login').off('click');
-                    $(".btn-login").text("Log out");
-                    $(".btn-login").attr("class", "btn-logout btn btn-danger mx-2")
+                    $(".info").empty();
+                    $.ajax({
+                        type: "get",
+                        url: "./database/accountDao.php?type=100",
+                        dataType: "json",
+                        success: function (data) {
+                            var a = `
+                            <a href="user.php" data-id=${data.idUser} >${data.username}</a>
+                            `
+                            $(".info").append(a)
+                            console.log(data);
+                        }
+                    });
                     $(".btn-logout").click(function (e) {
                         e.preventDefault();
                         $.ajax({
@@ -119,8 +140,6 @@ $(document).ready(function () {
                             url: "./database/accountDao.php?type=3",
                             dataType: "html",
                             success: function (data) {
-                                console.log(data)
-                                window.location.reload()
                             }
                         });
                     });
