@@ -281,13 +281,13 @@ $(document).ready(function () {
                     <div class="col-sm-6 col-md-6 col-lg-6">
                         <label for="remain-product">Còn lại</label>
                         <input type="text" name="remain-product" id="remain-product"
-                            class="form-control" value="${dataProduct[0]["product"]["QUANTITY_REMAIN"]}">
+                            class="form-control" value="${dataProduct[0]["product"]["QUANTITY_REMAIN"]}" readonly>
                     </div>
     
                     <div class="col-sm-6 col-md-6 col-lg-6">
                         <label for="sold-product">Đã bán</label>
                         <input type="text" name="sold-product" id="sold-product"
-                            class="form-control" value="${dataProduct[0]["product"]["QUANTITY_SOLD"]}">
+                            class="form-control" value="${dataProduct[0]["product"]["QUANTITY_SOLD"]}" readonly>
                     </div>
                 </div>
                 `
@@ -453,13 +453,13 @@ $(document).ready(function () {
                     <div class="col-sm-6 col-md-6 col-lg-6">
                         <label for="remain-product">Còn lại</label>
                         <input type="text" name="remain-product" id="remain-product"
-                            class="form-control">
+                            class="form-control" value=0 readonly>
                     </div>
     
                     <div class="col-sm-6 col-md-6 col-lg-6">
                         <label for="sold-product">Đã bán</label>
                         <input type="text" name="sold-product" id="sold-product"
-                            class="form-control">
+                            class="form-control" value=0 readonly>
                     </div>
                 </div>
                 `
@@ -629,21 +629,22 @@ $(document).ready(function () {
                     dataType: "json",
                 })
             ).done (function (data) {
+                // console.log (data)
                 var modal = `
                 <div class="container-fluid header-list-receipt row my-2">
-                    <div class="col-sm-6 col-md-7 col-lg-9 text-center"><span class=" fs-6 fw-bold">Tên sản phẩm</span></div>
+                    <div class="col-sm-6 col-md-7 col-lg-6 text-center"><span class=" fs-6 fw-bold">Tên sản phẩm</span></div>
                     <div class="col-sm-2 col-md-1 col-lg-1 text-center"><span class=" fs-6 fw-bold">Size</span></div>
-                    <div class="col-sm-2 col-md-2 col-lg-1 text-center"><span class=" fs-6 fw-bold">Giá</span></div>
-                    <div class="col-sm-2 col-md-2 col-lg-1 text-center"><span class=" fs-6 fw-bold">Số lượng</span></div>
+                    <div class="col-sm-2 col-md-2 col-lg-3 text-center"><span class=" fs-6 fw-bold">Giá</span></div>
+                    <div class="col-sm-2 col-md-2 col-lg-2 text-center"><span class=" fs-6 fw-bold">Số lượng</span></div>
                 </div>
                 `
                 $.each(data, function (i, val) { 
                     tmp = `
                     <div class="container-fluid item-receipt row py-2">
-                        <div class="col-sm-6 col-md-7 col-lg-9 text-right"><span class=" fs-6 ">${val["PRODUCT_NAME"]}</span></div>
+                        <div class="col-sm-6 col-md-7 col-lg-6 text-right"><span class=" fs-6 ">${val["PRODUCT_NAME"]}</span></div>
                         <div class="col-sm-2 col-md-1 col-lg-1 text-left d-flex align-items-center justify-content-center"><span class=" fs-6 ">${val["SIZE"]}</span></div>
-                        <div class="col-sm-2 col-md-2 col-lg-1 text-left d-flex align-items-center justify-content-center"><span class=" fs-6 ">${val["PRICE"]}</span></div>
-                        <div class="col-sm-1 col-md-1 col-lg-1 text-left d-flex align-items-center justify-content-center"><span class=" fs-6 ">${val["QUANTITY"]}</span></div>
+                        <div class="col-sm-2 col-md-2 col-lg-3 text-left d-flex align-items-center justify-content-center"><span class=" fs-6 ">${parseInt (val["PRICE"]).toLocaleString ("de-DE")}đ</span></div>
+                        <div class="col-sm-2 col-md-1 col-lg-2 text-left d-flex align-items-center justify-content-center"><span class=" fs-6 ">${val["QUANTITY"]}</span></div>
                     </div>
                     `
                     modal += tmp
@@ -747,8 +748,9 @@ $(document).ready(function () {
         })
     }
 
+
     if (typeof module !== 'undefined' && module.exports) {
-        module.exports = { modalUser, modalUserAdd, modalProduct, modalFormLogin, modalFormRegister, modalAccount, modalProductAdd ,modalAddAu,modalUpAu};
+        module.exports = { modalUser, modalUserAdd, modalProduct, modalFormLogin, modalFormRegister, modalAccount, modalProductAdd ,modalAddAu,modalUpAu, modalReceiptsParticular};
     }
     else {
         window.modalUser = modalUser;
@@ -760,5 +762,6 @@ $(document).ready(function () {
         window.modalProductAdd = modalProductAdd;
         window.modalAddAu = modalAddAu;
         window.modalUpAu = modalUpAu;
+        window.modalReceiptsParticular = modalReceiptsParticular;
     }
 });

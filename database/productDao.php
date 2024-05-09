@@ -62,6 +62,13 @@ function deleteProduct ($connect, $id) {
     return mysqli_query($connect, $sql);
 }
 
+function getLastId($connect)
+{
+    $sql="SELECT ID_PRODUCT FROM
+    PRODUCTS ORDER BY ID_PRODUCT DESC LIMIT 1";
+    $result=mysqli_query($connect,$sql);
+    return mysqli_fetch_assoc($result)['ID_PRODUCT'];
+}
 function selectAll($connect, $items, $currentPage)
 {
     $offset = ($currentPage - 1) * $items;
@@ -213,6 +220,18 @@ function getProductById($id, $connect)
         }
     }
 
+    function getPtProduct($connect,$id,$size)
+    {
+        $sql="SELECT * FROM PARTICULAR_PRODUCTS
+        WHERE ID_PRODUCT=$id and SIZE = $size";
+        $result=mysqli_query($connect,$sql);
+        if(mysqli_num_rows($result)>0)
+        {
+            $abc=mysqli_fetch_assoc($result);
+            echo json_encode($abc);
+        }
+    }
+
     if ($_GET["type"] == 0) {
         getTotalPage($connect, $_GET["items"]);
     }
@@ -232,5 +251,8 @@ function getProductById($id, $connect)
     }
     else if ($_GET["type"] == 5) {
         echo insertProduct($connect, $_POST["product"]);
+    }
+    else if ($_GET["type"] == 100) {
+        echo getPtProduct($connect, $_GET['id'],$_GET['size']);
     }
 ?>

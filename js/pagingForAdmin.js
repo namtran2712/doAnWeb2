@@ -41,34 +41,43 @@
                     obj.totalPage = data
                     if (type == "sanPham") {
                         loadDataProduct(obj.currentPage)
+                        $(".crud").css("display", "flex");
                     }
                     else if (type == "khachHang" || type == "nhanVien") {
                         loadDataUser(obj.currentPage)
+                        $(".crud").css("display", "flex");
+                        if(type == "khachHang")
+                        {
+                            $(".create").css("display", "none");
+                        }
                     }
                     else if (type == "taiKhoan") {
                         loadDataAccount(obj.currentPage)
+                        $(".crud").css("display", "flex");
+                        $(".create").css("display", "none");
                     }
                     else if (type == "hoaDon") {
                         loadDataBill(obj.currentPage)
+                        $(".crud").css("display", "flex");
+                        $(".create").css("display", "none");
+                        $(".update").css("display", "none");
+
+
                     }
                     else if (type == "phieuNhap") {
                         loadDataReceipt(obj.currentPage)
+                        $(".crud").css("display", "flex");
+                        $(".update").css("display", "none");
                     }
                     else if (type == "phanQuyen") {
                         loadAuthoryze(obj.currentPage)
+                        $(".crud").css("display", "flex");
                     }
                     
                     else if (type == "nhapHang") {
                         $(".list-item").children().first().empty();
                         $(".nhapHang").css('display', 'flex');
-                        $(".crud").css('display', 'none');
-                    }
-
-                    if (type != "phanQuyen" && type != "nhapHang") {
-                        $(".crud").css('display', 'flex');
-                    }
-                    if (type != "phanQuyen") {
-                        $(".phanQuyen").css('display', 'none');
+                        $(".crud").css("display", "none");
                     }
                     if (type != "nhapHang") {
                         $(".nhapHang").css('display', 'none');
@@ -149,7 +158,7 @@
                                 if (tmp != item.ID_PRODUCT) {
                                     subItem[0].id.push(item.ID_PRODUCT)
                                     subItem[0].size.push(
-                                        `<option value="${item.SIZE}" data-price="${item.PRICE}">${item.SIZE}</option>`
+                                        `<option value="${item.SIZE}" data-price="${item.PRICE}" data-remain="${item.QUANTITY_REMAIN}">${item.SIZE}</option>`
                                     )
 
                                     tmp = item.ID_PRODUCT
@@ -157,14 +166,14 @@
                                     endItem.push(`
                                         </select>
                                         <span class="col-sm-1 col-md-1 col-lg-1 val-price">${parseInt(item.PRICE).toLocaleString("de-DE")}đ</span>
-                                        <span class="col-sm-1 col-md-1 col-lg-1">${item.QUANTITY_REMAIN}</span>
+                                        <span class="col-sm-1 col-md-1 col-lg-1 val-remain">${item.QUANTITY_REMAIN}</span>
                                         <input type="checkbox" name="" id="" class="col-sm-1 col-md-1 col-lg-1">
                                     </div>
                                     `)
                                 }
                                 else {
                                     subItem[0].id.push(item.ID_PRODUCT)
-                                    subItem[0].size.push(`<option value="${item.SIZE}" data-price="${item.PRICE}">${item.SIZE}</option>`)
+                                    subItem[0].size.push(`<option value="${item.SIZE}" data-price="${item.PRICE}" data-remain="${item.QUANTITY_REMAIN}">${item.SIZE}</option>`)
                                 }
                             }
                         }
@@ -201,9 +210,11 @@
                         e.preventDefault();
                         val = $(this).find(":selected")
                         price = val.data("price")
+                        remain = val.data("remain")
                         price = parseInt(price).toLocaleString("de-DE")
                         price += "đ"
                         $(this).parent().find('.val-price').text(price)
+                        $(this).parent().find('.val-remain').text(remain)
                     });
                 }
             });
@@ -306,16 +317,16 @@
             $.ajax({
                 type: "GET",
                 url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page,
-                dataType: "text",
+                dataType: "json",
                 success: function (data) {
-                    console.log(data);
                     if (page == 1) {
                         var title = `
                             <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
-                            <span class="col-sm-2 col-md-2 col-lg-2">Tên khách hàng</span>
                             <span class="col-sm-2 col-md-2 col-lg-2">Tên nhân viên</span>
-                            <span class="col-sm-2 col-md-2 col-lg-2">Thời gian</span>
-                            <span class="col-sm-2 col-md-2 col-lg-2">Tổng hóa đơn</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Tên khách hàng</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Địa chỉ</span>
+                            <span class="col-sm-1 col-md-1 col-lg-1">Thời gian</span>
+                            <span class="col-sm-1 col-md-1 col-lg-1">Tổng tiền</span>
                             <span class="col-sm-1 col-md-1 col-lg-1">Trạng thái</span>
                             <span class="col-sm-1 col-md-1 col-lg-1">Chi tiết</span>
                             <span class="col-sm-1 col-md-1 col-lg-1">Chọn</span>
@@ -324,31 +335,59 @@
                         $(".list-item").children().first().append(title);
                     }
 
-                    $.each(data, function (i, val) {
-                        $.ajax({
-                            type: "GET",
-                            url: "",
-                            data: "data",
-                            dataType: "dataType",
-                            success: function (response) {
+                    $.each(data, function (i, val) { 
+                             
+                            $.get("./database/userDao.php?type=100&id="+val.ID_STAFF,
+                                function (data) {
+                                    if(data['FULLNAME'])
+                                    {
 
-                            }
-                        });
-                        var item = `
-                        <div class="item row">
-                            <span class="id-item col-sm-1 col-md-1 col-lg-1">${val.ID_ACCOUNT}</span>
-                            <span class="col-sm-2 col-md-2 col-lg-2">${val.AUTHORIZE_NAME}</span>
-                            <span class="col-sm-2 col-md-2 col-lg-2">${val.FULLNAME}</span>
-                            <span class="col-sm-2 col-md-2 col-lg-2">${val.USERNAME}</span>
-                            <span class="col-sm-2 col-md-2 col-lg-2">${val.PASS_WORD}</span>
-                            <span class="col-sm-1 col-md-1 col-lg-1">${val.ID_ACCOUNT}</span>
-                            <span class="col-sm-1 col-md-1 col-lg-1">${val.ID_ACCOUNT}</span>
-                            <input type="checkbox" name="" id="" class="col-sm-1 col-md-1 col-lg-1">
-                        </div>
-                        `
+                                        console.log(val);
+                                        var price=val.TOTAL_BILL
+                                        price=parseFloat(price).toLocaleString('de-DE')+"đ"
+                                        var item = `
+                                    <div class="item row">
+                                        <span class="id-item col-sm-1 col-md-1 col-lg-1">${val.ID_BILL}</span>
+                                        <span class="col-sm-2 col-md-2 col-lg-2">${data['FULLNAME']}</span>
+                                        <span class="col-sm-2 col-md-2 col-lg-2">${val.FULLNAME}</span>
+                                        <span class="col-sm-2 col-md-2 col-lg-2">${val.SHIPPING_ADDRESS}</span>
+                                        <span class="col-sm-1 col-md-1 col-lg-1">${val.DATE_BILL}</span>
+                                        <span class="col-sm-1 col-md-1 col-lg-1">${price}</span>
+                                        <span class="col-sm-1 col-md-1 col-lg-1">Trạng thái</span>
+                                        <span class="col-sm-1 col-md-1 col-lg-1">Chi tiết</span>
+                                        <input type="checkbox" name="" id="" class="col-sm-1 col-md-1 col-lg-1">
+                                    </div>
+                                    `
+                                    
+                                    $(".list-item").append(item)
+                                }
+                                else
+                                {
+                                    console.log(val);
+                                    var price=val.TOTAL_BILL
+                                    price=parseFloat(price).toLocaleString('de-DE')+"đ"
+                                    var item = `
+                                    <div class="item row">
+                                        <span class="id-item col-sm-1 col-md-1 col-lg-1">${val.ID_BILL}</span>
+                                        <span class="col-sm-2 col-md-2 col-lg-2">${"Chưa có"}</span>
+                                        <span class="col-sm-2 col-md-2 col-lg-2">${val.FULLNAME}</span>
+                                        <span class="col-sm-2 col-md-2 col-lg-2">${val.SHIPPING_ADDRESS}</span>
+                                        <span class="col-sm-1 col-md-1 col-lg-1">${val.DATE_BILL}</span>
+                                        <span class="col-sm-1 col-md-1 col-lg-1">${price}</span>
+                                        <span class="col-sm-1 col-md-1 col-lg-1">Trạng thái</span>
+                                        <span class="col-sm-1 col-md-1 col-lg-1">Chi tiết</span>
+                                        <input type="checkbox" name="" id="" class="col-sm-1 col-md-1 col-lg-1">
+                                    </div>
+                                    `
+                                    
+                                    $(".list-item").append(item)
 
-                        $(".list-item").append(item)
+                                    }
+                                },
+                                "json"
+                            );
                     });
+                        
                 }
             });
         }
@@ -358,8 +397,6 @@
                 url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page,
                 dataType: "json",
                 success: function (data) {
-                    console.log(obj)
-                    console.log(data)
                     if (page == 1 || page == 0) {
                         var title = `
                             <span class="col-sm-1 col-md-1 col-lg-2">ID</span>
@@ -391,8 +428,15 @@
                     $(".detail-receipt").click(function (e) {
                         e.preventDefault();
                         var id = $(this).data('id');
-                        var modalContent = ``;
-                        $(".my-modal").modal('show')
+                        
+                        $.getScript("./js/modal.js");
+                        modalReceiptsParticular (id).then (function (modal) {
+                            $(".modal-body").empty ()
+                            $(".modal-body").append (modal)
+                            $(".modal-footer").css ("display", "none")
+                            $(".modal-title").text ("Chi tiết phiếu nhập")
+                            $(".my-modal").modal('show')
+                        })
 
                     });
                 }

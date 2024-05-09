@@ -9,7 +9,7 @@ VALUES ("NHẪN"),
     ("BÔNG TAI"),
     ("KIỀNG"),
     ("VÒNG TAY");
-INSERT INTO tasks(TASK_NAME)
+INSERT INTO tasks(TASK_NAME)s
 VALUES ("Phân quyền"),
     ("Qlí sản phẩm"),
     ("Qlí khách hàng"),
@@ -19,6 +19,12 @@ VALUES ("Phân quyền"),
     ("Qlí phiếu nhập"),
     ("Qlí nhập hàng"),
     ("Qlí thống kê");
+INSERT INTO actions(ACTION_NAME)
+VALUES ("Creacte"),
+("Update"),
+("Delete"),
+("Readonly");
+
 INSERT INTO authorizes(AUTHORIZE_NAME,ID_ADMIN_ADD,ID_ADMIN_UPDATE)
 VALUES ("Khách hàng",1,1),
     ("Nhân viên kho",1,1),

@@ -71,7 +71,7 @@
         $sql = "SELECT *
         FROM accounts JOIN authorizes
         ON accounts.ID_AUTHORIZE = authorizes.ID_AUTHORIZE
-        JOIN users ON accounts.ID_USER = users.ID_USER";
+        JOIN users ON accounts.ID_USER = users.ID_USER WHERE STATUS_ACCOUNT <> 2";
         $result = mysqli_query($connect, $sql);
         $accounts = [];
         if (mysqli_num_rows($result) > 0) {
@@ -97,7 +97,8 @@
     }
     function loadAuthorize ($connect) {
         $sql = "SELECT *
-        FROM AUTHORIZES ";
+        FROM AUTHORIZES 
+        WHERE AUTHORIZE_NAME <> 'Khách hàng'";
         $result = mysqli_query($connect, $sql);
         $receipts = [];
         if (mysqli_num_rows($result) > 0) {

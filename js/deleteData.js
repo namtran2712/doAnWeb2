@@ -2,7 +2,6 @@ $(document).ready(function () {
     $.when(
         $.getScript("js\\pagingForAdmin.js")
     ).done(function () {
-        console.log("Tất cả các file đã được tải ở delete")
     })
 
     $(".delete").click(function () {

@@ -6,11 +6,11 @@ $(document).ready(function () {
         $.getScript("js\\pagingForAdmin.js"),
         $.getScript("js\\eventAdmin.js")
     ).done(function () {
-        console.log("Tất cả các file đã được tải ở add")
     })
 
     $(".create").click(function (e) {
-
+        $(".modal-title").text ("Thêm thông tin")
+        $(".modal-footer").css ("display", "flex")
         $('.my-modal .modal-content .modal-footer .btn.btn-warning').css('display', 'none')
         $('.my-modal .modal-content .modal-footer .btn.btn-success').css('display', 'block')
         $(".my-modal .modal-body").empty()
@@ -239,6 +239,7 @@ $(document).ready(function () {
                     $(".modal-body").empty();
                     $(".modal-body").append(modal)
                     $(".my-modal").modal("show")
+                    $(".modal-title").html("Thêm nhóm quyền");
                     $(".modal-footer .btn-success").click(function (e) { 
                         e.preventDefault();
                         var name=$("#nameAu").val();
@@ -288,6 +289,11 @@ $(document).ready(function () {
                                                                     });
                                                                     Swal.fire("Thêm thành công!", "", "success");
                                                                     $(".my-modal").modal("hide")
+                                                                    var type = $(".list-group-item.list-group-item-action.active").parent().attr("id");
+                                                                    $(".list-item").find(".item.row").remove();
+                                                                    var obj = null
+                                                                    $(".list-item").Paging(obj, type);
+
                                                                 },
                                                                 "html"
                                                             );

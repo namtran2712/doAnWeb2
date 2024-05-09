@@ -33,6 +33,27 @@
                 echo "Đã xóa receipts có id: " . $tmp . "<br>";
             }
         }
+        else if ($table == "phanQuyen") {
+            $sql = "DELETE FROM AUTHORIZES WHERE ID_AUTHORIZE=";
+            $i = 0;
+            while (count($id) > $i) {
+                $tmp = (int) $id[$i];
+                mysqli_query($connect, $sql . $tmp);
+                $i+=1;
+                echo "Đã xóa authorize có id: " . $tmp . "<br>";
+            }
+        }
+        else if($table == "taiKhoan")
+        {
+            $sql="UPDATE ACCOUNTS SET STATUS_ACCOUNT =2 WHERE ID_ACCOUNT=";
+            $i = 0;
+            while (count($id) > $i) {
+                $tmp = (int) $id[$i];
+                mysqli_query($connect, $sql . $tmp);
+                $i+=1;
+                echo "Đã xóa account có id: " . $tmp . "<br>";
+            }
+        }
     }
     function updateDataUser ($id,$user,$connect) {
         $fullname = $user['fullname'];

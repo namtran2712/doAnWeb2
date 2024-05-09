@@ -21,7 +21,7 @@ body {
         }
     }
 
-    .btn-show-sidebar {
+    .btn-hide-sidebar {
         position: absolute;
         right: 5px;
         top: -7px;
@@ -32,7 +32,7 @@ body {
         font-size: 40px;
     }
 
-    .btn-show-sidebar:hover {
+    .btn-hide-sidebar:hover {
         opacity: 0.7;
     }
 
@@ -222,7 +222,7 @@ body {
                             }
 
                             .delete-size {
-                                right: unset;
+                                right: 65px;
                                 color: red !important;
                             }
 
