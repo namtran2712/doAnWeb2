@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
     $.ajax({
         type: "GET",
@@ -125,10 +126,10 @@ $(document).ready(function () {
             $(".make-bill").click(function (e) { 
                 e.preventDefault();
                 Swal.fire({
-                    title: "Bạn chắc chắn muốn đặt hàng?",
+                    title: "Bạn chắc chắn muốn check out?",
                     showDenyButton: true,
                     showCancelButton: false,
-                    confirmButtonText: "Đặt hàng",
+                    confirmButtonText: "Check out",
                     denyButtonText: `Hủy`
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -136,10 +137,9 @@ $(document).ready(function () {
                         {
                             var priceText =$('.shoping__checkout ul li:nth-child(2) span').text();
                             total = parseFloat(priceText.replace(/[đ.]/g, ""));
-                            makeBill(accountId,total)
-                            $(".shoping__cart__table table tbody").empty();
-                            checkout();
-                            Swal.fire("Đặt hàng thành công!", "", "success");
+                            $(".my-modal").modal('show')
+
+                            
                         }
                         else
                         {
@@ -152,8 +152,48 @@ $(document).ready(function () {
 
                     }})
             });
-            
-            function makeBill(accountId,total)
+            $(".btn-check-out").click(function (e) { 
+                e.preventDefault();
+                var selectedValue= $('input[name="flexRadioDefault"]:checked').val()
+                if(selectedValue=="default"){
+                    var address=$("#list-address").val();
+                    makeBill(accountId,total,address)
+                    $(".shoping__cart__table table tbody").empty();
+                    checkout();
+                    Swal.fire("Đặt hàng thành công!", "", "success");
+                } else 
+                {
+                    var address=$("#address2").val();
+                    $.getScript("./js/validate.js")
+                    if(checkAddress(address))
+                    {
+                        $.ajax({
+                            type: "GET",
+                            url: "./database/userDao.php?type=100&address="+address,
+                            dataType: "html",
+                            success: function (response) {
+                                if(response)
+                                {
+                                    makeBill(accountId,total,address)
+                                    $(".shoping__cart__table table tbody").empty();
+                                    checkout();
+                                    Swal.fire("Đặt hàng thành công!", "", "success");
+                                }
+                            }
+                        });
+                        
+                    }
+                    else
+                    {
+                        Swal.fire({
+                            title: "Địa chỉ cần nhiều hơn 10 ký tự!!!",
+                            text: "",
+                            icon: "error"
+                        });
+                    }
+                }
+            });
+            function makeBill(accountId,total,address)
             {
                 $.ajax({
                     type: "POST",
@@ -161,10 +201,12 @@ $(document).ready(function () {
                     data: {
                         account_id : accountId,
                         total : total,
+                        address : address,
                     },
-                    dataType: "dataType",
+                    dataType: "html",
                     success: function (response) {
-
+                        console.log(response)
+                        $(".my-modal").modal("hide")
                     }
                 });
             }

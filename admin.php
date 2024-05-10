@@ -15,7 +15,17 @@
             $account=mysqli_fetch_assoc($result);
             $idAu=$account['ID_AUTHORIZE'];
             $sql="SELECT * 
-            FROM ";
+            FROM AUTHORIZES
+            WHERE ID_AUTHORIZE=$idAu";
+            $result=mysqli_query($connect,$sql);
+            if(mysqli_num_rows($result)>0)
+            {
+                $author=mysqli_fetch_assoc($result);
+                if($author['AUTHORIZE_NAME']=="Khách hàng")
+                {
+                    header("Location: ./index.php");
+                }
+            }
         }
     }
 ?>

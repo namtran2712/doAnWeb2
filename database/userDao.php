@@ -101,6 +101,13 @@ function updateAddressUser ($connect,$idAddress,$address)
     ";
     return mysqli_query($connect,$sql);
 }
+function insertAddressLevelUp($connect,$address)
+{
+    $id= $_SESSION["accountCurrent"]["idAccount"];
+    $sql = "INSERT INTO user_shipping_address (ID_ACCOUNT,SHIPPING_ADDRESS)
+    VALUES ($id,'$address')";
+    return mysqli_query($connect, $sql);
+}
 
 session_start();
 if ($_GET["type"] == 200) {
@@ -117,4 +124,7 @@ if ($_GET["type"] == 200) {
     echo getAddressById($connect,$_GET["idAddress"]);
 }else if ($_GET["type"]==188){
     echo updateAddressUser($connect,$_POST["idAddress"],$_POST["address"]);
+}
+else if ($_GET["type"]==100){
+    echo insertAddressLevelUp($connect,$_GET["address"]);
 }

@@ -50,7 +50,7 @@
                     valueText = parseInt(valueText)
                     if (valueText < 1 || valueText > options.totalPage || isNaN(valueText)) {
                         Swal.fire({
-                            title: "Vui lòng nhập > 0 và bé hơn hoặc bằng " + options.totalPage,
+                            title: "Vui lòng nhập > 0 và <= " + options.totalPage,
                             width: 600,
                             padding: "3em",
                             color: "#716add",

@@ -40,9 +40,28 @@ function getCartInfoByAccountId($account_id)
         // Hiển thị thông báo nếu không tìm thấy giỏ hàng
         // echo "Không tìm thấy giỏ hàng cho tài khoản có ID_ACCOUNT là $account_id";
     }
+
 }
+    $sql = "  SELECT *
+    FROM accounts ,users 
+    WHERE accounts.ID_USER =users.ID_USER AND ID_ACCOUNT =$account_id;";
+    $result = mysqli_query($connect, $sql);
+    $user = mysqli_fetch_assoc($result);
 
+    $sql = "SELECT * 
+    FROM user_shipping_address adr , accounts 
+    WHERE adr.ID_ACCOUNT =accounts.ID_Account and accounts.ID_Account = $account_id";
+    $result = mysqli_query($connect, $sql);
 
+    $checkEmty=true;
+    if(mysqli_num_rows($result)>0)
+    {
+        $address = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $address[] = $row;
+        }
+        $checkEmty=false;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -54,6 +73,8 @@ function getCartInfoByAccountId($account_id)
     <link rel="stylesheet" href="./css/shoping_cart.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
     <title>Document</title>
 </head>
 
@@ -65,6 +86,7 @@ function getCartInfoByAccountId($account_id)
                 Update Cart</a>
         </div>
     </div>
+
     <?php
     require_once("database/connect.php");
     if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
@@ -185,7 +207,7 @@ function getCartInfoByAccountId($account_id)
                 </div>
                 <div class="row">
                     <div class="shoping__continue">
-                        <div class="shoping__discount">
+                        <div class="shoping__discount my-3"> 
                             <h5>Discount Codes</h5>
                             <form action="#">
                                 <input type="text" placeholder="Enter your coupon code" id="code-discount">
@@ -207,12 +229,15 @@ function getCartInfoByAccountId($account_id)
     <?php
     } else {
     ?>
-        <div class="container_cartnull">
-            <p>Giỏ hàng của bạn chưa có sản phẩm</p>
-        </div>
-        <div class="row">
+    <div class="container-fluid">
+
+            <div class="container_cartnull">
+                <p>Giỏ hàng của bạn chưa có sản phẩm</p>
+            </div>
+
+        <div class=" container-fluid row">
                     <div class="shoping__continue">
-                        <div class="shoping__discount">
+                        <div class="shoping__discount  my-3">
                             <h5>Discount Codes</h5>
                             <form action="#">
                                 <input type="text" placeholder="Enter your coupon code" id="code-discount">
@@ -229,10 +254,113 @@ function getCartInfoByAccountId($account_id)
                         <a href="#" class="primary-btn make-bill">PROCEED TO CHECKOUT</a>
                     </div>
                 </div>
+    </div>
     <?php
     }
     ?>
+
+                <div class="modal fade my-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="myModalLabel">Form Check Out</h5>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-12 order-md-1">
+                                        
+                                        <form class="needs-validation" novalidate>
+                                            <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <label for="fullName">Full Name</label>
+                                                <input type="text" class="form-control" id="fullName" placeholder="" value="<?php echo $user['FULLNAME'] ?>" readonly>
+                                            </div>
+                                            </div>
+
+                                            <div class="mb-3">
+                                            <label for="username">Username</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                <span class="input-group-text">@</span>
+                                                </div>
+                                                <input type="text" class="form-control" id="username" placeholder="" value="<?php echo $user['USERNAME'] ?>"readonly>
+                                  
+                                            </div>
+                                            </div>
+
+                                            <div class="mb-3">
+                                            <label for="phoneNumber">Phone Number</label>
+                                            <input type="text" class="form-control" id="phoneNumber" placeholder="" value="<?php echo $user['PHONE_NUMBER'] ?>"readonly>
+                                       
+                                            </div>
+                                            <?php  if($checkEmty==false) {?>
+                                                <div class="mb-3">
+                                                    <label for="list-address">Address<span class="text-muted">(Default)</span></label>
+                                                    <select class="form-select" aria-label="Disabled select example" id="list-address">
+                                                        <?php foreach ($address as $key => $value) {?>
+                                                            <?php if($value['STATUS_ADDRESS']==1) {?>
+                                                                <option selected value="<?php echo $value['SHIPPING_ADDRESS'];?>"><?php echo $value['SHIPPING_ADDRESS'];?></option>
+                                                                <?php }else {?>
+                                                                    <option value="<?php echo $value['SHIPPING_ADDRESS'];?>"><?php echo $value['SHIPPING_ADDRESS'];?></option>
+                                                            <?php }?>
+                                                        <?php }  ?>
+                                                    </select>
+                                                </div>
+                                            <?php }?>
+                                            <div class="mb-3">
+                                                             
+                                                <label for="address2">New address<span class="text-muted">(Option)</span></label>
+                                                <input type="text" class="form-control" id="address2" placeholder="New shopping address" value="">
+                                                <br>
+                                                <?php  if($checkEmty==false) {?>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="defaultAddress" checked value="default">
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Use Default address
+                                                        </label>
+                                                    </div>
+                                                <?php }?>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="newAddress" value="new">
+                                                    <label class="form-check-label" for="flexRadioDefault2">
+                                                        Create and use new address
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <hr class="">
+                                            <!-- #region -->
+
+                                            <h5 class="">Payment</h5>
+
+                                            <div class="d-block my-1">
+                                            <div class="custom-control custom-radio">
+                                                <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+                                                <label class="custom-control-label" for="credit">Direct</label>
+                                            </div>
+                                            </div>
+
+                                            <hr class="mb-4">
+                                            <div class="container d-flex justify-content-center">
+                                                <button class="btn btn-danger btn-lg  btn-check-out" >Continue to checkout</button>
+
+                                            </div>
+                                        </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 </body>
 <script src="js/shoping_cart.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"
+        integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </html>
