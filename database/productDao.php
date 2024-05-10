@@ -63,6 +63,13 @@ function deleteProduct($connect, $id)
     return mysqli_query($connect, $sql);
 }
 
+function getLastId($connect)
+{
+    $sql="SELECT ID_PRODUCT FROM
+    PRODUCTS ORDER BY ID_PRODUCT DESC LIMIT 1";
+    $result=mysqli_query($connect,$sql);
+    return mysqli_fetch_assoc($result)['ID_PRODUCT'];
+}
 function selectAll($connect, $items, $currentPage)
 {
     $offset = ($currentPage - 1) * $items;

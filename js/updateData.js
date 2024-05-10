@@ -6,7 +6,6 @@ $(document).ready(function () {
         $.getScript("js\\modal.js"),
         $.getScript("js\\eventAdmin.js")
     ).done(function () {
-        console.log("Tất cả các file đã được tải ở update")
     })
 
     $(".update").click(function (e) {
@@ -29,7 +28,8 @@ $(document).ready(function () {
             });
         }
         else {
-            
+            $(".modal-footer").css ("display", "flex")
+            $(".modal-title").text ("Sửa thông tin")
             $('.my-modal .modal-content .modal-footer .btn.btn-warning').css('display', 'block')
             $('.my-modal .modal-content .modal-footer .btn.btn-success').css('display', 'none')
             $(".my-modal").modal('show')
@@ -101,9 +101,6 @@ $(document).ready(function () {
                                                     $(".my-modal").modal('hide')
 
                                                     var type = $(".list-group-item.list-group-item-action.active").parent().attr("id");
-                                                    $(".list-item").find(".item.row").remove();
-                                                    var obj = null
-                                                    $(".list-item").Paging(obj, type);
                                                 }
                                                 else {
                                                     Swal.fire({
@@ -324,10 +321,10 @@ $(document).ready(function () {
                                                 timer: 1000
                                             });
                                             var type = $(".list-group-item.list-group-item-action.active").parent().attr("id");
+                                            $(".my-modal").modal("hide")
                                             $(".list-item").find(".item.row").remove();
                                             var obj = null
                                             $(".list-item").Paging(obj, type);
-                                            $(".my-modal").modal("hide")
                                         }
                                     });
                                 }
@@ -356,6 +353,7 @@ $(document).ready(function () {
                 {
                     $(".modal-body").empty();
                     $(".modal-body").append(modal);
+                    $(".modal-title").html("Sửa nhóm quyền");
                     $.get("./database/authoriesDao.php?type=3&id="+id,
                         function (data) {
                             console.log(data)

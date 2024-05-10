@@ -71,7 +71,7 @@
         $sql = "SELECT *
         FROM accounts JOIN authorizes
         ON accounts.ID_AUTHORIZE = authorizes.ID_AUTHORIZE
-        JOIN users ON accounts.ID_USER = users.ID_USER";
+        JOIN users ON accounts.ID_USER = users.ID_USER WHERE STATUS_ACCOUNT <> 2";
         $result = mysqli_query($connect, $sql);
         $accounts = [];
         if (mysqli_num_rows($result) > 0) {
@@ -97,7 +97,8 @@
     }
     function loadAuthorize ($connect) {
         $sql = "SELECT *
-        FROM AUTHORIZES ";
+        FROM AUTHORIZES 
+        WHERE AUTHORIZE_NAME <> 'Khách hàng'";
         $result = mysqli_query($connect, $sql);
         $receipts = [];
         if (mysqli_num_rows($result) > 0) {
@@ -106,21 +107,6 @@
             }
         }
         echo json_encode($receipts);
-    }
-    function loadBill($connect)
-    {
-        $sql="SELECT * 
-        FROM bills ";
-        $result=mysqli_query($connect,$sql);
-        if(mysqli_num_rows($result)>0)
-        {
-            $bill = [];
-            while($row = mysqli_fetch_assoc($result))
-            {
-                $bill[]=$row;
-            }
-            echo json_encode($bill);
-        }
     }
 
     $type = $_GET["type"];
@@ -140,6 +126,9 @@
         }
         else if ($_GET["loai"] == "taiKhoan") {
             getPage("ID_ACCOUNT","ACCOUNTS",$connect,"");
+        }
+        else if ($_GET["loai"] == "hoaDon") {
+            getPage("ID_BILL","BILLS",$connect,"");
         }
     }
     else if ($type == "sanPham") {
@@ -192,10 +181,6 @@
     }
     else if ($type == "phieuNhap") {
         loadReceipt ($connect);
-    }
-    elseif ($type=="hoaDon")
-    {
-        loadBill($connect);
     }
     elseif ($type=="phanQuyen")
     {

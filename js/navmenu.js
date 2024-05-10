@@ -9,7 +9,7 @@ window.addEventListener("scroll", function () {
     }
 })
 $(".navbar-brand").click(function () {
-    window.location.href = "http://localhost/Doan"
+    window.location.href = "./index.php"
     
 })
 $(document).ready(function () {

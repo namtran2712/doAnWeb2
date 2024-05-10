@@ -4,7 +4,8 @@
     function getById($connect,$id)
     {
         $sql = "SELECT *
-        FROM PARTICULAR_RECEIPTS
+        FROM PARTICULAR_RECEIPTS JOIN PRODUCTS
+        ON PARTICULAR_RECEIPTS.ID_PRODUCT = PRODUCTS.ID_PRODUCT
         WHERE ID_RECEIPT = $id";
         $result = mysqli_query($connect,$sql);
         if (mysqli_num_rows($result) > 0) {
@@ -33,7 +34,7 @@
     }
 
     if ($_GET["type"]==1) {
-        getById ($_GET["id"], $connect);
+        getById ($connect,$_GET["id"]);
     }
     else if ($_GET['type'] == 2) {
         getByIdFull($connect, $_GET["id"]);

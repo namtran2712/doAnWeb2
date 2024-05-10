@@ -15,12 +15,12 @@
         } 
     }
 
-    function getTaskAccountCurrent ($connect) {
+    function getPtAuAccountCurrent ($connect) {
         session_start();
         $task = [];
         if (isset($_SESSION["accountCurrent"])) {
             $id = $_SESSION["accountCurrent"]["idAccount"];
-            $sql = "SELECT PARTICULAR_AUTHORIZE.ID_TASK
+            $sql = "SELECT *
             FROM PARTICULAR_AUTHORIZE JOIN ACCOUNTS
             ON PARTICULAR_AUTHORIZE.ID_AUTHORIZE = ACCOUNTS.ID_AUTHORIZE
             WHERE ACCOUNTS.ID_ACCOUNT = $id";
@@ -59,6 +59,24 @@
             echo json_encode($pttask);
         }
     }
+    function getAction($connect,$id)
+    {
+        session_start();
+        $idAcc = $_SESSION["accountCurrent"]["idAccount"];
+        $sql="SELECT * 
+        FROM particular_authorize JOIN ACCOUNTS ON
+        particular_authorize.ID_AUTHORIZE=ACCOUNTS.ID_AUTHORIZE
+        WHERE ID_TASK=$id and ID_ACCOUNT=$idAcc";
+        $result=mysqli_query($connect,$sql);
+        if ($result->num_rows > 0) {
+            $pttask=[];
+            while ($row = $result->fetch_assoc()) {
+                $pttask[]=$row;
+            }
+            echo json_encode($pttask);
+        }
+    }
+
     function checkName($connect,$name)
     {
         $sql="SELECT * 
@@ -224,7 +242,7 @@
         selectAllTask($connect);
     }
     else if ($_GET["type"] == 10) {
-        echo getTaskAccountCurrent($connect);
+        echo getPtAuAccountCurrent($connect);
     }
     else if ($_GET["type"] == 11) {
         echo getLastId($connect);
@@ -234,6 +252,9 @@
     }
     else if ($_GET["type"] == 13) {
         echo updateAu($connect,$_GET['id']);
+    }
+    else if ($_GET["type"] == 14) {
+        echo getAction($connect,$_GET['id']);
     }
     
     

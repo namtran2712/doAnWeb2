@@ -104,7 +104,7 @@
             </div>
             <div class="table-column data-column">
                 <div class="data" id="total">000.000.000 đ</div>
-                <div class="data" id="discount">-000.000.000 đ</div>
+                <div class="data" id="discount">-0 đ</div>
                 <div class="data" id="total-amount">000.000.000 đ</div>
             </div>
         </div>

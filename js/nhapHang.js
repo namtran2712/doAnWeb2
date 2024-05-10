@@ -70,9 +70,10 @@ $(document).ready(function () {
                     var size=$(this).val();
                     $.ajax({
                         type: "GET",
-                        url: "database/productDao.php?type=2&id="+id+"&size="+size,
+                        url: "database/productDao.php?type=100&id="+id+"&size="+size,
                         dataType: "json",
                         success: function (data) {
+                            console.log(data)
                             $("#in4-priceProduct").val(parseInt(data['PRICE']*(0.95)).toLocaleString("de-DE")+"đ");
                             $("#in4-quantityRemainProduct").val(data['QUANTITY_REMAIN']);
                         }

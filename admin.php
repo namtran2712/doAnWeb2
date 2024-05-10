@@ -2,22 +2,7 @@
     require "./database/connect.php";
 
     session_start();
-    if(isset( $_SESSION["accountCurrent"]))
-    {
-
-        $idAccount=$_SESSION["accountCurrent"]['idAccount'];
-        $sql="SELECT *
-        FROM ACCOUNTS 
-        WHERE ID_ACCOUNT =$idAccount";
-        $result=mysqli_query($connect,$sql);
-        if(mysqli_num_rows($result)>0)
-        {
-            $account=mysqli_fetch_assoc($result);
-            $idAu=$account['ID_AUTHORIZE'];
-            $sql="SELECT * 
-            FROM ";
-        }
-    }
+    
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +38,7 @@
 <body>
 
     <div class="sidebar toggle bg-white d-flex flex-column p-3">
-        <div class="btn-show-sidebar">
+        <div class="btn-hide-sidebar">
             <i class="fas fa-regular fa-rectangle-xmark"></i>
         </div>
 
@@ -75,7 +60,7 @@
                             while ($row = mysqli_fetch_assoc($result)) {
                                 $name = $row["FULLNAME"];
                                 $author = $row["AUTHORIZE_NAME"];
-                                echo "<h4>$name</h4>
+                                echo "<h5>$name</h5>
                                 <h6>Chức vụ: <span>$author</span></h6>";
                             }
                         }
@@ -108,10 +93,10 @@
             <li id="nhapHang" data-id="8"><a href="#"
                     class="list-group-item list-group-item-action py-3 fw-bold fs-7 text-right">
                     <i class="fas fa-regular fa-money-bill-transfer mx-2"></i> Nhập hàng</a></li>
-            <li id="phanQuyen" data-id="1" style=" display:block;"><a href="#"
+            <li id="phanQuyen" data-id="1"><a href="#"
                     class="list-group-item list-group-item-action py-3 fw-bold fs-7 text-right">
                     <i class="fas fa-solid fa-user-gear mx-2"></i> Phân quyền</a></li>
-            <li id="logout" style="display: block;"><a href="#"
+            <li id="logout" data-id="10" style="display: block;"><a href="#"
                     class="list-group-item list-group-item-action py-3 fw-bold fs-7 text-danger text-right">
                     <i class="fas fa-solid fa-right-from-bracket mx-2"></i> Đăng xuất</a></li>
         </ul>
@@ -133,11 +118,11 @@
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="myModalLabel">Sửa thông tin</h5>
+                            <span class="modal-title fs-3 fw-bold" id="myModalLabel">Sửa thông tin</span>
                         </div>
 
                         <div class="modal-body">
-                            
+
                         </div>
 
                         <div class="modal-footer">
@@ -149,19 +134,7 @@
             </div>
 
             <div class="crud">
-                <div class="create bg-success">
-                    <i class="fas fa-regular fa-circle-plus"></i>
-                    <span>Thêm</span>
-                </div>
 
-                <div class="update bg-warning" data-toggle="modal" data-target=".my-modal">
-                    <i class="fas fa-solid fa-pen-to-square"></i> <span>Sửa</span>
-                </div>
-
-                <div class="delete bg-danger">
-                    <i class="fas fa-regular fa-trash"></i>
-                    <span>Xóa</span>
-                </div>
             </div>
 
             <div class="list-item">
@@ -172,10 +145,6 @@
 
             </div>
 
-
-            <div class="phanQuyen" style="display : none;">
-                <?php require "authorizes.php" ?>
-            </div>
 
 
             <div class="show-more">
@@ -192,8 +161,6 @@
     <script src="./js/updateData.js"></script>
     <script src="./js/deleteData.js"></script>
     <script src="./js/addData.js"></script>
-    <script src="./js/particularData.js"></script>
-
 
     <!-- js bootstrap -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"
