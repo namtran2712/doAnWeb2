@@ -1,63 +1,63 @@
 $(document).ready(function () {
 
-    function loadCrud(id,type)
-    {
-        return new Promise(function(resolve,reject)
-        {
+    function loadCrud(id, type) {
+        return new Promise(function (resolve, reject) {
             $.when(
                 $.ajax({
                     type: "get",
-                    url: "./database/authoriesDao.php?type=14&id="+id,
+                    url: "./database/authoriesDao.php?type=14&id=" + id,
                     dataType: "json"
                 })
             )
-            .done(function(data)
-            {
+                .done(function (data) {
                     $(".list-item").find(".item.row").remove();
                     var obj = null
                     $(".list-item").Paging(obj, type);
                     $(".crud").empty();
-                    $.each(data, function (i, val) { 
-                        if(val['ID_ACTION']==1)
-                        {
-                            var add=
-                            `
+                    var check = false
+                    $.each(data, function (i, val) {
+                        if (val['ID_ACTION'] == 1) {
+                            var add =
+                                `
                             <div class="create bg-success" data-id="1">
                                 <i class="fas fa-regular fa-circle-plus"></i>
                                 <span>Thêm</span>
                             </div>
                             `
+                            check = true
                             $('.crud').append(add);
                         }
-                        else if(val['ID_ACTION']==2)
-                            {
-                                var up=
+                        else if (val['ID_ACTION'] == 2) {
+                            var up =
                                 `
                                 <div class="update bg-warning" data-id="2" data-toggle="modal" data-target=".my-modal">
                                 <i class="fas fa-solid fa-pen-to-square"></i> <span>Sửa</span>
                                 </div>
                                 `
-                                $('.crud').append(up);
+                            $('.crud').append(up);
+                            check = true
                         }
-                        else if(val['ID_ACTION']==3)
-                        {
-                                var del=
+                        else if (val['ID_ACTION'] == 3) {
+                            var del =
                                 `
                                 <div class="delete bg-danger" data-id="3">
                                     <i class="fas fa-regular fa-trash"></i>
                                     <span>Xóa</span>
                                 </div>
                                 `
-                                $('.crud').append(del);
+                            $('.crud').append(del);
+                            check = true
                         }
-                        
                     });
+                    if (!check) {
+                        $(".crud").css("display", "none")
+                    }
                     $.getScript("./js/addData.js");
                     $.getScript("./js/updateData.js");
                     $.getScript("./js/deleteData.js");
                     resolve("")
-                
-            })
+
+                })
         })
     }
 
@@ -74,25 +74,23 @@ $(document).ready(function () {
                 dataType: "json",
             })
         ).done(function (data) {
-            var li=$(".list-group li")
+            var li = $(".list-group li")
             $.each(li, function (i, val) {
                 var check = false
-                $.each(data, function (j, value) { 
-                    if($(val).data("id")==value['ID_TASK'])
-                    {
+                $.each(data, function (j, value) {
+                    if ($(val).data("id") == value['ID_TASK']) {
                         $(val).css("display", "block");
-                        check=true
+                        check = true
                     }
                 });
-                if(check==false&&$(val).data("id")!=10)
-                {
+                if (check == false && $(val).data("id") != 10) {
                     $(val).remove();
                 }
             });
             $(".list-group li").eq(0).find("a").attr("class", "list-group-item list-group-item-action py-3 fw-bold fs-7 text-right active");
-            
+
             var type = $("a.active").parent().attr("id");
-            loadCrud($(".list-group li").eq(0).data("id"),type)
+            loadCrud($(".list-group li").eq(0).data("id"), type)
 
             $(".btn-show-sidebar").click(function (e) {
                 e.preventDefault();
@@ -104,7 +102,7 @@ $(document).ready(function () {
                 $(".sidebar").toggleClass("toggle");
                 setTimeout(() => {
                     $(".btn-show-sidebar").show();
-                    
+
                 }, 300);
             });
 
@@ -138,15 +136,15 @@ $(document).ready(function () {
                 $(this).addClass("active");
                 setTimeout(() => {
                     $(".btn-show-sidebar").show();
-                    
+
                 }, 300);
 
                 $(".sidebar").toggleClass("toggle");
-                
+
                 var type = $(this).parent().attr("id");
-                loadCrud($(this).parent().data('id'),type).then(function(i){
-                                  
-                })         
+                loadCrud($(this).parent().data('id'), type).then(function (i) {
+
+                })
 
 
             });

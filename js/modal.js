@@ -620,15 +620,15 @@ $(document).ready(function () {
         return modal;
     }
 
-    function modalReceiptsParticular (id) {
-        return new Promise (function (resolve, reject) {
-            $.when (
+    function modalReceiptsParticular(id) {
+        return new Promise(function (resolve, reject) {
+            $.when(
                 $.ajax({
                     type: "GET",
-                    url: "./database/receiptDao.php?type=1&id="+id,
+                    url: "./database/receiptDao.php?type=1&id=" + id,
                     dataType: "json",
                 })
-            ).done (function (data) {
+            ).done(function (data) {
                 // console.log (data)
                 var modal = `
                 <div class="container-fluid header-list-receipt row my-2">
@@ -638,35 +638,32 @@ $(document).ready(function () {
                     <div class="col-sm-2 col-md-2 col-lg-2 text-center"><span class=" fs-6 fw-bold">Số lượng</span></div>
                 </div>
                 `
-                $.each(data, function (i, val) { 
+                $.each(data, function (i, val) {
                     tmp = `
                     <div class="container-fluid item-receipt row py-2">
                         <div class="col-sm-6 col-md-7 col-lg-6 text-right"><span class=" fs-6 ">${val["PRODUCT_NAME"]}</span></div>
                         <div class="col-sm-2 col-md-1 col-lg-1 text-left d-flex align-items-center justify-content-center"><span class=" fs-6 ">${val["SIZE"]}</span></div>
-                        <div class="col-sm-2 col-md-2 col-lg-3 text-left d-flex align-items-center justify-content-center"><span class=" fs-6 ">${parseInt (val["PRICE"]).toLocaleString ("de-DE")}đ</span></div>
+                        <div class="col-sm-2 col-md-2 col-lg-3 text-left d-flex align-items-center justify-content-center"><span class=" fs-6 ">${parseInt(val["PRICE"]).toLocaleString("de-DE")}đ</span></div>
                         <div class="col-sm-2 col-md-1 col-lg-2 text-left d-flex align-items-center justify-content-center"><span class=" fs-6 ">${val["QUANTITY"]}</span></div>
                     </div>
                     `
                     modal += tmp
                 });
-                resolve (modal)                    
+                resolve(modal)
             })
         })
     }
 
-    function modalAddAu()
-    {
-        return new Promise(function(resolve,reject)
-        {
+    function modalAddAu() {
+        return new Promise(function (resolve, reject) {
             $.when(
                 $.ajax({
                     type: "GET",
                     url: "./database/authoriesDao.php?type=9",
                     dataType: "json",
                 })
-            ).done(function(data)
-            {
-                var modalHead=`
+            ).done(function (data) {
+                var modalHead = `
                 <div class="container-fluid row">
                     <div class="form-row container-fluid row my-3">
                         <div class="form-group col-md-12">
@@ -680,28 +677,27 @@ $(document).ready(function () {
                         <div class="col-sm-2 col-md-2 col-lg-2 fs-5 text-primary text-center">Detele</div>
                         <div class="col-sm-2 col-md-2 col-lg-2 fs-5 text-primary text-center">Readonly</div>
                     `
-                    var modalTail=''
-                    $.each(data, function (i, val) { 
-                     var tmp=
-                     `
+                var modalTail = ''
+                $.each(data, function (i, val) {
+                    var tmp =
+                        `
                             <div class="col-sm-3 col-md-3 col-lg-3 fs-5 text-primary text-right py-1">${val['TASK_NAME']}</div>
                             <div class="check__box col-sm-2 col-md-2 col-lg-2 d-flex justify-content-center py-1"><input type="checkbox" data-task=${val['ID_TASK']} data-action=1></input></div>
                             <div class="check__box col-sm-2 col-md-2 col-lg-2 d-flex justify-content-center py-1"><input type="checkbox" data-task=${val['ID_TASK']} data-action=2></input></div>
                             <div class="check__box col-sm-2 col-md-2 col-lg-2 d-flex justify-content-center py-1"><input type="checkbox" data-task=${val['ID_TASK']} data-action=3></input></div>
                             <div class="check__box col-sm-2 col-md-2 col-lg-2 d-flex justify-content-center py-1"><input type="checkbox" data-task=${val['ID_TASK']} data-action=4></input></div>
                      `
-                    modalTail+=tmp
+                    modalTail += tmp
                 });
-                modalTail+="</div>"
-                var modal=modalHead+modalTail
+                modalTail += "</div>"
+                var modal = modalHead + modalTail
                 resolve(modal)
             })
         })
     }
-    function modalUpAu(id)
-    {
-        return new Promise(function(resolve,reject)
-        {
+
+    function modalUpAu(id) {
+        return new Promise(function (resolve, reject) {
             $.when(
                 $.ajax({
                     type: "GET",
@@ -710,12 +706,11 @@ $(document).ready(function () {
                 }),
                 $.ajax({
                     type: "GET",
-                    url: "./database/authoriesDao.php?type=12&id="+id,
+                    url: "./database/authoriesDao.php?type=12&id=" + id,
                     dataType: "json",
                 })
-            ).done(function(listTask,Au)
-            {
-                var modalHead=`
+            ).done(function (listTask, Au) {
+                var modalHead = `
                 <div class="container-fluid row">
                     <div class="form-row container-fluid row my-3">
                         <div class="form-group col-md-12">
@@ -729,20 +724,86 @@ $(document).ready(function () {
                         <div class="col-sm-2 col-md-2 col-lg-2 fs-5 text-primary text-center">Detele</div>
                         <div class="col-sm-2 col-md-2 col-lg-2 fs-5 text-primary text-center">Readonly</div>
                     `
-                    var modalTail=''
-                    $.each(listTask[0], function (i, val) {
-                     var tmp=
-                     `
+                var modalTail = ''
+                $.each(listTask[0], function (i, val) {
+                    var tmp =
+                        `
                             <div class="col-sm-3 col-md-3 col-lg-3 fs-5 text-primary text-right py-1">${val['TASK_NAME']}</div>
                             <div class="check__box col-sm-2 col-md-2 col-lg-2 d-flex justify-content-center py-1"><input type="checkbox" id="${val['ID_TASK']}-1"  data-task=${val['ID_TASK']} data-action=1></input></div>
                             <div class="check__box col-sm-2 col-md-2 col-lg-2 d-flex justify-content-center py-1"><input type="checkbox" id="${val['ID_TASK']}-2"  data-task=${val['ID_TASK']} data-action=2></input></div>
                             <div class="check__box col-sm-2 col-md-2 col-lg-2 d-flex justify-content-center py-1"><input type="checkbox" id="${val['ID_TASK']}-3"  data-task=${val['ID_TASK']} data-action=3></input></div>
                             <div class="check__box col-sm-2 col-md-2 col-lg-2 d-flex justify-content-center py-1"><input type="checkbox" id="${val['ID_TASK']}-4"  data-task=${val['ID_TASK']} data-action=4></input></div>
                      `
-                    modalTail+=tmp
+                    modalTail += tmp
                 });
-                modalTail+="</div>"
-                var modal=modalHead+modalTail
+                modalTail += "</div>"
+                var modal = modalHead + modalTail
+                resolve(modal)
+            })
+        })
+    }
+
+    function modalBillParticular(id) {
+        return new Promise(function (resolve, reject) {
+            $.when(
+                $.ajax({
+                    type: "GET",
+                    url: "./database/billDao.php?type=2&id-bill=" + id,
+                    dataType: "json"
+                })
+            ).done(function (data) {
+                var modalHead = `
+                <div class="container-fluid">
+                    <div class="info-bill row">
+                        <div class="customer col-sm-6 col-md-6 col-lg-6">
+                            <span class="fs-5"><span class="fw-bold fs-4">Tên khách hàng:</span> ${data[0]["FULLNAME"]}</span>
+                        </div>
+
+                        <div class="time col-sm-6 col-md-6 col-lg-6">
+                            <span class="fs-5"><span class="fw-bold fs-4">Thời gian đặt:</span> ${data[0]["DATE_BILL"]}</span>
+                        </div>
+
+                        <div class="address col-sm-12 col-md-12 col-lg-12">
+                            <p class="fs-5"><span class="fw-bold fs-4">Địa chỉ: </span> ${data[0]["SHIPPING_ADDRESS"]}</p>
+                        </div>
+
+                        <div class="particular row col-sm-12 col-md-12 col-lg-12">
+                            <span class="text-center fw-bold fs-4 col-sm-12 col-md-12 col-lg-12">Các
+                                sản
+                                phẩm đã đặt</span>
+
+                            <div class="row mb-0 title-item col-sm-12 col-md-12 col-lg-12">
+                                <span
+                                    class="border border-2 border-dark col-sm-6 col-md-6 col-lg-6 text-center fw-bold fs-5">Sản
+                                    phẩm</span>
+                                <span
+                                    class="border-top border-bottom border-2 border-dark col-sm-3 col-md-3 col-lg-3 text-center fw-bold fs-5">Size</span>
+                                <span
+                                    class="border border-2 border-dark col-sm-3 col-md-3 col-lg-3 text-center fw-bold fs-5">Số
+                                    lượng</span>
+                            </div>
+                        `
+                var modalTail = ``
+
+                $.each(data, function (i, val) {
+                    var tmp = `
+                            <div
+                                class="item-bill mt-0 mb-0 border-bottom border-end border-start border-2 border-dark row col-sm-12 col-md-12 col-lg-12">
+                                <span class="col-sm-6 col-md-6 col-lg-6 text-left fs-6">${val["PRODUCT_NAME"]}</span>
+                                <span class="col-sm-3 col-md-3 col-lg-3 text-center fs-6">${val["SIZE"]}</span>
+                                <span class="col-sm-3 col-md-3 col-lg-3 text-center fs-6">${val["QUANTITY"]}</span>
+                            </div>
+                            `
+                    modalTail += tmp;
+                });
+
+                var modalTmp = `
+                                </div>
+                            </div>
+                        </div>
+                        `
+
+                var modal = modalHead + modalTail + modalTmp
                 resolve(modal)
             })
         })
@@ -750,7 +811,7 @@ $(document).ready(function () {
 
 
     if (typeof module !== 'undefined' && module.exports) {
-        module.exports = { modalUser, modalUserAdd, modalProduct, modalFormLogin, modalFormRegister, modalAccount, modalProductAdd ,modalAddAu,modalUpAu, modalReceiptsParticular};
+        module.exports = { modalUser, modalUserAdd, modalProduct, modalFormLogin, modalFormRegister, modalAccount, modalProductAdd, modalAddAu, modalUpAu, modalReceiptsParticular, modalBillParticular };
     }
     else {
         window.modalUser = modalUser;
@@ -763,5 +824,6 @@ $(document).ready(function () {
         window.modalAddAu = modalAddAu;
         window.modalUpAu = modalUpAu;
         window.modalReceiptsParticular = modalReceiptsParticular;
+        window.modalBillParticular = modalBillParticular;
     }
 });
