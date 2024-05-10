@@ -46,8 +46,7 @@
                     else if (type == "khachHang" || type == "nhanVien") {
                         loadDataUser(obj.currentPage)
                         $(".crud").css("display", "flex");
-                        if(type == "khachHang")
-                        {
+                        if (type == "khachHang") {
                             $(".create").css("display", "none");
                         }
                     }
@@ -61,8 +60,6 @@
                         $(".crud").css("display", "flex");
                         $(".create").css("display", "none");
                         $(".update").css("display", "none");
-
-
                     }
                     else if (type == "phieuNhap") {
                         loadDataReceipt(obj.currentPage)
@@ -73,7 +70,7 @@
                         loadAuthoryze(obj.currentPage)
                         $(".crud").css("display", "flex");
                     }
-                    
+
                     else if (type == "nhapHang") {
                         $(".list-item").children().first().empty();
                         $(".nhapHang").css('display', 'flex');
@@ -84,6 +81,21 @@
                     }
                     if (obj.currentPage == obj.totalPage || obj.totalPage == 0) {
                         $(".content .show-more").children('button').css('display', 'none');
+                    }
+
+                    var item = $(".crud").find("div")
+                    var display = false
+                    $.each(item, function (i, val) {
+                        if ($(val).css("display") == "block") {
+                            display = true
+                        }
+                    });
+                    if (!display) {
+                        $(".crud").css("display", "none")
+                        $(".crud").find("div").remove()
+                    }
+                    else {
+                        $(".crud").css("display", "flex")
                     }
                 }
             });
@@ -315,78 +327,90 @@
         function loadDataBill(page) {
             $.ajax({
                 type: "GET",
-                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page,
+                url: "./database/billDao.php?type=1" + "&item=" + obj.items + "&page=" + page,
                 dataType: "json",
                 success: function (data) {
-                    if (page == 1) {
+                    if (page == 1 || page == 0) {
                         var title = `
                             <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
-                            <span class="col-sm-2 col-md-2 col-lg-2">Tên nhân viên</span>
-                            <span class="col-sm-2 col-md-2 col-lg-2">Tên khách hàng</span>
-                            <span class="col-sm-2 col-md-2 col-lg-2">Địa chỉ</span>
-                            <span class="col-sm-1 col-md-1 col-lg-1">Thời gian</span>
-                            <span class="col-sm-1 col-md-1 col-lg-1">Tổng tiền</span>
-                            <span class="col-sm-1 col-md-1 col-lg-1">Trạng thái</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Nhân viên</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Khách hàng</span>
+                            <span class="col-sm-3 col-md-3 col-lg-3">Tổng tiền</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Trạng thái</span>
                             <span class="col-sm-1 col-md-1 col-lg-1">Chi tiết</span>
                             <span class="col-sm-1 col-md-1 col-lg-1">Chọn</span>
                         `
                         $(".list-item").children().first().empty();
                         $(".list-item").children().first().append(title);
                     }
+                    $.each(data, function (i, val) {
+                        var staff = "Chưa có người duyệt đơn";
+                        var price = parseInt(val["TOTAL_BILL"]).toLocaleString("de-DE");
+                        var status = "";
+                        var button = "";
 
-                    $.each(data, function (i, val) { 
-                             
-                            $.get("./database/userDao.php?type=100&id="+val.ID_STAFF,
-                                function (data) {
-                                    if(data['FULLNAME'])
-                                    {
+                        switch (val["STATUS_BILL"]) {
+                            case "0":
+                                status = "Đang chờ xác nhận";
+                                button = "btn-warning";
+                                break;
+                            case "1":
+                                status = "giao hàng";
+                                button = "btn-info";
+                                break;
+                            case "2":
+                                status = "Đang vận chuyển";
+                                button = "btn-orange";
+                                break;
+                            case "3":
+                                status = "Giao hàng thành công";
+                                button = "btn-success";
+                                break;
+                            case "4":
+                                status = "Đơn hàng đã hoàn thành";
+                                button = "btn-secondary";
+                            default:
+                                break;
+                        }
 
-                                        console.log(val);
-                                        var price=val.TOTAL_BILL
-                                        price=parseFloat(price).toLocaleString('de-DE')+"đ"
-                                        var item = `
-                                    <div class="item row">
-                                        <span class="id-item col-sm-1 col-md-1 col-lg-1">${val.ID_BILL}</span>
-                                        <span class="col-sm-2 col-md-2 col-lg-2">${data['FULLNAME']}</span>
-                                        <span class="col-sm-2 col-md-2 col-lg-2">${val.FULLNAME}</span>
-                                        <span class="col-sm-2 col-md-2 col-lg-2">${val.SHIPPING_ADDRESS}</span>
-                                        <span class="col-sm-1 col-md-1 col-lg-1">${val.DATE_BILL}</span>
-                                        <span class="col-sm-1 col-md-1 col-lg-1">${price}</span>
-                                        <span class="col-sm-1 col-md-1 col-lg-1">Trạng thái</span>
-                                        <span class="col-sm-1 col-md-1 col-lg-1">Chi tiết</span>
-                                        <input type="checkbox" name="" id="" class="col-sm-1 col-md-1 col-lg-1">
-                                    </div>
-                                    `
-                                    
-                                    $(".list-item").append(item)
-                                }
-                                else
-                                {
-                                    console.log(val);
-                                    var price=val.TOTAL_BILL
-                                    price=parseFloat(price).toLocaleString('de-DE')+"đ"
-                                    var item = `
-                                    <div class="item row">
-                                        <span class="id-item col-sm-1 col-md-1 col-lg-1">${val.ID_BILL}</span>
-                                        <span class="col-sm-2 col-md-2 col-lg-2">${"Chưa có"}</span>
-                                        <span class="col-sm-2 col-md-2 col-lg-2">${val.FULLNAME}</span>
-                                        <span class="col-sm-2 col-md-2 col-lg-2">${val.SHIPPING_ADDRESS}</span>
-                                        <span class="col-sm-1 col-md-1 col-lg-1">${val.DATE_BILL}</span>
-                                        <span class="col-sm-1 col-md-1 col-lg-1">${price}</span>
-                                        <span class="col-sm-1 col-md-1 col-lg-1">Trạng thái</span>
-                                        <span class="col-sm-1 col-md-1 col-lg-1">Chi tiết</span>
-                                        <input type="checkbox" name="" id="" class="col-sm-1 col-md-1 col-lg-1">
-                                    </div>
-                                    `
-                                    
-                                    $(".list-item").append(item)
+                        var getStaffPromise = new Promise(function (resolve, reject) {
+                            if (val["ID_STAFF"] != null) {
+                                $.get("./database/accountDao.php?type=8&id=" + val["ID_STAFF"], function (user) {
+                                    resolve(user["FULLNAME"]);
+                                }, "json");
+                            } else {
+                                resolve(staff);
+                            }
+                        });
 
-                                    }
-                                },
-                                "json"
-                            );
+                        getStaffPromise.then(function (staffName) {
+                            var item = `
+                            <div class="item row">
+                              <span class="id-item col-sm-1 col-md-1 col-lg-1">${val["ID_BILL"]}</span>
+                              <span class="col-sm-2 col-md-2 col-lg-2">${staffName}</span>
+                              <span class="col-sm-2 col-md-2 col-lg-2">${val.FULLNAME}</span>
+                              <span class="col-sm-3 col-md-3 col-lg-3">${price}đ</span>
+                              <button class="btn-status col-sm-2 btn ${button} col-md-2 col-lg-2" data-status="${val["STATUS_BILL"]}">${status}</button>
+                              <span class="detail-receipt col-sm-1 col-md-1 col-lg-1"><i class="fa-solid fa-eye"></i></span>
+                              <input type="checkbox" name="" id="check-bill" class="col-sm-1 col-md-1 col-lg-1">
+                            </div>
+                          `;
+                            $(".list-item").append(item);
+                        });
                     });
-                        
+
+                    $(".list-item").on("click", ".detail-receipt", function (e) {
+                        e.preventDefault();
+                        var id = $(this).parent().find(".id-item").text();
+                        modalBillParticular(id).then(function (modal) {
+                            $(".modal-body").empty();
+                            $(".modal-body").append(modal);
+                            $(".modal-footer").css("display", "none");
+                            $(".my-modal").modal("show");
+                        });
+                    });
+
+                    $.getScript("./js/acceptBill.js");
                 }
             });
         }
@@ -427,13 +451,13 @@
                     $(".detail-receipt").click(function (e) {
                         e.preventDefault();
                         var id = $(this).data('id');
-                        
+
                         $.getScript("./js/modal.js");
-                        modalReceiptsParticular (id).then (function (modal) {
-                            $(".modal-body").empty ()
-                            $(".modal-body").append (modal)
-                            $(".modal-footer").css ("display", "none")
-                            $(".modal-title").text ("Chi tiết phiếu nhập")
+                        modalReceiptsParticular(id).then(function (modal) {
+                            $(".modal-body").empty()
+                            $(".modal-body").append(modal)
+                            $(".modal-footer").css("display", "none")
+                            $(".modal-title").text("Chi tiết phiếu nhập")
                             $(".my-modal").modal('show')
                         })
 
@@ -441,38 +465,23 @@
                 }
             });
         }
-        
+
         function loadAuthoryze(page) {
             $.ajax({
                 type: "GET",
                 url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page,
                 dataType: "json",
                 success: function (data) {
-                    // console.log(data)
-
                     if (page == 1 || page == 0) {
-                        if (type == "khachHang") {
-                            var title = `
-                                <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
-                                <span class="col-sm-2 col-md-2 col-lg-2">Tên nhóm quyền</span>
-                                <span class="col-sm-2 col-md-2 col-lg-2">Người tạo</span>
-                                <span class="col-sm-2 col-md-2 col-lg-2">Ngày tạo</span>
-                                <span class="col-sm-2 col-md-2 col-lg-2">Người thay đổi</span>
-                                <span class="col-sm-2 col-md-2 col-lg-2">Ngày thay đổi</span>
-                                <span class="col-sm-1 col-md-1 col-lg-1">Chọn</span>
-                            `
-                        }
-                        else {
-                            var title = `
-                                <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
-                                <span class="col-sm-2 col-md-2 col-lg-2">Tên nhóm quyền</span>
-                                <span class="col-sm-2 col-md-2 col-lg-2">Người tạo</span>
-                                <span class="col-sm-2 col-md-2 col-lg-2">Ngày tạo</span>
-                                <span class="col-sm-2 col-md-2 col-lg-2">Người thay đổi</span>
-                                <span class="col-sm-2 col-md-2 col-lg-2">Ngày thay đổi</span>
-                                <span class="col-sm-1 col-md-1 col-lg-1">Chọn</span>
-                            `
-                        }
+                        var title = `
+                            <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Tên nhóm quyền</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Người tạo</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Ngày tạo</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Người thay đổi</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">Ngày thay đổi</span>
+                            <span class="col-sm-1 col-md-1 col-lg-1">Chọn</span>
+                        `
                         $(".list-item").children().first().empty();
                         $(".list-item").children().first().append(title);
                     }
@@ -481,15 +490,16 @@
 
                         $.ajax({
                             type: "GET",
-                            url: "./database/userDao.php?type=100&id="+val['ID_ADMIN_ADD'],
+                            url: "./database/userDao.php?type=200&id=" + val['ID_ADMIN_ADD'],
                             dataType: "json",
                             success: function (admin) {
+                                console.log(admin)
                                 $.ajax({
                                     type: "GET",
-                                    url: "./database/userDao.php?type=100&id="+val['ID_ADMIN_UPDATE'],
+                                    url: "./database/userDao.php?type=200&id=" + val['ID_ADMIN_UPDATE'],
                                     dataType: "json",
                                     success: function (response) {
-                                        
+                                        console.log(response)
                                         var item = `
                                         <div class="item row">
                                                 <span class="id-item col-sm-1 col-md-1 col-lg-1">${val['ID_AUTHORIZE']}</span>
@@ -503,16 +513,14 @@
                                         `
                                         $(".list-item").append(item)
                                     }
-                                });}
+                                });
+                            }
                         });
 
                     });
                 }
             });
         }
-
-
-
     }
 
 

@@ -157,6 +157,52 @@ CREATE TABLE USER_SHIPPING_ADDRESS (
   SHIPPING_ADDRESS VARCHAR(100),
   STATUS_ADDRESS INT DEFAULT 0 -- 1: địa chỉ mặc định, 0: địa chỉ thông thường
 );
+CREATE TABLE `order_timeline` (
+  `ID_BILL` int(11) NOT NULL,
+  `CONFIRM_TIME` datetime DEFAULT NULL,
+  `SHIPPING_TIME` datetime DEFAULT NULL,
+  `CONFIRM_RECEIVE_TIME` datetime DEFAULT NULL,
+  `CANCEL_TIME` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_timeline`
+--
+
+INSERT INTO `order_timeline` (`ID_BILL`, `CONFIRM_TIME`, `SHIPPING_TIME`, `CONFIRM_RECEIVE_TIME`, `CANCEL_TIME`) VALUES
+(1, NULL, NULL, NULL, NULL),
+(2, NULL, NULL, NULL, NULL),
+(3, NULL, NULL, '2024-05-08 12:13:13', NULL),
+(4, NULL, NULL, NULL, NULL),
+(5, NULL, NULL, NULL, '2024-05-07 13:05:39'),
+(6, NULL, NULL, NULL, '2024-05-07 12:21:45'),
+(7, NULL, NULL, '2024-05-07 10:48:33', NULL);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `order_timeline`
+--
+ALTER TABLE `order_timeline`
+  ADD PRIMARY KEY (`ID_BILL`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `order_timeline`
+--
+ALTER TABLE `order_timeline`
+  ADD CONSTRAINT `order_timeline_ibfk_1` FOREIGN KEY (`ID_BILL`) REFERENCES `bills` (`ID_BILL`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
 -- Liên kết khóa ngoại
 -- Tạo khóa ngoại cho bảng chi tiết chức năng
 ALTER TABLE PARTICULAR_AUTHORIZE
@@ -169,7 +215,7 @@ ADD FOREIGN KEY (ID_ACTION) REFERENCES ACTIONS (ID_ACTION) ON DELETE CASCADE;
 -- Tạo khoá ngoại cho bảng tài khoản
 ALTER TABLE ACCOUNTS
 ADD FOREIGN KEY (ID_AUTHORIZE) REFERENCES AUTHORIZES (ID_AUTHORIZE) ON DELETE
-SET 1;
+SET NULL;
 ALTER TABLE ACCOUNTS
 ADD FOREIGN KEY (ID_USER) REFERENCES USERS (ID_USER);
 -- Tạo khóa ngoại cho bảng sản phẩm
@@ -261,22 +307,24 @@ END $$ DELIMITER;
 DELIMITER $$ CREATE TRIGGER updateBill
 AFTER
 UPDATE ON BILLS FOR EACH ROW BEGIN IF NEW.STATUS_BILL = 2 THEN
-UPDATE products JOIN (
-	SELECT particular_bills.ID_PRODUCT, SUM(particular_bills.QUANTITY) AS TOTAL
-	FROM particular_bills
-	WHERE particular_bills.ID_BILL = NEW.ID_BILL
-	GROUP BY particular_bills.ID_PRODUCT
-)
-AS SUB ON products.ID_PRODUCT = SUB.ID_PRODUCT
+UPDATE products
+  JOIN (
+    SELECT particular_bills.ID_PRODUCT,
+      SUM(particular_bills.QUANTITY) AS TOTAL
+    FROM particular_bills
+    WHERE particular_bills.ID_BILL = NEW.ID_BILL
+    GROUP BY particular_bills.ID_PRODUCT
+  ) AS SUB ON products.ID_PRODUCT = SUB.ID_PRODUCT
 SET QUANTITY_SOLD = QUANTITY_SOLD + SUB.TOTAL;
-UPDATE particular_products JOIN(
-	SELECT particular_bills.QUANTITY AS TOTAL, particular_bills.ID_PRODUCT AS ID
-	FROM particular_products JOIN particular_bills
-	ON particular_bills.ID_PRODUCT = particular_products.ID_PRODUCT
-	WHERE particular_bills.ID_BILL = NEW.ID_BILL
-	AND particular_products.SIZE = particular_bills.SIZE
-)
-AS SUB ON particular_products.ID_PRODUCT = SUB.ID
+UPDATE particular_products
+  JOIN(
+    SELECT particular_bills.QUANTITY AS TOTAL,
+      particular_bills.ID_PRODUCT AS ID
+    FROM particular_products
+      JOIN particular_bills ON particular_bills.ID_PRODUCT = particular_products.ID_PRODUCT
+    WHERE particular_bills.ID_BILL = NEW.ID_BILL
+      AND particular_products.SIZE = particular_bills.SIZE
+  ) AS SUB ON particular_products.ID_PRODUCT = SUB.ID
 SET QUANTITY_REMAIN = QUANTITY_REMAIN - SUB.TOTAL;
 END IF;
 END $$ DELIMITER;
@@ -292,15 +340,15 @@ END $$ DELIMITER;
 -- Ràng buộc này sẽ thiết lập địa chỉ của 1 tài khoản là mặc định nếu chỉ có 1 và sẽ set tất cả là 0 nếu lên 1
 DELIMITER $$ CREATE TRIGGER insertAddress
 AFTER
-INSERT ON USER_SHIPPING_ADDRESS FOR EACH ROW BEGIN IF 0 = (
+UPDATE USER_SHIPPING_ADDRESS
+SET STATUS_ADDRESS = 1
+WHERE ID_ACCOUNT = NEW.ID_ACCOUNT
+  AND ID_USER_SHIPPING_ADDRESS = NEW.ID_USER_SHIPPING_ADDRESS
+  AND (
     SELECT COUNT(*)
     FROM USER_SHIPPING_ADDRESS
     WHERE ID_ACCOUNT = NEW.ID_ACCOUNT
-  ) THEN
-UPDATE USER_SHIPPING_ADDRESS
-SET STATUS_ADDRESS = 1
-WHERE ID_USER_SHIPPING_ADDRESS = NEW.ID_USER_SHIPPING_ADDRESS;
-END IF;
+  ) = 1;
 END $$ DELIMITER;
 -- Ràng buộc khi thay đổi trạng thái của địa chỉ thành mặc định thì tất cả địa chỉ khác sẽ đưa về 0
 DELIMITER $$ CREATE TRIGGER updateAddress
@@ -310,4 +358,4 @@ UPDATE USER_SHIPPING_ADDRESS
 SET STATUS_ADDRESS = 0
 WHERE ID_USER_SHIPPING_ADDRESS <> NEW.ID_USER_SHIPPING_ADDRESS;
 END IF;
-END $$ DELIMITER;
+END $$ DELIMITER; 

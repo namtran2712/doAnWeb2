@@ -1,6 +1,6 @@
 
 (function ($) {
-    $.fn.dataProduct = function (options) {
+    $.fn.dataProductFilter = function (options) {
         //====================================================
         // cac gia tri mac dinh cua options
         //====================================================
@@ -13,9 +13,7 @@
             txtCurrentPage: "#current-page",
             goNext: ".go-next",
             goPrevious: ".go-previous",
-            query: "#filter-price .dropdown-item input",
-            query1: "#filter-material .dropdown-item input"
-
+            
         };
         $.extend(options, defaults);
         var showArea = $(options.showArea)
@@ -23,8 +21,7 @@
         var btnGoNext = $(options.goNext)
         var btnGoPrevious = $(options.goPrevious)
         var infoPage = $(".infoPage")
-        var query = $("#filter-price .dropdown-item input")
-        var query1 = $("#filter-material .dropdown-item input")
+        
         init()
 
         function init() {
@@ -34,7 +31,6 @@
                 dataType: "json",
                 success: function (data) {
                     options.totalPage = data
-                    loadData(options.currentPage)
                     setInfoPage(options)
                 }
 
@@ -48,46 +44,14 @@
             btnGoPrevious.click(function (e) {
                 goPrevious();
             })
-
             var querycondition = ""
-            var queryconditionPrice = ""
-            var queryconditionQuantity = ""
             $.each(query, function (indexInArray, valueOfElement) {
                 $(valueOfElement).change(function () {
-
-                    if (($(val).is(":checked"))) {
-                        querycondition = querycondition + $(val).attr("data-query") + " or "
-                        console.log(1)
-                    }
-                    else {
-                        if (querycondition.trim() == "")
-                            querycondition = ""
-
-                        querycondition = querycondition.replace(($(val).attr("data-query") + " or"), " ")
-
-                    }
-                    filter(querycondition.substring(0, querycondition.length - 4), options.currentPage)
-
-                })
-
-
-            });
-
-            $.each(query1, function (indexInArray, valueOfElement) {
-                $(valueOfElement).change(function () {
                     if (($(valueOfElement).is(":checked"))) {
-                        querycondition = querycondition + $(valueOfElement).attr("data-query") + " or "
-
+                        querycondition = querycondition + $(valueOfElement).attr("data-query")
+                        console.log (querycondition,options.currentPage)
+                        filterByprice(querycondition, options.currentPage)
                     }
-                    else {
-                        if (querycondition.trim() == "")
-                            querycondition = ""
-
-                        querycondition = querycondition.replace(($(valueOfElement).attr("data-query") + " or"), " ")
-
-                    }
-                    
-                    filter(querycondition.substring(0, querycondition.length - 4), options.currentPage)
                 })
 
 
@@ -98,7 +62,7 @@
                     valueText = parseInt(valueText)
                     if (valueText < 1 || valueText > options.totalPage || isNaN(valueText)) {
                         Swal.fire({
-                            title: "Vui lòng nhập > 0 và <= " + options.totalPage,
+                            title: "Vui lòng nhập > 0 và bé hơn hoặc bằng " + options.totalPage,
                             width: 600,
                             padding: "3em",
                             color: "#716add",
@@ -129,96 +93,20 @@
             infoPage.text("Page " + options.currentPage + " of " + options.totalPage)
         }
         function filterByprice(querycondition, currentPage) {
+           
             $.ajax({
                 type: "POST",
-                url: "./database/productDao.php?type=200&items=" + options.items + "&currentPage=" + currentPage,
-
+                url: "./database/productDao.php",
                 data: {
+                    type: 200,
+                    items: 12,
                     query: querycondition,
+                    currentPage: currentPage,
                 },
                 dataType: "html",
-                success: function (data) {
-                    // console.log(data)
-                    if (data == null) {
-                        showArea.empty()
-                        var li = `
-                        <div class="container-fluid">
-                            <h3> Không có sản phẩm nào
-                        </div>
-                        `
-                        showArea.append(li)
-
-                    }
-                    else {
-                        showArea.empty()
-                        createProductItem(data)
-                        $(".buy-now").click(function (e) {
-                            e.preventDefault();
-                            var id = $(this).data("id")
-                            getData(id)
-                        });
-
-                        $(".image-product img").click(function (e) {
-                            e.preventDefault();
-                            var id = $(this).data("id")
-                            getData(id)
-                        });
-
-                        $(".name-product").click(function (e) {
-                            e.preventDefault();
-                            var id = $(this).data("id")
-                            getData(id)
-                        });
-
-                    }
-
-                }
-            });
-        }
-        function filterByMaterial(querycondition, currentPage) {
-            $.ajax({
-                type: "POST",
-                url: "./database/productDao.php?type=199&items=" + options.items + "&currentPage=" + currentPage,
-
-                data: {
-                    query: querycondition,
-                },
-                dataType: "json",
-                success: function (data) {
-                    console.log(data)
-                    if (data == null) {
-                        showArea.empty()
-                        var li = `
-                        <div class="container-fluid">
-                            <h3> Không có sản phẩm nào
-                        </div>
-                        `
-                        showArea.append(li)
-
-                    }
-                    else {
-                        showArea.empty()
-                        createProductItem(data)
-                        $(".buy-now").click(function (e) {
-                            e.preventDefault();
-                            var id = $(this).data("id")
-                            getData(id)
-                        });
-
-                        $(".image-product img").click(function (e) {
-                            e.preventDefault();
-                            var id = $(this).data("id")
-                            getData(id)
-                        });
-
-                        $(".name-product").click(function (e) {
-                            e.preventDefault();
-                            var id = $(this).data("id")
-                            getData(id)
-                        });
-
-                    }
-
+                success: function (response) {
+                    console.log(1)
+                    console.log(response)
                 }
             });
         }
@@ -320,13 +208,9 @@
     }
 
 })(jQuery);
-
 $(document).ready(function () {
     $options = {}
-    $(".list-product").dataProduct($options)
+    $(".list-product").dataProductFilter($options)
 
 
-
-})
-
-
+});

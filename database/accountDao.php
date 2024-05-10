@@ -90,7 +90,6 @@
         session_start();
         if(isset( $_SESSION["accountCurrent"]))
         {
-
             echo json_encode( $_SESSION["accountCurrent"]);
         }
         else
@@ -110,6 +109,19 @@
             }
         }
         return json_encode($account);
+    }
+
+    function selectUserByIdAccount ($connect, $id) {
+        $sql = "SELECT *
+        FROM USERS JOIN ACCOUNTS ON USERS.ID_USER = ACCOUNTS.ID_USER
+        WHERE ACCOUNTS.ID_ACCOUNT = $id";
+        $result = mysqli_query($connect, $sql);
+        if (mysqli_num_rows($result) > 0) {
+
+            while ($row = mysqli_fetch_assoc($result)) {
+                return json_encode($row);
+            }
+        }
     }
 
     function updateAccount ($connect, $account) {
@@ -164,6 +176,9 @@
     }
     else if ($_GET["type"] == 7) {
         echo updateAccount($connect, $_POST["account"]);
+    }
+    else if ($_GET["type"] == 8) {
+        echo selectUserByIdAccount($connect, $_GET["id"]);
     }
     elseif($_GET["type"]==100)
     {

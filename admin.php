@@ -118,7 +118,7 @@
             <li id="nhapHang" data-id="8"><a href="#"
                     class="list-group-item list-group-item-action py-3 fw-bold fs-7 text-right">
                     <i class="fas fa-regular fa-money-bill-transfer mx-2"></i> Nhập hàng</a></li>
-            <li id="phanQuyen" data-id="1" ><a href="#"
+            <li id="phanQuyen" data-id="1"><a href="#"
                     class="list-group-item list-group-item-action py-3 fw-bold fs-7 text-right">
                     <i class="fas fa-solid fa-user-gear mx-2"></i> Phân quyền</a></li>
             <li id="logout" data-id="10" style="display: block;"><a href="#"
@@ -143,11 +143,11 @@
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="myModalLabel">Sửa thông tin</h5>
+                            <span class="modal-title fs-3 fw-bold" id="myModalLabel">Sửa thông tin</span>
                         </div>
 
                         <div class="modal-body">
-                            
+
                         </div>
 
                         <div class="modal-footer">
@@ -159,7 +159,7 @@
             </div>
 
             <div class="crud">
-                
+
             </div>
 
             <div class="list-item">
@@ -186,8 +186,6 @@
     <script src="./js/updateData.js"></script>
     <script src="./js/deleteData.js"></script>
     <script src="./js/addData.js"></script>
-    <script src="./js/particularData.js"></script>
-
 
     <!-- js bootstrap -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"

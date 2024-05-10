@@ -41,7 +41,6 @@ function getUserByID($connect, $id)
     $result = mysqli_query($connect, $sql);
     $row = mysqli_fetch_assoc($result);
     echo json_encode($row);
-    // print_r($result);
 }
 function getAddressUser($connect, $idUser)
 {
