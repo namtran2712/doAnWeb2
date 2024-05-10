@@ -147,6 +147,11 @@
 }
 
 #parent {
-    transition: top 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transition: 0.3s ease-in-out;
+    transition: top 0.3s ease-in-out, opacity 0.5s ease-in-out;
 
+}
+
+.offcanvas.hiding, .offcanvas.show, .offcanvas.showing {
+    height: 100vh;
 }

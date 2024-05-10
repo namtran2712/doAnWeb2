@@ -157,6 +157,52 @@ CREATE TABLE USER_SHIPPING_ADDRESS (
   SHIPPING_ADDRESS VARCHAR(100),
   STATUS_ADDRESS INT DEFAULT 0 -- 1: địa chỉ mặc định, 0: địa chỉ thông thường
 );
+CREATE TABLE `order_timeline` (
+  `ID_BILL` int(11) NOT NULL,
+  `CONFIRM_TIME` datetime DEFAULT NULL,
+  `SHIPPING_TIME` datetime DEFAULT NULL,
+  `CONFIRM_RECEIVE_TIME` datetime DEFAULT NULL,
+  `CANCEL_TIME` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_timeline`
+--
+
+INSERT INTO `order_timeline` (`ID_BILL`, `CONFIRM_TIME`, `SHIPPING_TIME`, `CONFIRM_RECEIVE_TIME`, `CANCEL_TIME`) VALUES
+(1, NULL, NULL, NULL, NULL),
+(2, NULL, NULL, NULL, NULL),
+(3, NULL, NULL, '2024-05-08 12:13:13', NULL),
+(4, NULL, NULL, NULL, NULL),
+(5, NULL, NULL, NULL, '2024-05-07 13:05:39'),
+(6, NULL, NULL, NULL, '2024-05-07 12:21:45'),
+(7, NULL, NULL, '2024-05-07 10:48:33', NULL);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `order_timeline`
+--
+ALTER TABLE `order_timeline`
+  ADD PRIMARY KEY (`ID_BILL`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `order_timeline`
+--
+ALTER TABLE `order_timeline`
+  ADD CONSTRAINT `order_timeline_ibfk_1` FOREIGN KEY (`ID_BILL`) REFERENCES `bills` (`ID_BILL`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
 -- Liên kết khóa ngoại
 -- Tạo khóa ngoại cho bảng chi tiết chức năng
 ALTER TABLE PARTICULAR_AUTHORIZE
@@ -308,4 +354,4 @@ UPDATE USER_SHIPPING_ADDRESS
 SET STATUS_ADDRESS = 0
 WHERE ID_USER_SHIPPING_ADDRESS <> NEW.ID_USER_SHIPPING_ADDRESS;
 END IF;
-END $$ DELIMITER;
+END $$ DELIMITER; 
