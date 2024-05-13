@@ -260,7 +260,7 @@ $(document).ready(function () {
                                             var type = $(".list-group-item.list-group-item-action.active").parent().attr("id");
                                             $(".list-item").find(".item.row").remove();
                                             var obj = null
-                                            $(".list-item").Paging(obj, type);
+                                            $(".list-item").Paging(obj, type,'');
                                         }
                                     }
                                 });
@@ -324,7 +324,7 @@ $(document).ready(function () {
                                             $(".my-modal").modal("hide")
                                             $(".list-item").find(".item.row").remove();
                                             var obj = null
-                                            $(".list-item").Paging(obj, type);
+                                            $(".list-item").Paging(obj, type,'');
                                         }
                                     });
                                 }
