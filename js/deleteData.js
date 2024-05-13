@@ -40,7 +40,7 @@ $(document).ready(function () {
 
                             $(".list-item").find(".item.row").remove();
                             var obj = {}
-                            $(".list-item").Paging(obj, type);
+                            $(".list-item").Paging(obj, type,'');
                         }
                     });
                     Swal.fire("Đã xóa thành công!", "", "success");

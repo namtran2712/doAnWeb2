@@ -69,7 +69,7 @@ $(document).ready(function () {
                                             $(".list-item").find(".item.row").remove();
                                             var type = $(".list-group-item.list-group-item-action.active").parent().attr("id");
                                             var obj = null
-                                            $(".list-item").Paging(obj, type);
+                                            $(".list-item").Paging(obj, type,"");
                                         }
                                         else {
                                             Swal.fire({
@@ -225,7 +225,7 @@ $(document).ready(function () {
                                     var type = $(".list-group-item.list-group-item-action.active").parent().attr("id");
                                     $(".list-item").find(".item.row").remove();
                                     var obj = null
-                                    $(".list-item").Paging(obj, type);
+                                    $(".list-item").Paging(obj, type,'');
                                 }
                             });
                         }
@@ -286,7 +286,7 @@ $(document).ready(function () {
                                                                 var type = $(".list-group-item.list-group-item-action.active").parent().attr("id");
                                                                 $(".list-item").find(".item.row").remove();
                                                                 var obj = null
-                                                                $(".list-item").Paging(obj, type);
+                                                                $(".list-item").Paging(obj, type,'');
 
                                                             },
                                                             "html"
