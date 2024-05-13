@@ -310,6 +310,14 @@ body {
             }
         }
 
+        .crud-fake {
+            display: none;
+        }
+
+        .crud-fake.fixed {
+            display: block;
+        }
+
         .crud {
             padding: 10px 0;
             display: flex;

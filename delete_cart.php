@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $sql="SELECT * 
     FROM CART 
-    WHERE ID_ACCOUNT=$idAccount";
+    WHERE ID_ACCOUNT=$accountId";
     $result=mysqli_query($connect,$sql);
     if(mysqli_num_rows($result)>0)
     {

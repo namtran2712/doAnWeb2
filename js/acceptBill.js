@@ -4,6 +4,7 @@ $(document).ready(function () {
         var id = $(this).parent().find(".id-item").text()
         var status = parseInt($(this).data("status"))
         var mess = ''
+        var currentBtn = $(this)
         switch (status) {
             case 0:
                 mess = "Xác nhận đơn hàng"
@@ -26,7 +27,7 @@ $(document).ready(function () {
                 text = ""
                 break;
         }
-        if (status < 2) {
+        if (status < 2 && status != -1) {
             Swal.fire({
                 title: mess,
                 text: "",
@@ -44,19 +45,19 @@ $(document).ready(function () {
                                 var text = "giao hàng";
                                 var button = "btn-info";
                                 var val = `btn-status col-sm-2 btn ${button} col-md-2 col-lg-2`
-                                $(".btn-status").attr("class", val);
-                                $(".btn-status").text(text)
-                                $(".btn-status").data("status", status + 1);
-                                console.log($(".btn-status").data("status"))
+                                currentBtn.attr("class", val);
+                                currentBtn.text(text)
+                                currentBtn.data("status", status + 1);
+                                console.log(currentBtn.data("status"))
                             }
                             else if (status + 1 == 2) {
                                 var text = "Đang vận chuyển";
                                 var button = "btn-orange";
                                 var val = `btn-status col-sm-2 btn ${button} col-md-2 col-lg-2`
-                                $(".btn-status").attr("class", val);
-                                $(".btn-status").text(text)
-                                $(".btn-status").data("status", status + 1);
-                                console.log($(".btn-status").data("status"))
+                                currentBtn.attr("class", val);
+                                currentBtn.text(text)
+                                currentBtn.data("status", status + 1);
+                                console.log(currentBtn.data("status"))
                             }
                         },
                         "html"

@@ -491,7 +491,7 @@ $(document).ready(function () {
                 }),
                 $.ajax({
                     type: "GET",
-                    url: "./database/authoriesDao.php?type=2",
+                    url: "./database/authoriesDao.php?type=1",
                     dataType: "json",
                 })
             ).done(function (dataAccount, dataAuthor) {

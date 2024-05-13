@@ -54,6 +54,18 @@
                 echo "Đã xóa account có id: " . $tmp . "<br>";
             }
         }
+        else if ($table == "hoaDon") {
+            $sql = "UPDATE BILLS SET STATUS_BILL_DELETE = 0
+            WHERE ID_BILL = ";
+            $count = count($id);
+            $i = 0;
+            while ($i < $count) {
+                $tmp = (int) $id[$i];
+                mysqli_query($connect, $sql . $tmp);
+                $i+=1;
+                echo "Đã xóa bill có id: " . $tmp . "<br>";
+            }
+        }
     }
     function updateDataUser ($id,$user,$connect) {
         $fullname = $user['fullname'];

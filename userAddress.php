@@ -2,7 +2,8 @@
     <h2 id="user-info">Địa chỉ</h2>
     <button id="addAddress">
         <div class="menu-item">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAOElEQVR4nGNgGCDgBsVUA1eheNRA8sEwDEM3JE3Y8A8oxqfGjaYGDv4wJARGDRyEYehG7QKWaAAAXKI0qf87rN4AAAAASUVORK5CYII=">
+            <img
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAOElEQVR4nGNgGCDgBsVUA1eheNRA8sEwDEM3JE3Y8A8oxqfGjaYGDv4wJARGDRyEYehG7QKWaAAAXKI0qf87rN4AAAAASUVORK5CYII=">
             <span>Thêm địa chỉ</span>
         </div>
     </button>
@@ -21,7 +22,8 @@
                 <input readonly type="text" id="phone" name="phone" class=".form-control-plaintext">
             </div>
             <input type="text" id="addressNote" name="address" placeholder="Địa chỉ cụ thể" required>
-            <input type="text" id="address" name="address" placeholder="Tỉnh/ Thành Phố, Quận/ Huyện, Phường/ Xã" required>
+            <input type="text" id="address" name="address" placeholder="Tỉnh/ Thành Phố, Quận/ Huyện, Phường/ Xã"
+                required>
         </form>
         <!-- Dropdown danh sách thành phố, quận, phường -->
         <div id="addressDropdown">
@@ -55,7 +57,7 @@
             <button class="btnRepair" type="submit">Sửa</button>
         </div>
     </div>
-   
+
     <div class="addressContainer">
         <div class="address">
             <div class="addressInfo">

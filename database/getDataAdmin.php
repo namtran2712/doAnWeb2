@@ -28,58 +28,68 @@
     }
 
     function loadUser ($userType, $connect) {
-        if ($userType == "Khách hàng") {
-            $currentPage = $_GET['page'];
-            $item = $_GET['item'];
-            $offset = ($currentPage-1)*$item;
-            $sql = "SELECT * 
-            FROM USERS JOIN ACCOUNTS 
-            ON USERS.ID_USER = ACCOUNTS.ID_USER
-            WHERE ID_AUTHORIZE = 1
-            LIMIT $offset, $item";
-            // echo $sql;
-            $result = mysqli_query($connect, $sql);
-            $users = [];
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $users[] = $row;
+        session_start();
+        if (isset($_SESSION["accountCurrent"])) {
+            $id = $_SESSION["accountCurrent"]["idUser"];
+            if ($userType == "Khách hàng") {
+                $currentPage = $_GET['page'];
+                $item = $_GET['item'];
+                $offset = ($currentPage-1)*$item;
+                $sql = "SELECT * 
+                FROM USERS JOIN ACCOUNTS 
+                ON USERS.ID_USER = ACCOUNTS.ID_USER
+                WHERE ID_AUTHORIZE = 1
+                LIMIT $offset, $item";
+                // echo $sql;
+                $result = mysqli_query($connect, $sql);
+                $users = [];
+                if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $users[] = $row;
+                    }
                 }
+                echo json_encode($users);
             }
-            echo json_encode($users);
-        }
-        else {
-            $currentPage = $_GET['page'];
-            $item = $_GET['item'];
-            $offset = ($currentPage-1)*$item;
-            $sql = "SELECT * 
-            FROM USERS JOIN ACCOUNTS 
-            ON USERS.ID_USER = ACCOUNTS.ID_USER
-            WHERE ID_AUTHORIZE <> 1
-            LIMIT $offset, $item";
-            $result = mysqli_query($connect, $sql);
-            $users = [];
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $users[] = $row;
+            else {
+                $currentPage = $_GET['page'];
+                $item = $_GET['item'];
+                $offset = ($currentPage-1)*$item;
+                $sql = "SELECT * 
+                FROM USERS JOIN ACCOUNTS 
+                ON USERS.ID_USER = ACCOUNTS.ID_USER
+                WHERE ID_AUTHORIZE <> 1
+                AND USERS.ID_USER <> $id
+                LIMIT $offset, $item";
+                $result = mysqli_query($connect, $sql);
+                $users = [];
+                if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $users[] = $row;
+                    }
                 }
+                echo json_encode($users);
             }
-            echo json_encode($users);
         }
     }
 
     function loadAccount ($connect) {
-        $sql = "SELECT *
-        FROM accounts JOIN authorizes
-        ON accounts.ID_AUTHORIZE = authorizes.ID_AUTHORIZE
-        JOIN users ON accounts.ID_USER = users.ID_USER WHERE STATUS_ACCOUNT <> 2";
-        $result = mysqli_query($connect, $sql);
-        $accounts = [];
-        if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                $accounts[] = $row;
+        session_start();
+        if (isset($_SESSION["accountCurrent"])) {
+            $id = $_SESSION["accountCurrent"]["idAccount"];
+            $sql = "SELECT *
+            FROM accounts JOIN authorizes
+            ON accounts.ID_AUTHORIZE = authorizes.ID_AUTHORIZE
+            JOIN users ON accounts.ID_USER = users.ID_USER WHERE STATUS_ACCOUNT <> 2
+            AND accounts.ID_ACCOUNT <> $id";
+            $result = mysqli_query($connect, $sql);
+            $accounts = [];
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $accounts[] = $row;
+                }
             }
+            echo json_encode($accounts);
         }
-        echo json_encode($accounts);
     }
     function loadReceipt ($connect) {
         $sql = "SELECT *

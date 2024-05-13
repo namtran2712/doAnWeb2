@@ -9,8 +9,8 @@ $(document).ready(function () {
     })
 
     $(".create").click(function (e) {
-        $(".modal-title").text ("Thêm thông tin")
-        $(".modal-footer").css ("display", "flex")
+        $(".modal-title").text("Thêm thông tin")
+        $(".modal-footer").css("display", "flex")
         $('.my-modal .modal-content .modal-footer .btn.btn-warning').css('display', 'none')
         $('.my-modal .modal-content .modal-footer .btn.btn-success').css('display', 'block')
         $(".my-modal .modal-body").empty()
@@ -232,95 +232,109 @@ $(document).ready(function () {
                     });
                 })
         }
-        else if(table=="phanQuyen")
-            {
-                modalAddAu().then(function(modal)
-                {
-                    $(".modal-body").empty();
-                    $(".modal-body").append(modal)
-                    $(".my-modal").modal("show")
-                    $(".modal-title").html("Thêm nhóm quyền");
-                    $(".modal-footer .btn-success").click(function (e) { 
-                        e.preventDefault();
-                        var name=$("#nameAu").val();
-                        if(checkEmpty(["#nameAu"]))
-                        {
-                            Swal.fire({
-                                title: "Không được để rỗng tên!!!",
-                                text: "",
-                                icon: "error"
-                            });
-                        }
-                        else
-                        {
-                            $.get("database/authoriesDao.php?type=4&name="+name,
-                                function (data) {
-                                    if(data==1)
-                                    {
-                                        Swal.fire({
-                                            title: "Chắc chưa?",
-                                            showDenyButton: true,
-                                            showCancelButton: false,
-                                            confirmButtonText: "Thêm",
-                                            denyButtonText: `Hủy`
-                                        }).then((result) => {
-                                            if (result.isConfirmed) {
-                                                var checked=$(".check__box input:checked")
-                                                $.get("./database/authoriesDao.php?type=5&name="+name,
-                                                    function (data) {
-                                                        if(data==1)
-                                                        {
-                                                            var idAu=0
-                                                            $.get("./database/authoriesDao.php?type=11", 
-                                                                function (data) {
-                                                                    console.log(data)
-                                                                    idAu=data
-                                                                    $.each(checked, function (i, val) { 
-                            
-                                                                        var idTask=$(val).data("task")
-                                                                        var idAc=$(val).data("action")
-                                                                        $.get("./database/authoriesDao.php?type=7&idAu="+idAu+"&idTask="+idTask+"&idAc="+idAc,
-                                                                            function (data) {
-                                                                                console.log(data)
-                                                                            },
-                                                                            "html"
-                                                                        );
-        
-                                                                    });
-                                                                    Swal.fire("Thêm thành công!", "", "success");
-                                                                    $(".my-modal").modal("hide")
-                                                                    var type = $(".list-group-item.list-group-item-action.active").parent().attr("id");
-                                                                    $(".list-item").find(".item.row").remove();
-                                                                    var obj = null
-                                                                    $(".list-item").Paging(obj, type);
+        else if (table == "phanQuyen") {
+            modalAddAu().then(function (modal) {
+                $(".modal-body").empty();
+                $(".modal-body").append(modal)
+                $(".my-modal").modal("show")
+                $(".modal-title").html("Thêm nhóm quyền");
+                $(".modal-footer .btn-success").click(function (e) {
+                    e.preventDefault();
+                    var name = $("#nameAu").val();
+                    if (checkEmpty(["#nameAu"])) {
+                        Swal.fire({
+                            title: "Không được để rỗng tên!!!",
+                            text: "",
+                            icon: "error"
+                        });
+                    }
+                    else {
+                        $.get("database/authoriesDao.php?type=4&name=" + name,
+                            function (data) {
+                                if (data == 1) {
+                                    Swal.fire({
+                                        title: "Chắc chưa?",
+                                        showDenyButton: true,
+                                        showCancelButton: false,
+                                        confirmButtonText: "Thêm",
+                                        denyButtonText: `Hủy`
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            var checked = $(".check__box input:checked")
+                                            $.get("./database/authoriesDao.php?type=5&name=" + name,
+                                                function (data) {
+                                                    if (data == 1) {
+                                                        var idAu = 0
+                                                        $.get("./database/authoriesDao.php?type=11",
+                                                            function (data) {
+                                                                console.log(data)
+                                                                idAu = data
+                                                                $.each(checked, function (i, val) {
 
-                                                                },
-                                                                "html"
-                                                            );
+                                                                    var idTask = $(val).data("task")
+                                                                    var idAc = $(val).data("action")
+                                                                    $.get("./database/authoriesDao.php?type=7&idAu=" + idAu + "&idTask=" + idTask + "&idAc=" + idAc,
+                                                                        function (data) {
+                                                                            console.log(data)
+                                                                        },
+                                                                        "html"
+                                                                    );
 
-                                                        }
+                                                                });
+                                                                Swal.fire("Thêm thành công!", "", "success");
+                                                                $(".my-modal").modal("hide")
+                                                                var type = $(".list-group-item.list-group-item-action.active").parent().attr("id");
+                                                                $(".list-item").find(".item.row").remove();
+                                                                var obj = null
+                                                                $(".list-item").Paging(obj, type);
 
-                                                    },
-                                                    "html"
-                                                );
-                                                
-                                            }
-                                        });
-                                    }
-                                    else
-                                    {
-                                        Swal.fire({
-                                            title: "",
-                                            text: "Tên nhóm quyền đã tồn tại!!",
-                                            icon: "error"
-                                        });
-                                    }
-                                },
-                                "html"
-                            );
-                        }
-                    });
-                })
+                                                            },
+                                                            "html"
+                                                        );
+
+                                                    }
+
+                                                },
+                                                "html"
+                                            );
+
+                                        }
+                                    });
+                                }
+                                else {
+                                    Swal.fire({
+                                        title: "",
+                                        text: "Tên nhóm quyền đã tồn tại!!",
+                                        icon: "error"
+                                    });
+                                }
+                            },
+                            "html"
+                        );
+                    }
+                });
+            })
+        }
+        else if (table == "phieuNhap") {
+            var receipt = $("#nhapHang")
+            if (receipt.length == 0) {
+                Swal.fire({
+                    title: "Bạn không có quyền nhập hàng!!",
+                    text: "",
+                    icon: "warning"
+                });
             }
+            else {
+                var listMenu = $(".list-group").find(".list-group-item")
+                console.log(listMenu)
+                $.each(listMenu, function (i, val) {
+                    $(val).removeClass("active");
+                });
+                receipt.find("a").addClass("active");
+                var obj = null
+                $(".list-item").Paging(obj, "nhapHang");
+                $(".crud").empty();
+            }
+        }
     });
 });

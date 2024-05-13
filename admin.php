@@ -28,6 +28,9 @@
             }
         }
     }
+    else {
+        header("Location: ./index.php");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -56,6 +59,8 @@
     <!-- css -->
     <link rel="stylesheet" href="./css/admin.css" />
     <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/statistics.css">
+
     <link rel="stylesheet" href="./css/nhapHang.css">
     <title>document</title>
 </head>
@@ -158,8 +163,12 @@
                 </div>
             </div>
 
-            <div class="crud">
+            <div class="crud-fake">
+                
+            </div>
 
+            <div class="crud">
+                
             </div>
 
             <div class="list-item">
@@ -170,13 +179,14 @@
 
             </div>
 
-
-
             <div class="show-more">
 
             </div>
             <div class="nhapHang" style="display : none;">
                 <?php require "nhapHang.php"?>
+            </div>
+            <div class="thongKe" style="display : none;">
+                <?php require "statistics.php"?>
             </div>
         </div>
     </div>
@@ -186,7 +196,8 @@
     <script src="./js/updateData.js"></script>
     <script src="./js/deleteData.js"></script>
     <script src="./js/addData.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/statistics.js"></script>
     <!-- js bootstrap -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"
         integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="

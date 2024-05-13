@@ -18,6 +18,50 @@ header {
 main {
     padding: 0 20px 20px 20px;
     background-color: #f1f1f1;
+
+    .modal-header,
+    .modal-footer {
+        justify-content: center;
+    }
+
+    .modal-body {
+        div.row {
+            padding: 0 20px;
+        }
+
+        label {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .star-wrap {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: start;
+
+            input {
+                appearance: none;
+            }
+
+            input::before {
+                content: "\2605";
+                color: #ccc;
+                font-size: 2rem;
+                cursor: pointer;
+            }
+
+            input:checked::before,
+            input:checked~input::before {
+                color: #ffb800;
+            }
+        }
+
+        textarea {
+            margin: 10px 0;
+            min-height: 150px;
+            resize: none;
+        }
+    }
 }
 
 nav {

@@ -112,7 +112,9 @@ CREATE TABLE BILLS (
   TOTAL_BILL FLOAT,
   SHIPPING_ADDRESS VARCHAR(100),
   DATE_BILL DATETIME DEFAULT CURRENT_TIMESTAMP,
-  STATUS_BILL INT DEFAULT 0 -- -1: hủy đơn, 0: đã đặt, 1: đã xác nhận, 2: đang giao, 3: giao hàng thành công, 4: đánh giá, 5: đã đánh giá
+  STATUS_BILL INT DEFAULT 0,
+  -- -1: hủy đơn, 0: đã đặt, 1: đã xác nhận, 2: đang giao, 3: giao hàng thành công, 4: đánh giá, 5: đã đánh giá
+  STATUS_BILL_DELETE INT DEFAULT 1 -- 1: tồn tại, 0: đã xóa
 );
 -- Tạo bảng chi tiết hóa đơn
 CREATE TABLE PARTICULAR_BILLS (
@@ -125,6 +127,7 @@ CREATE TABLE PARTICULAR_BILLS (
 CREATE TABLE FEEDBACKS (
   ID_FEEDBACK INT AUTO_INCREMENT PRIMARY KEY,
   ID_BILL INT,
+  ID_ACCOUNT INT,
   CONTENT VARCHAR(200),
   STAR INT(5),
   DATE_FEEDBACK DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -163,46 +166,47 @@ CREATE TABLE `order_timeline` (
   `SHIPPING_TIME` datetime DEFAULT NULL,
   `CONFIRM_RECEIVE_TIME` datetime DEFAULT NULL,
   `CANCEL_TIME` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 --
 -- Dumping data for table `order_timeline`
 --
-
-INSERT INTO `order_timeline` (`ID_BILL`, `CONFIRM_TIME`, `SHIPPING_TIME`, `CONFIRM_RECEIVE_TIME`, `CANCEL_TIME`) VALUES
-(1, NULL, NULL, NULL, NULL),
-(2, NULL, NULL, NULL, NULL),
-(3, NULL, NULL, '2024-05-08 12:13:13', NULL),
-(4, NULL, NULL, NULL, NULL),
-(5, NULL, NULL, NULL, '2024-05-07 13:05:39'),
-(6, NULL, NULL, NULL, '2024-05-07 12:21:45'),
-(7, NULL, NULL, '2024-05-07 10:48:33', NULL);
-
+INSERT INTO `order_timeline` (
+    `ID_BILL`,
+    `CONFIRM_TIME`,
+    `SHIPPING_TIME`,
+    `CONFIRM_RECEIVE_TIME`,
+    `CANCEL_TIME`
+  )
+VALUES (1, NULL, NULL, NULL, NULL),
+  (2, NULL, NULL, NULL, NULL),
+  (3, NULL, NULL, '2024-05-08 12:13:13', NULL),
+  (4, NULL, NULL, NULL, NULL),
+  (5, NULL, NULL, NULL, '2024-05-07 13:05:39'),
+  (6, NULL, NULL, NULL, '2024-05-07 12:21:45'),
+  (7, NULL, NULL, '2024-05-07 10:48:33', NULL);
 --
 -- Indexes for dumped tables
 --
-
 --
 -- Indexes for table `order_timeline`
 --
 ALTER TABLE `order_timeline`
-  ADD PRIMARY KEY (`ID_BILL`);
-
+ADD PRIMARY KEY (`ID_BILL`);
 --
 -- Constraints for dumped tables
 --
-
 --
 -- Constraints for table `order_timeline`
 --
 ALTER TABLE `order_timeline`
-  ADD CONSTRAINT `order_timeline_ibfk_1` FOREIGN KEY (`ID_BILL`) REFERENCES `bills` (`ID_BILL`);
+ADD CONSTRAINT `order_timeline_ibfk_1` FOREIGN KEY (`ID_BILL`) REFERENCES `bills` (`ID_BILL`);
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */
+;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */
+;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */
+;
 -- Liên kết khóa ngoại
 -- Tạo khóa ngoại cho bảng chi tiết chức năng
 ALTER TABLE PARTICULAR_AUTHORIZE
@@ -295,18 +299,33 @@ AFTER
 INSERT ON ACCOUNTS FOR EACH ROW BEGIN
 INSERT INTO CART (ID_ACCOUNT, TOTAL_PRICE_CART)
 VALUES (NEW.ID_ACCOUNT, 0);
-END $$ DELIMITER;
+END;
+$$ DELIMITER;
 -- Ràng buộc này là khi 1 USERS bị xóa thì sẽ chuyển status của accounts phụ thuộc nó thành 2
 DELIMITER $$ create TRIGGER deleteUser
 AFTER DELETE ON USERS FOR EACH ROW BEGIN
 UPDATE ACCOUNTS
 SET STATUS_ACCOUNT = 2
 WHERE OLD.ID_USER = ID_USER;
-END $$ DELIMITER;
--- Ràng buộc này khi thay đổi bill với status hiện tại là 2 thì nó sẽ tăng số lượng bán hàng của các sản phẩm đó lên và trừ đi số lượng bán trong tồn kho
-DELIMITER $$ CREATE TRIGGER updateBill
+END;
+$$ DELIMITER;
+-- Ràng buộc này khi tạo ra 1 bill mới thì sẽ cộng số lượng bán lên và giảm số lượng tồn kho đi
+DELIMITER $$ CREATE TRIGGER insertBill
 AFTER
-UPDATE ON BILLS FOR EACH ROW BEGIN IF NEW.STATUS_BILL = 2 THEN
+INSERT ON PARTICULAR_BILLS FOR EACH ROW BEGIN
+UPDATE PARTICULAR_PRODUCTS
+SET QUANTITY_REMAIN = QUANTITY_REMAIN - NEW.QUANTITY
+WHERE ID_PRODUCT = NEW.ID_PRODUCT
+  AND SIZE = NEW.SIZE;
+UPDATE PRODUCTS
+SET QUANTITY_SOLD = QUANTITY_SOLD + NEW.QUANTITY
+WHERE ID_PRODUCT = NEW.ID_PRODUCT;
+END;
+$$ DELIMITER;
+-- Ràng buộc này khi xóa bill với status hiện tại là -1 thì nó sẽ giảm số lượng bán hàng của các sản phẩm đó lên và cộng số lượng bán trong tồn kho
+DELIMITER $$ CREATE TRIGGER deleteBill
+AFTER
+UPDATE ON BILLS FOR EACH ROW BEGIN IF NEW.STATUS_BILL = -1 THEN
 UPDATE products
   JOIN (
     SELECT particular_bills.ID_PRODUCT,
@@ -315,7 +334,7 @@ UPDATE products
     WHERE particular_bills.ID_BILL = NEW.ID_BILL
     GROUP BY particular_bills.ID_PRODUCT
   ) AS SUB ON products.ID_PRODUCT = SUB.ID_PRODUCT
-SET QUANTITY_SOLD = QUANTITY_SOLD + SUB.TOTAL;
+SET QUANTITY_SOLD = QUANTITY_SOLD - SUB.TOTAL;
 UPDATE particular_products
   JOIN(
     SELECT particular_bills.QUANTITY AS TOTAL,
@@ -325,9 +344,10 @@ UPDATE particular_products
     WHERE particular_bills.ID_BILL = NEW.ID_BILL
       AND particular_products.SIZE = particular_bills.SIZE
   ) AS SUB ON particular_products.ID_PRODUCT = SUB.ID
-SET QUANTITY_REMAIN = QUANTITY_REMAIN - SUB.TOTAL;
+SET QUANTITY_REMAIN = QUANTITY_REMAIN + SUB.TOTAL;
 END IF;
-END $$ DELIMITER;
+END;
+$$ DELIMITER;
 -- ràng buộc này sẽ giúp cập nhật số lượng khi nhập hàng
 DELIMITER $$ CREATE TRIGGER insertReceipt
 AFTER
@@ -336,26 +356,5 @@ UPDATE PARTICULAR_PRODUCTS
 SET QUANTITY_REMAIN = QUANTITY_REMAIN + NEW.QUANTITY
 WHERE NEW.ID_PRODUCT = ID_PRODUCT
   AND NEW.SIZE = SIZE;
-END $$ DELIMITER;
--- Ràng buộc này sẽ thiết lập địa chỉ của 1 tài khoản là mặc định nếu chỉ có 1 và sẽ set tất cả là 0 nếu lên 1
-DELIMITER $$ CREATE TRIGGER insertAddress
-AFTER
-UPDATE USER_SHIPPING_ADDRESS
-SET STATUS_ADDRESS = 1
-WHERE ID_ACCOUNT = NEW.ID_ACCOUNT
-  AND ID_USER_SHIPPING_ADDRESS = NEW.ID_USER_SHIPPING_ADDRESS
-  AND (
-    SELECT COUNT(*)
-    FROM USER_SHIPPING_ADDRESS
-    WHERE ID_ACCOUNT = NEW.ID_ACCOUNT
-  ) = 1;
-END $$ DELIMITER;
--- Ràng buộc khi thay đổi trạng thái của địa chỉ thành mặc định thì tất cả địa chỉ khác sẽ đưa về 0
-DELIMITER $$ CREATE TRIGGER updateAddress
-AFTER
-UPDATE ON USER_SHIPPING_ADDRESS FOR EACH ROW BEGIN IF NEW.STATUS_ADDRESS = 1 THEN
-UPDATE USER_SHIPPING_ADDRESS
-SET STATUS_ADDRESS = 0
-WHERE ID_USER_SHIPPING_ADDRESS <> NEW.ID_USER_SHIPPING_ADDRESS;
-END IF;
-END $$ DELIMITER; 
+END;
+$$ DELIMITER;

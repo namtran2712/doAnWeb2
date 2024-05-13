@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -10,7 +10,7 @@
 
 </head>
 
-<body>
+<body> -->
     <div class="container">
         <h1>Thống kê kinh doanh</h1>
         <div class="filters">
@@ -45,9 +45,9 @@
 
     </div>
 
-    <!-- Thêm các script để xử lý sự kiện và vẽ biểu đồ -->
+    <!-- Thêm các script để xử lý sự kiện và vẽ biểu đồ
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/statistics.js"></script>
 </body>
 
-</html>
+</html> -->

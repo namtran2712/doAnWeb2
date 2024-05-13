@@ -11,7 +11,6 @@ $(document).ready(function () {
             id.push($(val).text())
         });
         var table = $(".sidebar ul li a.active").parents().attr("id")
-
         Swal.fire({
             title: "Bạn chắc chắn muốn xóa?",
             showDenyButton: true,

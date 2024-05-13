@@ -1411,6 +1411,10 @@ function loadDataAddress() {
         success: function (data) {
             $(".addressContainer").empty();
             $.each(data, function (indexInArray, valueOfElement) {
+                var status = ''
+                if (valueOfElement.STATUS_ADDRESS == 1) {
+                    status = '<span class ="border border-danger"> Mặc định </span>'
+                }
                 var div = `
                 <div class="address ">
                     <div class="addressInfo">
@@ -1422,7 +1426,7 @@ function loadDataAddress() {
                             <p>${valueOfElement.SHIPPING_ADDRESS}</p>
                         </div>
                         <div class="setDefault mt-5 text-danger" data-id=${valueOfElement.ID_USER_SHIPPING_ADDRESS}>
-                            
+                            ${status}
                         </div>           
                     </div>
                     
@@ -1431,7 +1435,7 @@ function loadDataAddress() {
                             <button class="btnUpdate" data-id=${valueOfElement.ID_USER_SHIPPING_ADDRESS}>Cập nhật</button>
                             <button class="btnDelete" data-id =${valueOfElement.ID_USER_SHIPPING_ADDRESS}>Xóa</button>
                         </div>
-                        <button class="btnDefault">Thiết lập mặc định</button>
+                        <button class="btnDefault" data-idAddress =${valueOfElement.ID_USER_SHIPPING_ADDRESS}>Thiết lập mặc định</button>
                     </div>
                 </div>
                 `
@@ -1456,7 +1460,22 @@ function loadDataAddress() {
 
             $(".btnDefault").off("click")
             $(".btnDefault").click(function () {
-                $(".setDefault").html('<span class ="border border-danger"> Mặc định </span>')
+                $(".setDefault").empty();
+                $(this).parent().parent().find(".setDefault").html('<span class ="border border-danger"> Mặc định </span>')
+                var idAddress = $(this).data("idaddress");
+                $.get("./database/userDao.php?type=1&id=" + idAddress,
+                    function (data) {
+                        console.log(data)
+                        if (data) {
+                            Swal.fire({
+                                title: "Thiết lập thành công",
+                                text: "",
+                                icon: "success"
+                            });
+                        }
+                    },
+                    "html"
+                );
             })
 
             $(".btnUpdate").off("click")
@@ -1469,18 +1488,18 @@ function loadDataAddress() {
                     url: "./database/userDao.php?type=189&idAddress=" + idAddress,
                     dataType: "json",
                     success: function (response) {
-                        arraySlipAddress= (response.SHIPPING_ADDRESS.split(", "))
+                        arraySlipAddress = (response.SHIPPING_ADDRESS.split(", "))
                         $("#addressNote").val(arraySlipAddress[0]);
 
                         // cộng 2 để bỏ qua ", " 
-                        $("#address").val(response.SHIPPING_ADDRESS.substring(arraySlipAddress[0].length+2));
+                        $("#address").val(response.SHIPPING_ADDRESS.substring(arraySlipAddress[0].length + 2));
 
 
                     }
                 });
                 $(".btnRepair").show();
-                $(".btnAdd").hide ();
-                $(".btnRepair").click (function (){
+                $(".btnAdd").hide();
+                $(".btnRepair").click(function () {
                     if (checkEmpty(["#addressNote"])) {
                         $("#addressNote").addClass("border border-danger")
                     }
@@ -1492,8 +1511,8 @@ function loadDataAddress() {
                         type: "POST",
                         url: "./database/userDao.php?type=188",
                         data: {
-                            idAddress :idAddress,
-                            address: $("#addressNote").val()+ ", " + $("#address").val () 
+                            idAddress: idAddress,
+                            address: $("#addressNote").val() + ", " + $("#address").val()
                         },
                         dataType: "html",
                         success: function (response) {

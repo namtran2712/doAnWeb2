@@ -23,10 +23,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'get_chart') {
                 SUM(b.TOTAL_BILL) AS revenue
             FROM 
                 bills b
-            JOIN 
-                particular_bills pb ON b.ID_BILL = pb.ID_BILL
-            JOIN 
-                particular_products pp ON pb.ID_PRODUCT = pp.ID_PRODUCT
             WHERE 
                 b.STATUS_BILL IN (3, 4)
             GROUP BY 

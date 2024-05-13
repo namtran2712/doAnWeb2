@@ -1,18 +1,18 @@
 
 $(document).ready(function () {
+    $.getScript("./js/validate.js")
     $.ajax({
         type: "GET",
         url: "database/accountDao.php?type=100",
         dataType: "json",
         success: function (response) {
-            var accountId=response['idAccount']
-            var priceDiscount=0;
-            $(".site-btn").click(function (e) { 
+            var accountId = response['idAccount']
+            var priceDiscount = 0;
+            $(".site-btn").click(function (e) {
                 e.preventDefault();
-                var code =$("#code-discount").val();
-                if(code=="THAYSANGDEPTRAI123")
-                {
-                    priceDiscount=500000
+                var code = $("#code-discount").val();
+                if (code == "THAYSANGDEPTRAI123") {
+                    priceDiscount = 500000
                     Swal.fire("Áp mã giảm giá thành công !!!", "", "success");
                 }
                 checkout()
@@ -20,64 +20,64 @@ $(document).ready(function () {
             $('select[name^="size_"]').change(function () {
                 // Lấy giá từ thuộc tính data-price của tùy chọn đã chọn
                 var selectedPrice = $(this).find('option:selected').data('price');
-            
+
                 // Định dạng giá tiền với dấu phẩy phân cách đơn vị hàng nghìn
                 selectedPrice = selectedPrice.toLocaleString('de-DE');
-            
+
                 // Cập nhật giá tương ứng
                 var productId = $(this).attr('id').replace('size_', '');
                 var trId = $(this).closest('tr').attr('id'); // Lấy ID của thẻ <tr>
                 var selectedPriceElement = $('#' + trId).find('#selected_price_' + productId); // Tìm phần tử có ID tương ứng bên trong thẻ <tr>
-            
+
                 // Thay đổi văn bản của phần tử selectedPriceElement
                 selectedPriceElement.text(selectedPrice + 'đ');
-            
+
                 // Lặp qua các option và loại bỏ thuộc tính selected
                 $(this).find('option').removeAttr('selected');
-            
+
                 // Thiết lập thuộc tính selected cho option được chọn
                 $(this).find('option:selected').attr('selected', 'selected');
-            
+
                 // Lấy giá từ thuộc tính data-price của option được chọn
                 var inputPrice = selectedPrice;
-            
+
                 // Tìm input trong cùng một hàng và thay đổi thuộc tính data-price
                 var inputElement = $(this).closest('tr').find('.value-changer_input');
                 // Loại bỏ dấu phân cách số
                 inputPrice = inputPrice.replace(/\D/g, '');
                 inputElement.attr('data-price', inputPrice);
-            
+
                 // Tính tổng tiền
                 var totalElement = $(this).closest('tr').find('.shoping__cart__total');
                 var totalPrice = inputPrice * inputElement.val(); // Nhân giá của size với số lượng
                 totalElement.text(totalPrice.toLocaleString('de-DE') + 'đ'); // Hiển thị tổng tiền đã định dạng
-            
+
                 // Lấy thông tin sản phẩm
                 var productId = $(this).attr('id').replace('size_', '');
                 var quantity = $(this).closest('tr').find('.value-changer_input').val();
                 var size = $(this).val();
                 var price = $(this).find('option:selected').data('price');
-            
+
                 // Gửi yêu cầu cập nhật thông tin trong session
                 sendUpdateSizeRequest(productId, quantity, size, price, trId);
             });
-            
+
             // Lắng nghe sự kiện click trên các liên kết tăng và giảm số lượng sản phẩm
             document.querySelectorAll('.value-changer_decrease, .value-changer_increase').forEach(item => {
                 item.addEventListener('click', event => {
                     event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a> khi nhấn vào
-            
+
                     // Tìm hàng (row) chứa sản phẩm tương ứng
                     const row = event.target.closest('tr');
                     const trId = row.getAttribute('id');
-            
+
                     // Tìm thẻ input chứa số lượng sản phẩm trong hàng đó
                     const inputElement = row.querySelector('.value-changer_input');
-            
+
                     // Lấy giá và số lượng hiện tại của sản phẩm từ thuộc tính data và giá trị của thẻ input
                     const price = parseFloat(inputElement.getAttribute('data-price'));
                     let quantity = parseInt(inputElement.value);
-            
+
                     // Xác định hành động: tăng hoặc giảm số lượng sản phẩm
                     if (event.target.classList.contains('value-changer_increase')) {
                         quantity += 1;
@@ -86,31 +86,30 @@ $(document).ready(function () {
                             quantity -= 1;
                         }
                     }
-            
+
                     // Cập nhật số lượng sản phẩm trong input
                     inputElement.value = quantity;
-            
+
                     // Tính tổng tiền cho sản phẩm trong hàng đó
                     const subtotal = price * quantity;
-            
+
                     // Cập nhật tổng tiền của sản phẩm trong hàng
                     const subtotalElement = row.querySelector('.shoping__cart__total');
                     subtotalElement.innerText = subtotal.toFixed(0).replace(/\d(?=(\d{3})+$)/g, '$&.') + 'đ';
-            
+
                     // Lấy thông tin sản phẩm
                     const productId = event.target.closest('tr').querySelector('.shoping__cart__total').id;
                     const size = row.querySelector('select').value;
-            
+
                     // Gửi yêu cầu cập nhật thông tin trong session
                     sendUpdateQuantityRequest(productId, inputElement.value, size, price, trId);
                 });
             });
-            
+
             $('.shoping__cart__item__close').click(function () {
                 // Lấy productId và size của sản phẩm cần xóa từ thuộc tính data của thẻ <tr>
                 var productId = $(this).closest('tr').data('id-product');
                 var size = $(this).closest('tr').data('size');
-                // In ra console ID và size của sản phẩm
                 Swal.fire({
                     title: "Bạn chắc chắn muốn xóa?",
                     showDenyButton: true,
@@ -121,9 +120,23 @@ $(document).ready(function () {
                     if (result.isConfirmed) {
                         Swal.fire("Đã xóa thành công!", "", "success");
                         deleteProduct(accountId, productId, size);
-                    }})
-                });
-            $(".make-bill").click(function (e) { 
+                    }
+                })
+            });
+
+            $(".value-changer_input").change(function (e) {
+                e.preventDefault();
+                var quantity = $(this).val();
+                $.get("./database/productDao.php",
+                    function (data, textStatus, jqXHR) {
+
+                    },
+                    "html"
+                );
+            });
+
+
+            $(".make-bill").click(function (e) {
                 e.preventDefault();
                 Swal.fire({
                     title: "Bạn chắc chắn muốn check out?",
@@ -133,16 +146,14 @@ $(document).ready(function () {
                     denyButtonText: `Hủy`
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        if($(".shoping__cart__table table tbody tr").length>0)
-                        {
-                            var priceText =$('.shoping__checkout ul li:nth-child(2) span').text();
+                        if ($(".shoping__cart__table table tbody tr").length > 0) {
+                            var priceText = $('.shoping__checkout ul li:nth-child(2) span').text();
                             total = parseFloat(priceText.replace(/[đ.]/g, ""));
                             $(".my-modal").modal('show')
 
-                            
+
                         }
-                        else
-                        {
+                        else {
                             Swal.fire({
                                 title: "Giỏ hàng của bạn đang trống !!!",
                                 text: "",
@@ -150,41 +161,39 @@ $(document).ready(function () {
                             });
                         }
 
-                    }})
+                    }
+                })
             });
-            $(".btn-check-out").click(function (e) { 
+            $(".btn-check-out").click(function (e) {
                 e.preventDefault();
-                var selectedValue= $('input[name="flexRadioDefault"]:checked').val()
-                if(selectedValue=="default"){
-                    var address=$("#list-address").val();
-                    makeBill(accountId,total,address)
+                var selectedValue = $('input[name="flexRadioDefault"]:checked').val()
+                if (selectedValue == "default") {
+                    var address = $("#list-address").val();
+                    makeBill(accountId, total, address)
                     $(".shoping__cart__table table tbody").empty();
                     checkout();
                     Swal.fire("Đặt hàng thành công!", "", "success");
-                } else 
-                {
-                    var address=$("#address2").val();
-                    $.getScript("./js/validate.js")
-                    if(checkAddress(address))
-                    {
+                } else {
+                    var address = $("#address2").val();
+                    if (checkAddress(address)) {
                         $.ajax({
                             type: "GET",
-                            url: "./database/userDao.php?type=100&address="+address,
+                            url: "./database/userDao.php?type=100&address=" + address,
                             dataType: "html",
                             success: function (response) {
-                                if(response)
-                                {
-                                    makeBill(accountId,total,address)
+
+                                console.log(response)
+                                if (response) {
+                                    makeBill(accountId, total, address)
                                     $(".shoping__cart__table table tbody").empty();
                                     checkout();
                                     Swal.fire("Đặt hàng thành công!", "", "success");
                                 }
                             }
                         });
-                        
+
                     }
-                    else
-                    {
+                    else {
                         Swal.fire({
                             title: "Địa chỉ cần nhiều hơn 10 ký tự!!!",
                             text: "",
@@ -193,15 +202,14 @@ $(document).ready(function () {
                     }
                 }
             });
-            function makeBill(accountId,total,address)
-            {
+            function makeBill(accountId, total, address) {
                 $.ajax({
                     type: "POST",
                     url: "makeBill.php",
                     data: {
-                        account_id : accountId,
-                        total : total,
-                        address : address,
+                        account_id: accountId,
+                        total: total,
+                        address: address,
                     },
                     dataType: "html",
                     success: function (response) {
@@ -228,8 +236,7 @@ $(document).ready(function () {
                     }
                 });
             }
-            
-            
+
             function sendUpdateQuantityRequest(productId, quantity, size, price, trId) {
                 // Gửi yêu cầu AJAX đến máy chủ để cập nhật thông tin sản phẩm
                 $.ajax({
@@ -277,11 +284,11 @@ $(document).ready(function () {
                     }
                 });
             }
-            
+
             function checkout() {
                 // Khởi tạo biến tổng hóa đơn
                 var totalBill = 0;
-            
+
                 // // Duyệt qua mỗi hàng trong bảng
                 $('.shoping__cart__table tbody tr').each(function (index, element) {
                     // Lấy giá trị từ ô có class là shoping__cart__total
@@ -293,14 +300,13 @@ $(document).ready(function () {
                 });
                 // Hiển thị tổng hóa đơn trong phần tử có class là shoping__checkout
                 $('.shoping__checkout ul li:nth-child(1) span').text(totalBill.toLocaleString('de-DE') + 'đ');
-                totalBill=totalBill-priceDiscount
-                if(totalBill<0)
-                {
-                    totalBill=0
+                totalBill = totalBill - priceDiscount
+                if (totalBill < 0) {
+                    totalBill = 0
                 }
                 $('.shoping__checkout ul li:nth-child(2) span').text(totalBill.toLocaleString('de-DE') + 'đ');
             }
-            
+
             checkout();
         }
     });

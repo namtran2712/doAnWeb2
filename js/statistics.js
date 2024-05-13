@@ -16,7 +16,6 @@ function getCategories() {
         success: function (response) {
             // Xử lý và hiển thị danh sách các loại sản phẩm
             displayCategories(response);
-            console.log(response);
         },
         error: function (xhr, status, error) {
             console.error('Error fetching categories:', error);
@@ -51,7 +50,7 @@ $(document).ready(function () {
         var clickedColumn = getClickedColumn();
         // Gọi hàm fetchStatistics để gửi yêu cầu AJAX
         fetchStatistics(selectedCategory, startDate, endDate, clickedColumn, sortOrder);
-        
+
     });
 });
 $(document).ready(function () {
@@ -67,16 +66,15 @@ $(document).ready(function () {
     });
 });
 var sortOrder = 'DESC'; // Mặc định sắp xếp giảm dần
-console.log(sortOrder);
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Biến toàn cục để lưu trữ tiêu đề được click
     var clickedHeader = null;
 
     // Lắng nghe sự kiện click trên tiêu đề của bảng
-    document.querySelectorAll('thead th[data-sort]').forEach(function(th) {
-        th.addEventListener('click', function() {
+    document.querySelectorAll('thead th[data-sort]').forEach(function (th) {
+        th.addEventListener('click', function () {
             // Loại bỏ lớp data-sort-by khỏi tất cả các thẻ th
-            document.querySelectorAll('thead th').forEach(function(th) {
+            document.querySelectorAll('thead th').forEach(function (th) {
                 th.classList.remove('data-sort-by');
             });
 
@@ -102,7 +100,6 @@ document.addEventListener('DOMContentLoaded', function() {
             var selectedCategory = $('#category-select').val();
             var columnName = this.getAttribute('data-sort');
             sortOrder = this.classList.contains('asc') ? 'ASC' : 'DESC';
-            console.log(sortOrder);
             fetchStatistics(selectedCategory, startDate, endDate, columnName, sortOrder);
         });
     });
@@ -114,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function getClickedColumn() {
     var clickedColumn = null;
-    document.querySelectorAll('thead th[data-clicked="true"]').forEach(function(th) {
+    document.querySelectorAll('thead th[data-clicked="true"]').forEach(function (th) {
         clickedColumn = th.getAttribute('data-sort');
     });
     return clickedColumn;
@@ -124,7 +121,7 @@ function fetchStatistics(selectedCategory, startDate, endDate, orderBy, sortOrde
     $.ajax({
         url: './database/statisticsDAO.php', // Đường dẫn đến file xử lý yêu cầu AJAX
         type: 'GET',
-        dataType: 'html',
+        dataType: 'json',
         data: {
             action: 'get_statistics', // Hành động cần thực hiện trong file statisticsDAO.php
             product_type: selectedCategory, // Giá trị của loại sản phẩm đã chọn
@@ -135,7 +132,6 @@ function fetchStatistics(selectedCategory, startDate, endDate, orderBy, sortOrde
         },
         success: function (response) {
             // Xử lý và hiển thị dữ liệu thống kê
-            console.log(response);
             displayStatistics(response);
             $('#data-body tr').each(function (index) {
                 if (index % 2 === 0) {
@@ -167,7 +163,8 @@ function displayStatistics(data) {
         tbody.append(noDataMessage);
     } else {
         // Lặp qua mỗi mục trong mảng dữ liệu và thêm vào tbody
-        data.forEach(function (item) {
+        $.each(data, function (indexInArray, item) {
+
             // Tạo một dòng mới
             var row = $('<tr>');
 
@@ -207,7 +204,6 @@ $.ajax({
         action: 'get_chart', // Hành động cần thực hiện trong file statisticsDAO.php
     },
     success: function (data) {
-        console.log(data);
         drawChart(data);
     },
     error: function (xhr, status, error) {
@@ -258,7 +254,7 @@ function drawChart(data) {
             }
         }
     });
-    
+
 }
 
 

@@ -14,6 +14,7 @@
         `
         $(".content .show-more").empty();
         $(".content .show-more").append(showMore);
+        $(".list-item").find(".item.row").remove()
 
         $(".content .show-more").children('button').click(function (e) {
             e.preventDefault();
@@ -24,7 +25,6 @@
                 loadDataUser(obj.currentPage)
             else if (type == "taiKhoan")
                 loadDataAccount(obj.currentPage)
-            console.log(obj)
             if (obj.currentPage == obj.totalPage) {
                 $(".content .show-more").children('button').css('display', 'none');
             }
@@ -39,6 +39,8 @@
                 dataType: "html",
                 success: function (data) {
                     obj.totalPage = data
+                    $(".thongKe").css("display", 'none');
+                    $(".content").css("display", "block");
                     if (type == "sanPham") {
                         loadDataProduct(obj.currentPage)
                         $(".crud").css("display", "flex");
@@ -70,15 +72,6 @@
                         loadAuthoryze(obj.currentPage)
                         $(".crud").css("display", "flex");
                     }
-
-                    else if (type == "nhapHang") {
-                        $(".list-item").children().first().empty();
-                        $(".nhapHang").css('display', 'flex');
-                        $(".crud").css("display", "none");
-                    }
-                    if (type != "nhapHang") {
-                        $(".nhapHang").css('display', 'none');
-                    }
                     if (obj.currentPage == obj.totalPage || obj.totalPage == 0) {
                         $(".content .show-more").children('button').css('display', 'none');
                     }
@@ -96,6 +89,19 @@
                     }
                     else {
                         $(".crud").css("display", "flex")
+                    }
+                    if (type == "thongKe") {
+                        $(".thongKe").css("display", 'block');
+                        $(".content").css("display", "none")
+                    }
+                    else if (type == "nhapHang") {
+                        $(".list-item").children().first().empty();
+                        $(".nhapHang").css('display', 'flex');
+                        $(".crud").css("display", "none");
+                        console.log(type)
+                    }
+                    if (type != "nhapHang") {
+                        $(".nhapHang").css('display', 'none');
                     }
                 }
             });
@@ -237,7 +243,6 @@
                 url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page,
                 dataType: "json",
                 success: function (data) {
-                    console.log(data)
                     if (page == 1 || page == 0) {
                         if (type == "khachHang") {
                             var title = `
@@ -350,6 +355,10 @@
                         var button = "";
 
                         switch (val["STATUS_BILL"]) {
+                            case "-1":
+                                status = "Đã hủy đơn hàng"
+                                button = "btn-danger"
+                                break;
                             case "0":
                                 status = "Đang chờ xác nhận";
                                 button = "btn-warning";
@@ -493,13 +502,11 @@
                             url: "./database/userDao.php?type=200&id=" + val['ID_ADMIN_ADD'],
                             dataType: "json",
                             success: function (admin) {
-                                console.log(admin)
                                 $.ajax({
                                     type: "GET",
                                     url: "./database/userDao.php?type=200&id=" + val['ID_ADMIN_UPDATE'],
                                     dataType: "json",
                                     success: function (response) {
-                                        console.log(response)
                                         var item = `
                                         <div class="item row">
                                                 <span class="id-item col-sm-1 col-md-1 col-lg-1">${val['ID_AUTHORIZE']}</span>
