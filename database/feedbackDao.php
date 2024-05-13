@@ -30,7 +30,23 @@
         return 0;
     }
 
+    function getFeedbackByBill ($connect, $idBill) {
+        $sql = "SELECT *
+        FROM FEEDBACKS JOIN BILLS
+        ON FEEDBACKS.ID_BILL = BILLS.ID_BILL
+        WHERE BILLS.ID_BILL = $idBill";
+        $result = mysqli_query($connect, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                return json_encode($row);
+            }
+        }
+    }
+
     if ($_GET["type"] == 1) {
         echo insertFeedback($connect, $_POST["id"], $_POST["content"], $_POST["star"]);
+    }
+    else if ($_GET["type"] == 2) {
+        echo getFeedbackByBill($connect, $_GET["id"]);
     }
 ?>

@@ -123,9 +123,6 @@ if (!empty($_SESSION["serializedProduct"])) {
                     <div class="price-after">
                         <b><span><?php echo $product[0]["PRICE"] ?></span> đ</b>
                     </div>
-                    <!-- <div class="price-before">
-                        <b style="text-decoration: line-through;color:grey;">2.999.000 đ</b>
-                    </div> -->
                 </div>
                 <div class="endow">
                     <div class="title">
@@ -166,22 +163,41 @@ if (!empty($_SESSION["serializedProduct"])) {
             <div class="list-comment row">
                 <div class="comment">
                     <?php
-                        
-                    ?>
+                        $idProduct = $product[0]["ID_PRODUCT"];
+                        $sql = "SELECT *
+                        FROM feedbacks JOIN particular_bills
+                        ON feedbacks.ID_BILL = particular_bills.ID_BILL
+                        JOIN accounts ON accounts.ID_ACCOUNT = feedbacks.ID_ACCOUNT
+                        WHERE particular_bills.ID_PRODUCT = $idProduct";
+                        $result = mysqli_query($connect, $sql);
+                        if (mysqli_num_rows($result) > 0) {
+                            $feedbacks = [];
+                            while ($row = mysqli_fetch_assoc($result)) {
+                            ?>
+
                     <div class="user-and-evaluate">
-                        <span class="user">ABCDEFJ</span>
+                        <span class="user"><?php echo $row["USERNAME"] ?></span>
                         <div class="star">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
+                            <?php
+                                for ($i = 1;$i<=$row["STAR"];$i++) {
+                                    echo '<i class="fa-solid fa-star"></i>';
+                                }
+                                for ($i = 1;$i <= 5-$row["STAR"];$i ++) {
+                                    echo '<i class="fa-regular fa-star"></i>';      
+                                }
+                            ?>
                         </div>
                     </div>
                     <div class="content-product">
-                        <p>loremloeads;lfasdlkfjsadlkfjsaldk;fjlasjflsdajfl;asdjfhasdkfjsldkjfahdjkfaeuhdglkjerahgkdvjsoido
-                        </p>
+                        <p> <?php echo $row["CONTENT"] ?> </p>
                     </div>
+                    <?php   
+                            }
+                        }
+                        else {
+                            echo "<span style='display: block;text-align: center;font-size: 20px'>Hiện không có bất cứ đánh giá nào về sản phẩm này</span>";
+                        }
+                        ?>
                 </div>
             </div>
         </div>
@@ -194,6 +210,7 @@ if (!empty($_SESSION["serializedProduct"])) {
 
     <script src="./js/detailProduct.js"></script>
     <script src="./js/login.js"></script>
+    <script src="./js/navmenu.js"></script>
 </body>
 
 </html>

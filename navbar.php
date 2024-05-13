@@ -22,7 +22,7 @@
                             <a class="nav-link active" aria-current="page" href="./index.php">Trang chủ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " aria-current="page" href="#products.php" data-name="sản phẩm">Sản
+                            <a class="nav-link " aria-current="page" href="products.php?data-name=sản phẩm">Sản
                                 phẩm</a>
                         </li>
                         <?php
@@ -33,14 +33,14 @@
 
                         <?php
                     while ($row = mysqli_fetch_assoc($result)) {
-
-                        echo '<li class="nav-item">
-                                <a class="nav-link " aria-current="page" href="#products.php?t=' . random_int(1, 1000) . '" data-id=' . $row["ID_CATEGORY"] . ' data-name="' . $row["CATEGORY_NAME"] . '">' . $row["CATEGORY_NAME"] . '</a>
-                            </li>';
+                        ?>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page"
+                                href="products.php?data-id=<?php echo $row["ID_CATEGORY"]; ?>&data-name=<?php echo $row["CATEGORY_NAME"]; ?>"><?php echo $row["CATEGORY_NAME"] ?></a>
+                        </li>
+                        <?php   
                     }
                     ?>
-
-
                     </ul>
                 </div>
             </div>

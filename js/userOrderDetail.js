@@ -385,4 +385,48 @@ $(document).ready(function () {
 
     });
 
+    $("#rated").click(function (e) {
+        e.preventDefault()
+        $.get("./database/feedbackDao.php?type=2&id=" + idBill,
+            function (data) {
+                console.log(data)
+                var modalHead = `
+                <div class="row">
+                    <label class="col-sm-12 col-md-12 col-lg-12">Số sao đánh giá <span style="color: red;">*</span></label>
+                `
+                var modalStar = `
+                    <div style="flex-direction: row;" class="star-wrap">
+                        
+                `
+
+                var i = 1;
+                while (data["STAR"] >= i) {
+                    modalStar += `<i style="color: gold;" class="fa-solid fa-star"></i>`
+                    i++;
+                }
+                while (i <= 5) {
+                    modalStar += `<i style="color: gold;" class="fa-regular fa-star"></i>`
+                    i++;
+                }
+                modalStar += `</div>`
+
+                var modalContent = `
+                    <label for="content-rate" class="col-sm-12 col-md-12 col-lg-12">Nội dung đánh
+                        giá</label>
+                    <textarea name="content-rate" placeholder="Tối đa 150 ký tự" class="form-control col-sm-12 col-md-12 col-lg-12"
+                        id="content-rate" readonly></textarea>
+                </div>
+                `
+                var content = modalHead + modalStar + modalContent;
+                $(".modal-body").empty()
+                $(".modal-body").append(content)
+                $("#content-rate").text(data["CONTENT"]);
+                $(".my-modal").modal("show")
+            },
+            "json"
+        );
+
+
+    })
+
 });

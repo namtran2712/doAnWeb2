@@ -38,11 +38,11 @@
 <body>
     <div class="wrapper bg-gray">
         <!-- navbar-top -->
-        <div class="container-fluid shadow p-2" style="display: none;">
+        <div class="container-fluid shadow p-2">
             <nav class="navbar bg-body-tertiary navbar-expand-lg scroll  ">
                 <?php
                     session_start(); 
-                    // include "navbar.php"
+                    include "./navbar.php";
                  ?>
             </nav>
         </div>
@@ -121,6 +121,7 @@
     </script>
     <script src="./js/user.js"></script>
     <script src="./js/login.js"></script>
+    <script src="./js/navmenu.js"></script>
 
 </body>
 
