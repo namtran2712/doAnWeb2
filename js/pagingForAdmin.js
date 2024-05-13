@@ -1,13 +1,12 @@
 
 
 (function ($) {
-    $.fn.Paging = function (obj, type) {
+    $.fn.Paging = function (obj, type,search) {
         var Default = {
             currentPage: 1,
             totalPage: 0,
             items: 10,
         }
-
         obj = Default;
         var showMore = `
         <button class="btn btn-outline-dark m-2">Xem thêm nội dung</button>
@@ -20,11 +19,11 @@
             e.preventDefault();
             obj.currentPage++
             if (type == "sanPham")
-                loadDataProduct(obj.currentPage)
+                loadDataProduct(obj.currentPage,search)
             else if (type == "khachHang" || type == "nhanVien")
-                loadDataUser(obj.currentPage)
+                loadDataUser(obj.currentPage,search)
             else if (type == "taiKhoan")
-                loadDataAccount(obj.currentPage)
+                loadDataAccount(obj.currentPage,search)
             if (obj.currentPage == obj.totalPage) {
                 $(".content .show-more").children('button').css('display', 'none');
             }
@@ -35,25 +34,25 @@
         function getPage() {
             $.ajax({
                 type: "GET",
-                url: "./database/getDataAdmin.php?type=countPage&item=" + obj.items + "&loai=" + type,
+                url: "./database/getDataAdmin.php?type=countPage&item=" + obj.items + "&loai=" + type +"&search="+search,
                 dataType: "html",
                 success: function (data) {
                     obj.totalPage = data
                     $(".thongKe").css("display", 'none');
                     $(".content").css("display", "block");
                     if (type == "sanPham") {
-                        loadDataProduct(obj.currentPage)
+                        loadDataProduct(obj.currentPage,search)
                         $(".crud").css("display", "flex");
                     }
                     else if (type == "khachHang" || type == "nhanVien") {
-                        loadDataUser(obj.currentPage)
+                        loadDataUser(obj.currentPage,search)
                         $(".crud").css("display", "flex");
                         if (type == "khachHang") {
                             $(".create").css("display", "none");
                         }
                     }
                     else if (type == "taiKhoan") {
-                        loadDataAccount(obj.currentPage)
+                        loadDataAccount(obj.currentPage,search)
                         $(".crud").css("display", "flex");
                         $(".create").css("display", "none");
                     }
@@ -69,7 +68,7 @@
                         $(".update").css("display", "none");
                     }
                     else if (type == "phanQuyen") {
-                        loadAuthoryze(obj.currentPage)
+                        loadAuthoryze(obj.currentPage,search)
                         $(".crud").css("display", "flex");
                     }
                     if (obj.currentPage == obj.totalPage || obj.totalPage == 0) {
@@ -118,12 +117,13 @@
                 $(".list-item").append(item)
             }
         }
-        function loadDataProduct(page) {
+        function loadDataProduct(page,search) {
             $.ajax({
                 type: "GET",
-                url: "./database/getDataAdmin.php?type=sanPham&item=" + obj.items + "&page=" + page,
+                url: "./database/getDataAdmin.php?type=sanPham&item=" + obj.items + "&page=" + page+"&search="+search,
                 dataType: "json",
                 success: function (data) {
+                    console.log(data)
                     if (page == 1 || obj.currentPage == 0) {
                         var title = `
                             <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
@@ -237,10 +237,10 @@
             });
         }
 
-        function loadDataUser(page) {
+        function loadDataUser(page,search) {
             $.ajax({
                 type: "GET",
-                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page,
+                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page+"&search="+search,
                 dataType: "json",
                 success: function (data) {
                     if (page == 1 || page == 0) {
@@ -283,12 +283,13 @@
             });
         }
 
-        function loadDataAccount(page) {
+        function loadDataAccount(page,search) {
             $.ajax({
                 type: "GET",
-                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page,
+                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page+"&search="+search,
                 dataType: "json",
                 success: function (data) {
+                    console.log(data)
                     if (page == 1) {
                         var title = `
                             <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
@@ -475,10 +476,10 @@
             });
         }
 
-        function loadAuthoryze(page) {
+        function loadAuthoryze(page,search) {
             $.ajax({
                 type: "GET",
-                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page,
+                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page +"&search="+search,
                 dataType: "json",
                 success: function (data) {
                     if (page == 1 || page == 0) {

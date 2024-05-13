@@ -22,7 +22,7 @@
 
 <div class="container-fluid d-flex justify-content-center my-4">
    <div class="container-fluid row my-2 title-receipt">
-        <div class="col-sm-4 col-md-4 col-lg-4 list-product-receipt">
+        <div class="col-sm-3 col-md-3 col-lg-3 list-product-receipt">
             <h3 class=" container-fluid text-center text-success fw-bold my-2">Danh sách sản phẩm</h3>
             <div class="container-fluid my-3 row d-flex justify-content-center">
 
@@ -91,14 +91,15 @@
             </form>
         </div>
 
-        <div class="col-sm-4 col-md-4 col-lg-4 list-receipt">
+        <div class="col-sm-5 col-md-5 col-lg-5 list-receipt">
             <h3 class="container-fluid text-center text-danger fw-bold my-2">Danh sách nhập hàng</h3>
             <div class="container-fluid my-3 row d-flex justify-content-center">
                 <div class="container-fluid header-list-receipt row my-2">
-                    <div class="col-sm-6 col-md-7 col-lg-7 text-center"><span class=" fs-6 fw-bold">Tên sản phẩm</span></div>
-                    <div class="col-sm-2 col-md-1 col-lg-1 text-center"><span class=" fs-6 fw-bold">Size</span></div>
-                    <div class="col-sm-2 col-md-2 col-lg-2 text-center"><span class=" fs-6 fw-bold">Giá</span></div>
-                    <div class="col-sm-2 col-md-2 col-lg-2 text-center"><span class=" fs-6 fw-bold">Sl</span></div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 text-center fs-6 fw-bold">Tên sản phẩm</div>
+                    <div class="col-sm-1 col-md-1 col-lg-1 text-center fs-6 fw-bold">Size</div>
+                    <div class="col-sm-2 col-md-2 col-lg-2 text-center fs-6 fw-bold">Giá</div>
+                    <div class="col-sm-1 col-md-1 col-lg-1 text-center fs-6 fw-bold">Sl</div>
+                    <div class="col-sm-1 col-md-1 col-lg-1 text-left fs-6 fw-bold">Xóa</div>
                 </div>
                 <div class="container-fluid list-item-receipt">
 

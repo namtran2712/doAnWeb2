@@ -64,6 +64,37 @@
             }
         }
     }
+    
+    function checkQuantity ($connect) {
+        session_start();
+        foreach ($_SESSION['cart'] as $key => $value) {
+            $id=$value['product_id'];
+            $quantity=$value['quantity'];
+            $size=$value['size'];
+            
+            $sql="SELECT * FROM PARTICULAR_PRODUCTS
+            WHERE ID_PRODUCT=$id AND SIZE=$size";
+            $result=mysqli_query($connect,$sql);
+            
+            if(mysqli_num_rows($result)>0)
+            {
+                $pt=mysqli_fetch_assoc($result);
+                if($pt["QUANTITY_REMAIN"]<$quantity)
+                {
+                    $sql="SELECT * FROM PRODUCTS
+                    WHERE ID_PRODUCT=$id";
+                    $result=mysqli_query($connect,$sql);
+                    if(mysqli_num_rows($result)==1)
+                    {
+                        $product=mysqli_fetch_assoc($result);
+                        return "Số lượng sản phẩm " .$product['PRODUCT_NAME']." trong kho hiện tại chỉ còn ".$pt['QUANTITY_REMAIN'];
+                    }
+                }
+                }
+        }
+        return 1;
+    }
+    
 
     if ($_GET["type"] == 1) {
         selectAll($connect);
@@ -74,5 +105,9 @@
     else if ($_GET["type"] == 3) {
         echo updateStatusBill($connect,$_GET["id"]);
     }
+    else if ($_GET["type"] == 100) {
+        echo checkQuantity($connect);
+    }
+
 
 ?>

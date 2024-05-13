@@ -169,10 +169,26 @@ $(document).ready(function () {
                 var selectedValue = $('input[name="flexRadioDefault"]:checked').val()
                 if (selectedValue == "default") {
                     var address = $("#list-address").val();
-                    makeBill(accountId, total, address)
-                    $(".shoping__cart__table table tbody").empty();
-                    checkout();
-                    Swal.fire("Đặt hàng thành công!", "", "success");
+                    $.get("./database/billDao.php?type=100",
+                        function (data) {
+                            if(data==1)
+                            {
+                                makeBill(accountId, total, address)
+                                $(".shoping__cart__table table tbody").empty();
+                                checkout();
+                                Swal.fire("Đặt hàng thành công!", "", "success");
+                            }
+                            else
+                            {
+                                Swal.fire({
+                                    title: data,
+                                    text: "",
+                                    icon: "error"
+                                });
+                            }
+                        },
+                        "html"
+                    );
                 } else {
                     var address = $("#address2").val();
                     if (checkAddress(address)) {
@@ -184,6 +200,7 @@ $(document).ready(function () {
 
                                 console.log(response)
                                 if (response) {
+
                                     makeBill(accountId, total, address)
                                     $(".shoping__cart__table table tbody").empty();
                                     checkout();
@@ -213,7 +230,6 @@ $(document).ready(function () {
                     },
                     dataType: "html",
                     success: function (response) {
-                        console.log(response)
                         $(".my-modal").modal("hide")
                     }
                 });

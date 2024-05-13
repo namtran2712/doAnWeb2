@@ -12,7 +12,7 @@ $(document).ready(function () {
                 .done(function (data) {
                     $(".list-item").find(".item.row").remove();
                     var obj = null
-                    $(".list-item").Paging(obj, type);
+                    $(".list-item").Paging(obj, type,"");
                     $(".crud").empty();
                     var check = false
                     $.each(data, function (i, val) {

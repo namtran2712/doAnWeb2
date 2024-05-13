@@ -19,10 +19,11 @@ $(document).ready(function () {
                         var item =
                             `
                         <div class="container-fluid item-receipt row py-2">
-                        <div class="col-sm-6 col-md-7 col-lg-7 text-right"><span class=" fs-6 ">${value['name']}</span></div>
-                        <div class="col-sm-2 col-md-1 col-lg-1 text-left d-flex align-items-center justify-content-center"><span class=" fs-6 ">${value['size']}</span></div>
-                        <div class="col-sm-2 col-md-2 col-lg-2 text-left d-flex align-items-center justify-content-center"><span class=" fs-6 ">${parseInt(value['price']).toLocaleString("de-DE") + "đ"}</span></div>
-                        <div class="col-sm-2 col-md-2 col-lg-2 text-left d-flex align-items-center justify-content-center"><span class=" fs-6 ">${value['quantity']}</span></div>
+                        <div class="col-sm-6 col-md-6 col-lg-6 text-right  fs-6">${value['name']}</div>
+                        <div class="col-sm-1 col-md-1 col-lg-1 text-center d-flex align-items-center justify-content-center  fs-6">${value['size']}</div>
+                        <div class="col-sm-2 col-md-2 col-lg-2 text-center d-flex align-items-center justify-content-center  fs-6">${parseInt(value['price']).toLocaleString("de-DE") + "đ"}</div>
+                        <div class="col-sm-1 col-md-1 col-lg-1 text-center d-flex align-items-center justify-content-center  fs-6">${value['quantity']}</div>
+                        <div class="col-sm-1 col-md-1 col-lg-1 text-center d-flex align-items-center justify-content-center  fs-6"><i class="fa-solid fa-trash-can delete-receipt" data-id=${key}></i></div>
                         </div>
                         `
                         $(".list-item-receipt").append(item);
@@ -30,6 +31,34 @@ $(document).ready(function () {
                         total += (price * value['quantity'])
                     });
                     $(".total-receipt").text(parseInt(total).toLocaleString("de-DE") + "đ");
+                    $(".delete-receipt").off("click")
+                    $(".delete-receipt").click(function (e) { 
+                        e.preventDefault();
+                        var id= $(this).data("id");
+                        Swal.fire({
+                            title: "Bạn chắc chắn muốn xóa?",
+                            text: "",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Xóa"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.get("database/processNhapHang.php?type=deleteItem&id="+id,
+                                    function (data) {
+                                        loadListReceipt()
+                                        Swal.fire({
+                                            title: "Xóa thành công",
+                                            text: "",
+                                            icon: "success"
+                                        });
+                                    },
+                                    "html"
+                                );                        
+                            }
+                        });
+                    });
                 }
                 else {
                     $(".list-item-receipt").empty();
