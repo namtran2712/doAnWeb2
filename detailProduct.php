@@ -210,6 +210,7 @@ if (!empty($_SESSION["serializedProduct"])) {
 
     <script src="./js/detailProduct.js"></script>
     <script src="./js/login.js"></script>
+    <script src="./js/navmenu.js"></script>
 </body>
 
 </html>

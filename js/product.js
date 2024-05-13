@@ -1,6 +1,6 @@
 
 (function ($) {
-    $.fn.dataProduct = function (options) {
+    $.fn.dataProduct = function (options, type) {
         //====================================================
         // cac gia tri mac dinh cua options
         //====================================================
@@ -15,7 +15,6 @@
             goPrevious: ".go-previous",
             query: "#filter-price .dropdown-item input",
             query1: "#filter-material .dropdown-item input"
-
         };
         $.extend(options, defaults);
         var showArea = $(options.showArea)
@@ -29,7 +28,7 @@
 
         function init() {
             $.ajax({
-                url: "database/productDao.php?type=0&items=" + options.items,
+                url: "database/productDao.php?type=0&items=" + options.items + "&category=" + type,
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
@@ -86,7 +85,7 @@
                         querycondition = querycondition.replace(($(valueOfElement).attr("data-query") + " or"), " ")
 
                     }
-                    
+
                     filter(querycondition.substring(0, querycondition.length - 4), options.currentPage)
                 })
 
@@ -244,7 +243,7 @@
         function loadData(page) {
             $.ajax({
                 type: "GET",
-                url: "./database/productDao.php?type=2&items=" + options.items + "&currentPage=" + page,
+                url: "./database/productDao.php?type=2&items=" + options.items + "&currentPage=" + page + "&category=" + type,
                 dataType: "json",
                 success: function (data) {
                     showArea.empty()
@@ -315,18 +314,12 @@
             loadData(options.currentPage);
             setInfoPage(options)
         }
-
-
     }
 
 })(jQuery);
 
 $(document).ready(function () {
-    $options = {}
-    $(".list-product").dataProduct($options)
-
-
-
+    var categoryName = new URLSearchParams(window.location.search).get("data-name")
+    var options = {}
+    $(".list-product").dataProduct(options, categoryName)
 })
-
-
