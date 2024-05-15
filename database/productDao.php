@@ -24,6 +24,7 @@ function getTotalPage($connect, $items)
     }
 }
 
+
 function getProduct($connect, $items, $currentPage)
 {
     if (isset($_SESSION["category"])) {
@@ -65,9 +66,9 @@ function deleteProduct($connect, $id)
 
 function getLastId($connect)
 {
-    $sql="SELECT ID_PRODUCT FROM
+    $sql = "SELECT ID_PRODUCT FROM
     PRODUCTS ORDER BY ID_PRODUCT DESC LIMIT 1";
-    $result=mysqli_query($connect,$sql);
+    $result = mysqli_query($connect, $sql);
     return mysqli_fetch_assoc($result)['ID_PRODUCT'];
 }
 function selectAll($connect, $items, $currentPage)
@@ -223,6 +224,8 @@ function insertProduct($connect, $product)
     }
 }
 
+
+
 function getProductBestSeller($connect, $items)
 {
     $sql = "SELECT *
@@ -240,34 +243,46 @@ function getProductBestSeller($connect, $items)
     // echo print_r($listProduct);
     echo json_encode($listProduct);
 }
-
-function getProductbyPrice($connect, $items, $currentPage, $query)
+function getTotalPageFilter($connect, $items, $condition)
 {
-    $offset = ($currentPage - 1) * $items;
-    $sql = "SELECT DISTINCT PRODUCTS.ID_PRODUCT, PRODUCT_NAME, MAIN_IMAGE, PRICE 
-        FROM PRODUCTS JOIN PARTICULAR_PRODUCTS ON PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT
-        WHERE $query
-        LIMIT $offset, $items";
-
-
+    $sql = "SELECT COUNT(*)
+    FROM PRODUCTS JOIN PARTICULAR_PRODUCTS ON PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT 
+    JOIN material ON material.ID_MATERIAL = products.ID_MATERIAL
+      WHERE PRICE <= ALL (
+        SELECT PRICE
+        FROM particular_products
+        WHERE PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT )
+        $condition; ";
     $result = mysqli_query($connect, $sql);
-    echo $sql;
-
-    if (mysqli_num_rows($result) > 0) {
-        $listProduct = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $listProduct[] = $row;
-        }
-        // echo json_encode($listProduct);
-    }
+    $totalProduct = (int) mysqli_fetch_array($result)[0];
+    $totalPage = ceil($totalProduct / $items);
+    echo json_encode($totalPage);
+    // echo $sql;
 }
-function getProductbyMaterial($connect, $items, $currentPage, $query)
+
+
+function getProductbyCondition($connect, $items, $currentPage, $query, $orderby)
 {
+    $cate = "";
+    if ($_SESSION["category"]["name"] == "sản phẩm") {
+        $cate = "";
+    } else {
+        $catename = $_SESSION["category"]["name"];
+        $cate = "and CATEGORY.CATEGORY_NAME = '$catename' ";
+    }
     $offset = ($currentPage - 1) * $items;
     $sql = "SELECT DISTINCT PRODUCTS.ID_PRODUCT, PRODUCT_NAME, MAIN_IMAGE, PRICE 
-        FROM PRODUCTS JOIN PARTICULAR_PRODUCTS ON PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT
-        WHERE $query
-        LIMIT $offset, $items";
+        FROM PRODUCTS JOIN PARTICULAR_PRODUCTS ON PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT 
+        JOIN material ON material.ID_MATERIAL = products.ID_MATERIAL
+        JOIN category ON  PRODUCTS.ID_CATEGORY = category.ID_CATEGORY
+        WHERE PRICE <= ALL (
+        SELECT PRICE
+        FROM particular_products
+        WHERE PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT
+    )
+        $cate $query
+        ORDER BY $orderby
+        LIMIT $offset, $items;";
 
 
     $result = mysqli_query($connect, $sql);
@@ -279,7 +294,29 @@ function getProductbyMaterial($connect, $items, $currentPage, $query)
         }
         echo json_encode($listProduct);
     }
+    // echo $sql ;
 }
+function getProductNotPaging($connect)
+{
+    $sql = "SELECT DISTINCT PRODUCTS.ID_PRODUCT, PRODUCT_NAME, MAIN_IMAGE, PRICE 
+        FROM PRODUCTS JOIN PARTICULAR_PRODUCTS ON PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT
+        WHERE PRICE <= ALL (
+            SELECT PRICE
+            FROM PARTICULAR_PRODUCTS
+            WHERE PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT
+        )
+    ";
+    $result = mysqli_query($connect, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        $listProduct = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $listProduct[] = $row;
+        }
+
+        echo json_encode($listProduct);
+    }
+}
+
 if ($_GET["type"] == 0) {
     getTotalPage($connect, $_GET["items"]);
 }
@@ -300,8 +337,10 @@ if ($_GET["type"] == 3) {
 } else if ($_GET["type"] == 6) {
     getProductBestSeller($connect, $_GET["items"]);
 } else if ($_GET["type"] == 200) {
-    getProductbyPrice($connect, 12, $_GET["currentPage"], $_POST["query"]);
-} else if ($_GET["type"] == 199) {
-    getProductbyPrice($connect, 12, $_GET["currentPage"], $_POST["query"]);
+    getProductbyCondition($connect, 12, $_GET["currentPage"], $_POST["query"], $_POST["orderby"]);
+} else if ($_GET["type"] == 197) {
+    getTotalPageFilter($connect, 12, $_POST["query"]);
 }
-
+else if ($_GET["type"] == 196) {
+    getProductNotPaging($connect);
+}

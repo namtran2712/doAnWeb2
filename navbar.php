@@ -44,6 +44,11 @@
         <div class="navbar-right d-flex align-items-center justify-content-end">
             <form class="d-flex formSearch" role="search">
                 <input class="form-control py-2 px-5 " size="25" type="search" placeholder="Search" aria-label="Search" id="search-bar">
+                <div class="searchHolder">
+                    <ul>
+                        
+                    </ul>
+                </div>
                 <div class="iconForSearchBar mb-2 ">
                     <i class="fa-solid fa-magnifying-glass px-2 py-2"></i>
                 </div>
