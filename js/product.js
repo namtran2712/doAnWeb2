@@ -13,8 +13,8 @@
             txtCurrentPage: "#current-page",
             goNext: ".go-next",
             goPrevious: ".go-previous",
-            searchBar: "#search-bar"
-
+            query: "#filter-price .dropdown-item input",
+            query1: "#filter-material .dropdown-item input"
 
         };
         $.extend(options, defaults);
@@ -23,11 +23,9 @@
         var btnGoNext = $(options.goNext)
         var btnGoPrevious = $(options.goPrevious)
         var infoPage = $(".infoPage")
-        var query = $(".fillerSelect")
-        var searchBar = options.searchBar
-
+        var query = $("#filter-price .dropdown-item input")
+        var query1 = $("#filter-material .dropdown-item input")
         init()
-
 
         function init() {
             $.ajax({
@@ -51,55 +49,49 @@
                 goPrevious();
             })
 
+            var querycondition = ""
             var queryconditionPrice = ""
-            var queryconditionMaterial = ""
-            var queryconditionSort = "price asc"
-            $("#sortSelection").change(function () {
-                queryconditionSort = $(this).children("option:selected").val()
-            })
+            var queryconditionQuantity = ""
             $.each(query, function (indexInArray, valueOfElement) {
                 $(valueOfElement).change(function () {
-                    var querycondition = ""
-                    if (($(valueOfElement).is(":checked"))) {
-                        if ($(valueOfElement).attr("data-filter-type") == "price") {
-                            queryconditionPrice = queryconditionPrice + $(valueOfElement).attr("data-query") + " or "
-                        }
-                        else if ($(valueOfElement).attr("data-filter-type") == "material") {
-                            queryconditionMaterial = queryconditionMaterial + $(valueOfElement).attr("data-query") + " or "
-                        }
 
+                    if (($(val).is(":checked"))) {
+                        querycondition = querycondition + $(val).attr("data-query") + " or "
+                        console.log(1)
                     }
-
-
                     else {
-                        if ($(valueOfElement).attr("data-filter-type") == "price") {
-                            $c = ($(valueOfElement).attr("data-query") + " or ")
-                            queryconditionPrice = queryconditionPrice.replace($c, "")
-                        }
-                        else if ($(valueOfElement).attr("data-filter-type") == "material") {
-                            $c = ($(valueOfElement).attr("data-query") + " or ")
-                            queryconditionMaterial = queryconditionMaterial.replace($c, "")
+                        if (querycondition.trim() == "")
+                            querycondition = ""
 
-                        }
+                        querycondition = querycondition.replace(($(val).attr("data-query") + " or"), " ")
 
                     }
+                    filter(querycondition.substring(0, querycondition.length - 4), options.currentPage)
 
-                    if (queryconditionPrice.trim() != "") {
-
-                        querycondition += " and (" + queryconditionPrice.substring(0, queryconditionPrice.length - 3) + ")"
-                    }
-                    if (queryconditionMaterial.trim() != "") {
-                        querycondition += " and (" + queryconditionMaterial.substring(0, queryconditionMaterial.length - 3) + ")"
-
-                    }
-                    getPageByCondition(querycondition)
-                    filter(querycondition, options.currentPage, queryconditionSort)
-                    console.log(querycondition)
                 })
 
 
             });
 
+            $.each(query1, function (indexInArray, valueOfElement) {
+                $(valueOfElement).change(function () {
+                    if (($(valueOfElement).is(":checked"))) {
+                        querycondition = querycondition + $(valueOfElement).attr("data-query") + " or "
+
+                    }
+                    else {
+                        if (querycondition.trim() == "")
+                            querycondition = ""
+
+                        querycondition = querycondition.replace(($(valueOfElement).attr("data-query") + " or"), " ")
+
+                    }
+                    
+                    filter(querycondition.substring(0, querycondition.length - 4), options.currentPage)
+                })
+
+
+            });
             txtCurrentPage.keyup(function (e) {
                 if (e.keyCode == 13) {
                     var valueText = $(this).val()
@@ -136,35 +128,60 @@
         function setInfoPage(options) {
             infoPage.text("Page " + options.currentPage + " of " + options.totalPage)
         }
-
-        function getPageByCondition(query) {
-
-            $.ajax({
-                url: "database/productDao.php?type=197&items=" + options.items,
-                type: "POST",
-                dataType: "json",
-                data: {
-                    query: query,
-                },
-                success: function (data) {
-                    console.log(data)
-                    options.totalPage = data
-                    setInfoPage(options)
-                }
-            })
-        }
-        function filter(querycondition, currentPage, queryconditionSort) {
-            if (querycondition.trim() == "") {
-                getTotalPage();
-                loadData(options.currentPage)
-                return;
-            }
+        function filterByprice(querycondition, currentPage) {
             $.ajax({
                 type: "POST",
                 url: "./database/productDao.php?type=200&items=" + options.items + "&currentPage=" + currentPage,
+
                 data: {
                     query: querycondition,
-                    orderby: queryconditionSort
+                },
+                dataType: "html",
+                success: function (data) {
+                    // console.log(data)
+                    if (data == null) {
+                        showArea.empty()
+                        var li = `
+                        <div class="container-fluid">
+                            <h3> Không có sản phẩm nào
+                        </div>
+                        `
+                        showArea.append(li)
+
+                    }
+                    else {
+                        showArea.empty()
+                        createProductItem(data)
+                        $(".buy-now").click(function (e) {
+                            e.preventDefault();
+                            var id = $(this).data("id")
+                            getData(id)
+                        });
+
+                        $(".image-product img").click(function (e) {
+                            e.preventDefault();
+                            var id = $(this).data("id")
+                            getData(id)
+                        });
+
+                        $(".name-product").click(function (e) {
+                            e.preventDefault();
+                            var id = $(this).data("id")
+                            getData(id)
+                        });
+
+                    }
+
+                }
+            });
+        }
+        function filterByMaterial(querycondition, currentPage) {
+            $.ajax({
+                type: "POST",
+                url: "./database/productDao.php?type=199&items=" + options.items + "&currentPage=" + currentPage,
+
+                data: {
+                    query: querycondition,
                 },
                 dataType: "json",
                 success: function (data) {
@@ -201,40 +218,6 @@
                         });
 
                     }
-                    setCurrentPage(1)
-                    btnGoNext.off("click")
-                    btnGoPrevious.off("click")
-                    btnGoNext.click(function (e) {
-                        if (options.totalPage == 0)
-                            return;
-                        if (options.currentPage == options.totalPage) {
-                            return;
-                        }
-                        window.scrollTo({
-                            top: 0,
-                            behavior: "instant"
-                        });
-                        options.currentPage++;
-                        setCurrentPage(options.currentPage);
-                        filter(querycondition, options.currentPage, queryconditionSort);
-                        setInfoPage(options)
-                    })
-
-                    btnGoPrevious.click(function () {
-                        if (options.currentPage == 1 || options.totalPage == 0) {
-                            return;
-                        }
-                        window.scrollTo({
-                            top: 0,
-                            behavior: "instant"
-                        });
-                        options.currentPage--;
-                        setCurrentPage(options.currentPage);
-                        filter(querycondition, options.currentPage, queryconditionSort);
-                        setInfoPage(options)
-
-                    })
-
 
                 }
             });
@@ -333,73 +316,10 @@
             setInfoPage(options)
         }
 
-        function getTotalPage() {
-            $.ajax({
-                url: "database/productDao.php?type=0&items=" + options.items,
-                type: "GET",
-                dataType: "json",
-                success: function (data) {
-                    options.totalPage = data
-                    setInfoPage(options)
-                }
 
-            })
-        }
-
-
-        function returnResultSearch(result) {
-            var holederResult = document.querySelector(".searchHolder ul")
-
-            console.log(holederResult)
-            holederResult.innerHTML = ""
-            $.each(result, function (indexInArray, valueOfElement) {
-                var li = document.createElement("li");
-                li.innerHTML = `${valueOfElement.PRODUCT_NAME}`
-                li.setAttribute("data-id", valueOfElement.ID_PRODUCT)
-                li.addEventListener("click", function () {
-                    getData(li.getAttribute("data-id"))
-                })
-                holederResult.append(li)
-
-            });
-        }
-
-        function search() {
-            $.ajax({
-                type: "get",
-                url: "./database/productDao.php?type=196",
-                dataType: "json",
-                success: function (data) {
-
-                    var valueSearch = document.querySelector("#search-bar").value
-                    var result = data.filter(value => {
-                        return value.PRODUCT_NAME.toUpperCase().includes(valueSearch.toUpperCase())
-                    })
-                    returnResultSearch(result)
-                }
-            });
-        }
-        var searchAction = document.querySelector("#search-bar")
-        var holederResult = document.querySelector(".searchHolder ul")
-        var fromsearch = document.querySelector(".formSearch")
-
-        searchAction.addEventListener("input", _.debounce(async () => {
-            holederResult.style.display = "block"
-            search();
-        }, 300));
-        searchAction.addEventListener("blur", function () {
-            document.querySelector(".searchHolder ul").style.display = 'none';
-        })
-
-        fromsearch.addEventListener('submit', function (e) {
-            e.preventDefault ();
-            createProductItem (value)
-        })  
     }
 
-
 })(jQuery);
-
 
 $(document).ready(function () {
     var categoryName = new URLSearchParams(window.location.search).get("data-name")

@@ -51,7 +51,7 @@
 
         <!-- navbar-controller -->
 
-1
+
         <div class="row bg-gray " style="margin-top: 120px;">
             <div class="col-sm-8 col-md-3 ">
                 <div class="container-fluid menu-controller">

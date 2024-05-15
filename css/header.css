@@ -118,32 +118,6 @@
     border-radius: 20px;
 }
 
-.searchHolder {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #fff;
-    width: 100%;
-    margin-top: 10px;
-    padding-bottom: 0;
-}
-
-.searchHolder ul li 
-{
-    border-bottom: 1px solid lightgray;
-    padding: 15px  10px;
-    cursor: pointer;
-
-
-}
-.searchHolder ul {
-    margin-bottom: 0;
-    overflow-y: auto;
-    height: 200px;
-    display: none;
-}
-
 @media (max-width:991px) {
     .formSearch .form-control {
         width: 0;
