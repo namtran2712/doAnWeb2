@@ -13,8 +13,7 @@
             txtCurrentPage: "#current-page",
             goNext: ".go-next",
             goPrevious: ".go-previous",
-            query: "#filter-price .dropdown-item input",
-            query1: "#filter-material .dropdown-item input"
+            searchBar: "#search-bar"
 
         };
         $.extend(options, defaults);
@@ -23,8 +22,7 @@
         var btnGoNext = $(options.goNext)
         var btnGoPrevious = $(options.goPrevious)
         var infoPage = $(".infoPage")
-        var query = $("#filter-price .dropdown-item input")
-        var query1 = $("#filter-material .dropdown-item input")
+        var query = $(".fillerSelect")
         init()
 
         function init() {
@@ -49,48 +47,55 @@
                 goPrevious();
             })
 
-            var querycondition = ""
-         
+            var queryconditionPrice = ""
+            var queryconditionMaterial = ""
+            var queryconditionSort = "price asc"
+            $("#sortSelection").change(function () {
+                queryconditionSort = $(this).children("option:selected").val()
+            })
             $.each(query, function (indexInArray, valueOfElement) {
                 $(valueOfElement).change(function () {
-
-                    if (($(val).is(":checked"))) {
-                        querycondition = querycondition + $(val).attr("data-query") + " or "
-                        console.log(1)
-                    }
-                    else {
-                        if (querycondition.trim() == "")
-                            querycondition = ""
-
-                        querycondition = querycondition.replace(($(val).attr("data-query") + " or"), " ")
-
-                    }
-                    filter(querycondition.substring(0, querycondition.length - 4), options.currentPage)
-
-                })
-
-
-            });
-
-            $.each(query1, function (indexInArray, valueOfElement) {
-                $(valueOfElement).change(function () {
+                    var querycondition = ""
                     if (($(valueOfElement).is(":checked"))) {
-                        querycondition = querycondition + $(valueOfElement).attr("data-query") + " or "
+                        if ($(valueOfElement).attr("data-filter-type") == "price") {
+                            queryconditionPrice = queryconditionPrice + $(valueOfElement).attr("data-query") + " or "
+                        }
+                        else if ($(valueOfElement).attr("data-filter-type") == "material") {
+                            queryconditionMaterial = queryconditionMaterial + $(valueOfElement).attr("data-query") + " or "
+                        }
 
                     }
+
+
                     else {
-                        if (querycondition.trim() == "")
-                            querycondition = ""
+                        if ($(valueOfElement).attr("data-filter-type") == "price") {
+                            $c = ($(valueOfElement).attr("data-query") + " or ")
+                            queryconditionPrice = queryconditionPrice.replace($c, "")
+                        }
+                        else if ($(valueOfElement).attr("data-filter-type") == "material") {
+                            $c = ($(valueOfElement).attr("data-query") + " or ")
+                            queryconditionMaterial = queryconditionMaterial.replace($c, "")
 
-                        querycondition = querycondition.replace(($(valueOfElement).attr("data-query") + " or"), " ")
+                        }
 
                     }
-                    
-                    filter(querycondition.substring(0, querycondition.length - 4), options.currentPage)
+
+                    if (queryconditionPrice.trim() != "") {
+
+                        querycondition += " and (" + queryconditionPrice.substring(0, queryconditionPrice.length - 3) + ")"
+                    }
+                    if (queryconditionMaterial.trim() != "") {
+                        querycondition += " and (" + queryconditionMaterial.substring(0, queryconditionMaterial.length - 3) + ")"
+
+                    }
+                    getPageByCondition(querycondition)
+                    filter(querycondition, options.currentPage, queryconditionSort)
+                    console.log(querycondition)
                 })
 
 
             });
+
             txtCurrentPage.keyup(function (e) {
                 if (e.keyCode == 13) {
                     var valueText = $(this).val()
@@ -127,60 +132,36 @@
         function setInfoPage(options) {
             infoPage.text("Page " + options.currentPage + " of " + options.totalPage)
         }
-        function filterByprice(querycondition, currentPage) {
+        function getPageByCondition(query) {
+
+            $.ajax({
+                url: "database/productDao.php?type=197&items=" + options.items,
+                type: "POST",
+                dataType: "json",
+                data: {
+                    query: query,
+                    category: type,
+                },
+                success: function (data) {
+                    console.log(data)
+                    options.totalPage = data
+                    setInfoPage(options)
+                }
+            })
+        }
+        function filter(querycondition, currentPage, queryconditionSort) {
+            if (querycondition.trim() == "" && queryconditionSort ==""){
+                init();
+                loadData(options.currentPage)
+                return;
+            }
             $.ajax({
                 type: "POST",
                 url: "./database/productDao.php?type=200&items=" + options.items + "&currentPage=" + currentPage,
-
                 data: {
                     query: querycondition,
-                },
-                dataType: "html",
-                success: function (data) {
-                    // console.log(data)
-                    if (data == null) {
-                        showArea.empty()
-                        var li = `
-                        <div class="container-fluid">
-                            <h3> Không có sản phẩm nào
-                        </div>
-                        `
-                        showArea.append(li)
-
-                    }
-                    else {
-                        showArea.empty()
-                        createProductItem(data)
-                        $(".buy-now").click(function (e) {
-                            e.preventDefault();
-                            var id = $(this).data("id")
-                            getData(id)
-                        });
-
-                        $(".image-product img").click(function (e) {
-                            e.preventDefault();
-                            var id = $(this).data("id")
-                            getData(id)
-                        });
-
-                        $(".name-product").click(function (e) {
-                            e.preventDefault();
-                            var id = $(this).data("id")
-                            getData(id)
-                        });
-
-                    }
-
-                }
-            });
-        }
-        function filterByMaterial(querycondition, currentPage) {
-            $.ajax({
-                type: "POST",
-                url: "./database/productDao.php?type=199&items=" + options.items + "&currentPage=" + currentPage,
-
-                data: {
-                    query: querycondition,
+                    orderby: queryconditionSort,
+                    category: type
                 },
                 dataType: "json",
                 success: function (data) {
@@ -217,6 +198,40 @@
                         });
 
                     }
+                    setCurrentPage(1)
+                    btnGoNext.off("click")
+                    btnGoPrevious.off("click")
+                    btnGoNext.click(function (e) {
+                        if (options.totalPage == 0)
+                            return;
+                        if (options.currentPage == options.totalPage) {
+                            return;
+                        }
+                        window.scrollTo({
+                            top: 0,
+                            behavior: "instant"
+                        });
+                        options.currentPage++;
+                        setCurrentPage(options.currentPage);
+                        filter(querycondition, options.currentPage, queryconditionSort);
+                        setInfoPage(options)
+                    })
+
+                    btnGoPrevious.click(function () {
+                        if (options.currentPage == 1 || options.totalPage == 0) {
+                            return;
+                        }
+                        window.scrollTo({
+                            top: 0,
+                            behavior: "instant"
+                        });
+                        options.currentPage--;
+                        setCurrentPage(options.currentPage);
+                        filter(querycondition, options.currentPage, queryconditionSort);
+                        setInfoPage(options)
+
+                    })
+
 
                 }
             });
@@ -314,9 +329,57 @@
             loadData(options.currentPage);
             setInfoPage(options)
         }
-
-
     }
+    function returnResultSearch(result) {
+        var holederResult = document.querySelector(".searchHolder ul")
+
+        console.log(holederResult)
+        holederResult.innerHTML = ""
+        $.each(result, function (indexInArray, valueOfElement) {
+            var li = document.createElement("li");
+            li.innerHTML = `${valueOfElement.PRODUCT_NAME}`
+            li.setAttribute("data-id", valueOfElement.ID_PRODUCT)
+            li.addEventListener("click", function () {
+                getData(li.getAttribute("data-id"))
+            })
+            holederResult.append(li)
+
+        });
+    }
+
+    function search() {
+        $.ajax({
+            type: "get",
+            url: "./database/productDao.php?type=196",
+            dataType: "json",
+            success: function (data) {
+
+                var valueSearch = document.querySelector("#search-bar").value
+                var result = data.filter(value => {
+                    return value.PRODUCT_NAME.toUpperCase().includes(valueSearch.toUpperCase())
+                })
+                returnResultSearch(result)
+            }
+        });
+    }
+    var searchAction = document.querySelector("#search-bar")
+    var holederResult = document.querySelector(".searchHolder ul")
+    var fromsearch = document.querySelector(".formSearch")
+
+    searchAction.addEventListener("input", _.debounce(async () => {
+        holederResult.style.display = "block"
+        search();
+    }, 300));
+    searchAction.addEventListener("blur", function () {
+        document.querySelector(".searchHolder ul").style.display = 'none';
+    })
+
+    fromsearch.addEventListener('submit', function (e) {
+        e.preventDefault();
+        createProductItem(value)
+    })
+
+
 
 })(jQuery);
 

@@ -339,6 +339,81 @@ function getProductLast ($connect) {
     return null;
 }
 
+function getProductbyCondition($connect, $items, $currentPage, $query, $orderby, $category)
+{
+    $cate = "";
+    if ($category == "sản phẩm") {
+        $cate = "";
+    } else {
+        $catename = $category;
+        $cate = "and CATEGORY.CATEGORY_NAME = '$catename' ";
+    }
+    $offset = ($currentPage - 1) * $items;
+    $sql = "SELECT DISTINCT PRODUCTS.ID_PRODUCT, PRODUCT_NAME, MAIN_IMAGE, PRICE 
+        FROM PRODUCTS JOIN PARTICULAR_PRODUCTS ON PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT 
+        JOIN material ON material.ID_MATERIAL = products.ID_MATERIAL
+        JOIN category ON  PRODUCTS.ID_CATEGORY = category.ID_CATEGORY
+        WHERE PRICE <= ALL (
+        SELECT PRICE
+        FROM particular_products
+        WHERE PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT
+    )
+        $cate $query
+        $orderby
+        LIMIT $offset, $items;";
+
+
+    $result = mysqli_query($connect, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+        $listProduct = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $listProduct[] = $row;
+        }
+        echo json_encode($listProduct);
+    }
+    // echo $sql ;
+}
+
+function getTotalPageFilter($connect, $items, $condition)
+{
+    $sql = "SELECT COUNT(*)
+    FROM PRODUCTS JOIN PARTICULAR_PRODUCTS ON PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT 
+    JOIN material ON material.ID_MATERIAL = products.ID_MATERIAL
+      WHERE PRICE <= ALL (
+        SELECT PRICE
+        FROM particular_products
+        WHERE PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT )
+        $condition; ";
+    $result = mysqli_query($connect, $sql);
+    $totalProduct = (int) mysqli_fetch_array($result)[0];
+    $totalPage = ceil($totalProduct / $items);
+    echo json_encode($totalPage);
+    // echo $sql;
+}
+
+function getProductNotPaging($connect)
+{
+    $sql = "SELECT DISTINCT PRODUCTS.ID_PRODUCT, PRODUCT_NAME, MAIN_IMAGE, PRICE 
+        FROM PRODUCTS JOIN PARTICULAR_PRODUCTS ON PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT
+        WHERE PRICE <= ALL (
+            SELECT PRICE
+            FROM PARTICULAR_PRODUCTS
+            WHERE PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT
+        )
+    ";
+    $result = mysqli_query($connect, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        $listProduct = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $listProduct[] = $row;
+        }
+
+        echo json_encode($listProduct);
+    }
+}
+
+
 function getPtProduct($connect,$id,$size)
 {
     $sql="SELECT * FROM PARTICULAR_PRODUCTS 
@@ -374,9 +449,12 @@ else if ($_GET["type"] == 7) {
     echo getProductLast($connect);
 } 
 else if ($_GET["type"] == 200) {
-    getProductbyPrice($connect, 12, $_GET["currentPage"], $_POST["query"]);
-} else if ($_GET["type"] == 199) {
-    getProductbyPrice($connect, 12, $_GET["currentPage"], $_POST["query"]);
+    getProductbyCondition($connect, 12, $_GET["currentPage"], $_POST["query"], $_POST["orderby"],$_POST["category"]);
+} else if ($_GET["type"] == 197) {
+    getTotalPageFilter($connect, 12, $_POST["query"]);
+}
+else if ($_GET["type"] == 196) {
+    getProductNotPaging($connect);
 }
 /////////////////////////////////////////////// type = 100 vs 101 la cua tao moi them dung co acceip current///////////////////////////////////////////////////
 else if ($_GET["type"] == 100) {
