@@ -189,9 +189,12 @@
             </div>
 
             <div class="crud">
-                
-            </div>
 
+            </div>
+            <!-- cai div nay cua tao dung co bo  -->
+            <div class="search-day-area container-fluid row">
+
+            </div>
             <div class="list-item">
 
                 <div class="title row text-center">

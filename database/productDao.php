@@ -218,6 +218,51 @@ function insertProduct($connect, $product)
     }
 }
 
+function getAllProduct($connect)
+{   
+    $search=$_GET['search'];
+    if($search=="")
+    {
+        $sql = "SELECT *
+        FROM PRODUCTS";
+        $result = mysqli_query($connect, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            $listProduct = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $listProduct[] = $row;
+            }
+            
+            echo json_encode($listProduct);
+        }
+    }
+    else
+    {
+        $arrSearch=explode(" ", $search);
+        $sql = "SELECT *
+            FROM PRODUCTS
+        WHERE ";
+        foreach ($arrSearch as $key => $value) 
+        {
+            if($key==0)
+            {
+                $sql=$sql . " PRODUCT_NAME like '%$value%' ";
+            }
+            else
+            {
+                $sql=$sql . " AND PRODUCT_NAME like '%$value%' ";
+            }
+        }
+        $result = mysqli_query($connect, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            $listProduct = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $listProduct[] = $row;
+            }
+            
+            echo json_encode($listProduct);
+        }
+    }
+}
 function getProductBestSeller($connect, $items)
 {
     $sql = "SELECT *
@@ -227,11 +272,11 @@ function getProductBestSeller($connect, $items)
             LIMIT 12";
     $result = mysqli_query($connect, $sql);
     $listProduct = [];
-
+    
     while ($row = mysqli_fetch_assoc($result)) {
         $listProduct[] = $row;
     }
-
+    
     // echo print_r($listProduct);
     echo json_encode($listProduct);
 }
@@ -245,16 +290,16 @@ function getProductbyPrice($connect, $items, $currentPage, $query)
         LIMIT $offset, $items";
 
 
-    $result = mysqli_query($connect, $sql);
-    echo $sql;
+$result = mysqli_query($connect, $sql);
+echo $sql;
 
-    if (mysqli_num_rows($result) > 0) {
-        $listProduct = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $listProduct[] = $row;
-        }
-        // echo json_encode($listProduct);
+if (mysqli_num_rows($result) > 0) {
+    $listProduct = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $listProduct[] = $row;
     }
+    // echo json_encode($listProduct);
+}
 }
 function getProductbyMaterial($connect, $items, $currentPage, $query)
 {
@@ -266,7 +311,7 @@ function getProductbyMaterial($connect, $items, $currentPage, $query)
 
 
     $result = mysqli_query($connect, $sql);
-
+    
     if (mysqli_num_rows($result) > 0) {
         $listProduct = [];
         while ($row = mysqli_fetch_assoc($result)) {
@@ -294,6 +339,17 @@ function getProductLast ($connect) {
     return null;
 }
 
+function getPtProduct($connect,$id,$size)
+{
+    $sql="SELECT * FROM PARTICULAR_PRODUCTS 
+    WHERE ID_PRODUCT=$id and SIZE = $size";
+    $result=mysqli_query($connect,$sql);
+    if(mysqli_num_rows($result)>0)
+    {
+        $product=mysqli_fetch_assoc($result);
+        echo json_encode($product);
+    }
+}
 if ($_GET["type"] == 0) {
     getTotalPage($connect, $_GET["items"],$_GET["category"]);
 }
@@ -321,4 +377,11 @@ else if ($_GET["type"] == 200) {
     getProductbyPrice($connect, 12, $_GET["currentPage"], $_POST["query"]);
 } else if ($_GET["type"] == 199) {
     getProductbyPrice($connect, 12, $_GET["currentPage"], $_POST["query"]);
+}
+/////////////////////////////////////////////// type = 100 vs 101 la cua tao moi them dung co acceip current///////////////////////////////////////////////////
+else if ($_GET["type"] == 100) {
+    getAllProduct($connect);
+}
+else if ($_GET["type"] == 101) {
+    getPtProduct($connect,$_GET['id'],$_GET['size']);
 }

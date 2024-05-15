@@ -30,7 +30,6 @@
         });
 
         getPage()
-
         function getPage() {
             $.ajax({
                 type: "GET",
@@ -43,6 +42,8 @@
                     if (type == "sanPham") {
                         loadDataProduct(obj.currentPage, search)
                         $(".crud").css("display", "flex");
+                        //////////// lam rong phan tim kiem bang ngay thang nam
+                        $(".search-day-area").empty();
                     }
                     else if (type == "khachHang" || type == "nhanVien") {
                         loadDataUser(obj.currentPage, search)
@@ -50,26 +51,29 @@
                         if (type == "khachHang") {
                             $(".create").css("display", "none");
                         }
+                        $(".search-day-area").empty();
                     }
                     else if (type == "taiKhoan") {
                         loadDataAccount(obj.currentPage, search)
                         $(".crud").css("display", "flex");
                         $(".create").css("display", "none");
+                        $(".search-day-area").empty();
                     }
                     else if (type == "hoaDon") {
-                        loadDataBill(obj.currentPage)
+                        loadBill(obj.currentPage)
                         $(".crud").css("display", "flex");
                         $(".create").css("display", "none");
                         $(".update").css("display", "none");
                     }
                     else if (type == "phieuNhap") {
-                        loadDataReceipt(obj.currentPage)
+                        loadReceipt(obj.currentPage)
                         $(".crud").css("display", "flex");
                         $(".update").css("display", "none");
                     }
                     else if (type == "phanQuyen") {
                         loadAuthoryze(obj.currentPage, search)
                         $(".crud").css("display", "flex");
+                        $(".search-day-area").empty();
                     }
                     if (obj.currentPage == obj.totalPage || obj.totalPage == 0) {
                         $(".content .show-more").children('button').css('display', 'none');
@@ -97,6 +101,7 @@
                         $(".list-item").children().first().empty();
                         $(".nhapHang").css('display', 'flex');
                         $(".crud").css("display", "none");
+                        $(".search-day-area").empty();
                         console.log(type)
                     }
                     if (type != "nhapHang") {
@@ -327,11 +332,37 @@
                 }
             });
         }
-
-        function loadDataBill(page) {
+        function loadBill(page) {
+            ///////////////////////////////////////them phan tim kiem ngay thang nam ///////////////////////////////
+            var tool =
+                `
+                <div class="col-sm-3 col-md-3 col-lg-3 my-2 ">
+                    <label for="date-start" class="form-label ">Ngày bắt đầu:</label>
+                    <input type="date" class="form-control" id="date-start">
+                </div>
+                <div class="col-sm-3 col-md-3 col-lg-3 my-2 ">
+                    <label for="date-end" class="form-label">Ngày kết thúc:</label>
+                    <input type="date" class="form-control" id="date-end">
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2 my-3 ">
+                    <button class="btn-search-bill btn btn-primary mt-4">Xem kết quả</button>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4 my-3 ">
+                </div>
+            `
+            $(".search-day-area").empty();
+            $(".search-day-area").append(tool);
+            loadDataBill(page, "", "")
+            $(".btn-search-bill").click(function (e) {
+                e.preventDefault();
+                $(".list-item").find(".item.row").remove();
+                loadDataBill(page, $("#date-start").val(), $("#date-end").val())
+            });
+        }
+        function loadDataBill(page, start, end) {
             $.ajax({
                 type: "GET",
-                url: "./database/billDao.php?type=1" + "&item=" + obj.items + "&page=" + page,
+                url: "./database/billDao.php?type=1" + "&item=" + obj.items + "&page=" + page + "&start=" + start + "&end=" + end,
                 dataType: "json",
                 success: function (data) {
                     if (page == 1 || page == 0) {
@@ -422,15 +453,45 @@
                 }
             });
         }
-        function loadDataReceipt(page) {
+        function loadReceipt(page) {
+            ///////////////////////////////////////them phan tim kiem ngay thang nam ///////////////////////////////
+
+            var tool =
+                `
+                <div class="col-sm-3 col-md-3 col-lg-3 my-2 ">
+                    <label for="date-start" class="form-label ">Ngày bắt đầu:</label>
+                    <input type="date" class="form-control" id="date-start">
+                </div>
+                <div class="col-sm-3 col-md-3 col-lg-3 my-2 ">
+                    <label for="date-end" class="form-label">Ngày kết thúc:</label>
+                    <input type="date" class="form-control" id="date-end">
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2 my-3 ">
+                    <button class="btn-search-day btn btn-primary mt-4">Xem kết quả</button>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4 my-3 ">
+                </div>
+            `
+            $(".search-day-area").empty();
+            $(".search-day-area").append(tool);
+            loadDataReceipt(page, "", "")
+            $(".btn-search-day").click(function (e) {
+                e.preventDefault();
+                $(".list-item").find(".item.row").remove();
+                loadDataReceipt(page, $("#date-start").val(), $("#date-end").val())
+            });
+        }
+        function loadDataReceipt(page, start, end) {
+            console.log(start)
             $.ajax({
                 type: "GET",
-                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page,
+                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page + "&start=" + start + "&end=" + end,
                 dataType: "json",
                 success: function (data) {
+                    console.log(data)
                     if (page == 1 || page == 0) {
                         var title = `
-                            <span class="col-sm-1 col-md-1 col-lg-2">ID</span>
+                            <span class="col-sm-2 col-md-2 col-lg-2">ID</span>
                             <span class="col-sm-2 col-md-2 col-lg-2">Tên nhân viên</span>
                             <span class="col-sm-2 col-md-2 col-lg-2">Thời gian</span>
                             <span class="col-sm-2 col-md-2 col-lg-2">Tổng hóa đơn</span>
@@ -473,6 +534,7 @@
                 }
             });
         }
+
 
         function loadAuthoryze(page, search) {
             $.ajax({

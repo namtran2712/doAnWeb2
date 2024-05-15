@@ -30,13 +30,10 @@
                     <div class="col-sm-2 col-md-2 col-lg-2 text-center"><span class=" fs-5 fw-bold">Mã</span></div>
                     <div class="col-sm-9 col-md-9 col-lg-9 text-center"><span class=" fs-5 fw-bold">Tên sản phẩm</span></div>
                 </div>
+                <div class="container-fluid list-product">
+                
 
-                <?php  foreach ($product as $key => $value) {?>
-                <div class="container-fluid item-product-receipt row">
-                    <div class="col-sm-2 col-md-2 col-lg-2 my-2 d-flex align-items-center justify-content-center"><span class=" fs-6 "></span><?php echo $value['ID_PRODUCT']?></div>
-                    <div class="col-sm-10 col-md-10 col-lg-10 d-flex align-items-center my-2"><span class="text-right fs-6 name-product-item" data-id=<?php echo $value['ID_PRODUCT']?>><?php echo $value['PRODUCT_NAME']?></span></div>
                 </div>
-                <?php }?>
 
             </div>
         </div>

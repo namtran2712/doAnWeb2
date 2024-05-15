@@ -118,18 +118,39 @@
         }
     }
     function loadReceipt ($connect) {
-        $sql = "SELECT *
-        FROM RECEIPTS JOIN ACCOUNTS
-        ON RECEIPTS.ID_STAFF = ACCOUNTS.ID_ACCOUNT
-        JOIN users ON accounts.ID_USER = users.ID_USER";
-        $result = mysqli_query($connect, $sql);
-        $receipts = [];
-        if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                $receipts[] = $row;
+        $start=$_GET["start"];
+        $end=$_GET["end"];
+        if($start!= "" && $end!= '')
+        {
+            $sql = "SELECT *
+            FROM RECEIPTS JOIN ACCOUNTS
+            ON RECEIPTS.ID_STAFF = ACCOUNTS.ID_ACCOUNT
+            JOIN users ON accounts.ID_USER = users.ID_USER
+            WHERE DATE(DATE_RECEIPT) BETWEEN '$start' AND '$end'";
+            $result = mysqli_query($connect, $sql);
+            $receipts = [];
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $receipts[] = $row;
+                }
             }
+            echo json_encode($receipts);
         }
-        echo json_encode($receipts);
+        else
+        {
+            $sql = "SELECT *
+            FROM RECEIPTS JOIN ACCOUNTS
+            ON RECEIPTS.ID_STAFF = ACCOUNTS.ID_ACCOUNT
+            JOIN users ON accounts.ID_USER = users.ID_USER";
+            $result = mysqli_query($connect, $sql);
+            $receipts = [];
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $receipts[] = $row;
+                }
+            }
+            echo json_encode($receipts);
+        }
     }
     function loadAuthorize ($connect) {
         $search=$_GET['search'];
