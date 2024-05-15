@@ -3,20 +3,44 @@
     require ("./connect.php");
 
     function selectAll ($connect) {
-        $sql = "SELECT *
-        FROM BILLS
-        JOIN ACCOUNTS
-        ON BILLS.ID_CUSTOMER = ACCOUNTS.ID_ACCOUNT
-        JOIN USERS
-        ON ACCOUNTS.ID_USER = USERS.ID_USER
-        WHERE STATUS_BILL_DELETE = 1";
-        $result = mysqli_query($connect, $sql);
-        if (mysqli_num_rows($result) > 0) {
-            $bills = [];
-            while ($row = mysqli_fetch_assoc($result)) {
-                $bills[] = $row;
+        $start=$_GET["start"];
+        $end=$_GET["end"];
+        if($start!= "" && $end!= '')
+        {
+            $sql = "SELECT *
+            FROM BILLS
+            JOIN ACCOUNTS
+            ON BILLS.ID_CUSTOMER = ACCOUNTS.ID_ACCOUNT
+            JOIN USERS
+            ON ACCOUNTS.ID_USER = USERS.ID_USER
+            WHERE STATUS_BILL_DELETE = 1 AND DATE(DATE_BILL) BETWEEN '$start' AND '$end'";
+            $result = mysqli_query($connect, $sql);
+            if (mysqli_num_rows($result) > 0) {
+                $bills = [];
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $bills[] = $row;
+                }
+                echo json_encode($bills);
             }
-            echo json_encode($bills);
+        }
+        else
+        {
+            $sql = "SELECT *
+            FROM BILLS
+            JOIN ACCOUNTS
+            ON BILLS.ID_CUSTOMER = ACCOUNTS.ID_ACCOUNT
+            JOIN USERS
+            ON ACCOUNTS.ID_USER = USERS.ID_USER
+            WHERE STATUS_BILL_DELETE = 1";
+            $result = mysqli_query($connect, $sql);
+            if (mysqli_num_rows($result) > 0) {
+                $bills = [];
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $bills[] = $row;
+                }
+                echo json_encode($bills);
+            }
+
         }
     }
 
