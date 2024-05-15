@@ -89,6 +89,8 @@ function getProductById($id, $connect)
     $sql = "SELECT *
         FROM PRODUCTS JOIN PARTICULAR_PRODUCTS
         ON PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT
+        JOIN MATERIAL ON PRODUCTS.ID_MATERIAL = MATERIAL.ID_MATERIAL
+        JOIN CATEGORY ON PRODUCTS.ID_CATEGORY = CATEGORY.ID_CATEGORY
         WHERE PRODUCTS.ID_PRODUCT = $id";
     $result = mysqli_query($connect, $sql);
     if (mysqli_num_rows($result) > 0) {
@@ -273,6 +275,25 @@ function getProductbyMaterial($connect, $items, $currentPage, $query)
         echo json_encode($listProduct);
     }
 }
+
+function getProductLast ($connect) {
+    $sql = "SELECT *
+    FROM products JOIN particular_products
+    ON products.ID_PRODUCT = particular_products.ID_PRODUCT
+    JOIN CATEGORY ON PRODUCTS.ID_CATEGORY = CATEGORY.ID_CATEGORY
+    JOIN MATERIAL ON PRODUCTS.ID_MATERIAL = MATERIAL.ID_MATERIAL
+    WHERE products.ID_PRODUCT = (SELECT MAX(ID_PRODUCT) FROM products)";
+    $result = mysqli_query($connect, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        $product = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $product[] = $row;
+        }
+        return json_encode($product);
+    }
+    return null;
+}
+
 if ($_GET["type"] == 0) {
     getTotalPage($connect, $_GET["items"],$_GET["category"]);
 }
@@ -292,9 +313,12 @@ if ($_GET["type"] == 3) {
     echo insertProduct($connect, $_POST["product"]);
 } else if ($_GET["type"] == 6) {
     getProductBestSeller($connect, $_GET["items"]);
-} else if ($_GET["type"] == 200) {
+}
+else if ($_GET["type"] == 7) {
+    echo getProductLast($connect);
+} 
+else if ($_GET["type"] == 200) {
     getProductbyPrice($connect, 12, $_GET["currentPage"], $_POST["query"]);
 } else if ($_GET["type"] == 199) {
     getProductbyPrice($connect, 12, $_GET["currentPage"], $_POST["query"]);
 }
-

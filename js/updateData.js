@@ -4,7 +4,8 @@ $(document).ready(function () {
         $.getScript("js\\pagingForAdmin.js"),
         $.getScript("js\\validate.js"),
         $.getScript("js\\modal.js"),
-        $.getScript("js\\eventAdmin.js")
+        $.getScript("js\\eventAdmin.js"),
+        $.getScript("js\\outerRowData.js")
     ).done(function () {
     })
 
@@ -12,7 +13,7 @@ $(document).ready(function () {
         e.preventDefault();
         var id = $('.list-item .item input:checked').siblings(".id-item")
         var table = $(".sidebar ul li a.active").parents().attr("id")
-        
+
         if (id.length == 0) {
             Swal.fire({
                 title: "Vui lòng chọn để sửa !!!",
@@ -28,8 +29,8 @@ $(document).ready(function () {
             });
         }
         else {
-            $(".modal-footer").css ("display", "flex")
-            $(".modal-title").text ("Sửa thông tin")
+            $(".modal-footer").css("display", "flex")
+            $(".modal-title").text("Sửa thông tin")
             $('.my-modal .modal-content .modal-footer .btn.btn-warning').css('display', 'block')
             $('.my-modal .modal-content .modal-footer .btn.btn-success').css('display', 'none')
             $(".my-modal").modal('show')
@@ -42,7 +43,7 @@ $(document).ready(function () {
                 $(".modal-body").empty();
                 $(".modal-body").append(modalContent);
                 $(".modal-footer button").off("click")
-                
+
                 $(".modal-footer .btn.btn-warning").click(function (e) {
                     e.preventDefault();
                     if (table == "khachHang" || table == "nhanVien") {
@@ -127,6 +128,8 @@ $(document).ready(function () {
             }
             else if (table == "sanPham") {
                 id = id.text()
+                // var row = $('.list-item .item input:checked').parent()
+                var row = document.querySelector(".list-item .item input:checked").parentElement
                 var modalContent = ``;
                 modalProduct(id)
                     .then(function (modal) {
@@ -258,9 +261,10 @@ $(document).ready(function () {
                                             });
                                             $(".my-modal").modal('hide')
                                             var type = $(".list-group-item.list-group-item-action.active").parent().attr("id");
-                                            $(".list-item").find(".item.row").remove();
-                                            var obj = null
-                                            $(".list-item").Paging(obj, type,'');
+                                            outerProduct(id).then(function (item) {
+                                                row.innerHTML = ``
+                                                row.innerHTML = item
+                                            })
                                         }
                                     }
                                 });
@@ -270,6 +274,7 @@ $(document).ready(function () {
             }
             else if (table == "taiKhoan") {
                 id = id.text()
+                var row = document.querySelector(".list-item .item input:checked").parentElement
                 modalAccount(id)
                     .then(function (modal) {
                         $(".modal-body").empty();
@@ -322,9 +327,10 @@ $(document).ready(function () {
                                             });
                                             var type = $(".list-group-item.list-group-item-action.active").parent().attr("id");
                                             $(".my-modal").modal("hide")
-                                            $(".list-item").find(".item.row").remove();
-                                            var obj = null
-                                            $(".list-item").Paging(obj, type,'');
+                                            outerAccount(id).then(function (item) {
+                                                row.innerHTML = ``
+                                                row.innerHTML = item
+                                            })
                                         }
                                     });
                                 }
@@ -346,36 +352,32 @@ $(document).ready(function () {
                         })
                     })
             }
-            else if(table=="phanQuyen")
-            {
-                id=id.text()
-                modalUpAu(id).then(function(modal)
-                {
+            else if (table == "phanQuyen") {
+                id = id.text()
+                modalUpAu(id).then(function (modal) {
                     $(".modal-body").empty();
                     $(".modal-body").append(modal);
                     $(".modal-title").html("Sửa nhóm quyền");
-                    $.get("./database/authoriesDao.php?type=3&id="+id,
+                    $.get("./database/authoriesDao.php?type=3&id=" + id,
                         function (data) {
                             console.log(data)
                             data.forEach(element => {
-                                $("#"+element['ID_TASK']+'-'+element['ID_ACTION']).prop("checked", true);
+                                $("#" + element['ID_TASK'] + '-' + element['ID_ACTION']).prop("checked", true);
                             });
                         },
                         "json"
                     );
-                    $(".modal-footer .btn-warning").click(function (e) { 
+                    $(".modal-footer .btn-warning").click(function (e) {
                         e.preventDefault();
-                        var name=$("#nameAu").val();
-                        if(checkEmpty(["#nameAu"]))
-                        {
+                        var name = $("#nameAu").val();
+                        if (checkEmpty(["#nameAu"])) {
                             Swal.fire({
                                 title: "Không được để rỗng tên!!!",
                                 text: "",
                                 icon: "error"
                             });
                         }
-                        else
-                        {
+                        else {
                             Swal.fire({
                                 title: "Chắc chưa?",
                                 showDenyButton: true,
@@ -384,48 +386,47 @@ $(document).ready(function () {
                                 denyButtonText: `Hủy`
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    var checked=$(".check__box input:checked")
-                                                var idAu=0
-                                                $.get("./database/authoriesDao.php?type=6&id="+id,
-                                                    function (rs) {
-                                                        if(rs==1)
-                                                            {
-                                                                $.get("./database/authoriesDao.php?type=11", 
-                                                                    function (data) {
-                                                                        $.get("./database/authoriesDao.php?type=13&id="+id,
-                                                                            function (data) {
-                                                                                $.each(checked, function (i, val) { 
-                                                                                    
-                                                                                    var idTask=$(val).data("task")
-                                                                                    var idAc=$(val).data("action")
-                                                                                    $.get("./database/authoriesDao.php?type=7&idAu="+id+"&idTask="+idTask+"&idAc="+idAc,
-                                                                                        function (data) {
-                                                                                        },
-                                                                                        "html"
-                                                                                    );
-                    
-                                                                                });
-                                                                            },
-                                                                            "html"
-                                                                        );
-                                                                        Swal.fire("Sửa thành công!", "", "success");
-                                                                        $(".my-modal").modal("hide")
-                                                                    },
-                                                                "html"
-                                                                );
-                                                            }
+                                    var checked = $(".check__box input:checked")
+                                    var idAu = 0
+                                    $.get("./database/authoriesDao.php?type=6&id=" + id,
+                                        function (rs) {
+                                            if (rs == 1) {
+                                                $.get("./database/authoriesDao.php?type=11",
+                                                    function (data) {
+                                                        $.get("./database/authoriesDao.php?type=13&id=" + id,
+                                                            function (data) {
+                                                                $.each(checked, function (i, val) {
 
+                                                                    var idTask = $(val).data("task")
+                                                                    var idAc = $(val).data("action")
+                                                                    $.get("./database/authoriesDao.php?type=7&idAu=" + id + "&idTask=" + idTask + "&idAc=" + idAc,
+                                                                        function (data) {
+                                                                        },
+                                                                        "html"
+                                                                    );
+
+                                                                });
+                                                            },
+                                                            "html"
+                                                        );
+                                                        Swal.fire("Sửa thành công!", "", "success");
+                                                        $(".my-modal").modal("hide")
                                                     },
                                                     "html"
                                                 );
-                                                
-                                            
+                                            }
 
-                                    
+                                        },
+                                        "html"
+                                    );
+
+
+
+
                                 }
                             });
-                                    
-                            
+
+
                         }
                     });
                 })

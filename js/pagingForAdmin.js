@@ -1,7 +1,7 @@
 
 
 (function ($) {
-    $.fn.Paging = function (obj, type,search) {
+    $.fn.Paging = function (obj, type, search) {
         var Default = {
             currentPage: 1,
             totalPage: 0,
@@ -19,11 +19,11 @@
             e.preventDefault();
             obj.currentPage++
             if (type == "sanPham")
-                loadDataProduct(obj.currentPage,search)
+                loadDataProduct(obj.currentPage, search)
             else if (type == "khachHang" || type == "nhanVien")
-                loadDataUser(obj.currentPage,search)
+                loadDataUser(obj.currentPage, search)
             else if (type == "taiKhoan")
-                loadDataAccount(obj.currentPage,search)
+                loadDataAccount(obj.currentPage, search)
             if (obj.currentPage == obj.totalPage) {
                 $(".content .show-more").children('button').css('display', 'none');
             }
@@ -34,25 +34,25 @@
         function getPage() {
             $.ajax({
                 type: "GET",
-                url: "./database/getDataAdmin.php?type=countPage&item=" + obj.items + "&loai=" + type +"&search="+search,
+                url: "./database/getDataAdmin.php?type=countPage&item=" + obj.items + "&loai=" + type + "&search=" + search,
                 dataType: "html",
                 success: function (data) {
                     obj.totalPage = data
                     $(".thongKe").css("display", 'none');
                     $(".content").css("display", "block");
                     if (type == "sanPham") {
-                        loadDataProduct(obj.currentPage,search)
+                        loadDataProduct(obj.currentPage, search)
                         $(".crud").css("display", "flex");
                     }
                     else if (type == "khachHang" || type == "nhanVien") {
-                        loadDataUser(obj.currentPage,search)
+                        loadDataUser(obj.currentPage, search)
                         $(".crud").css("display", "flex");
                         if (type == "khachHang") {
                             $(".create").css("display", "none");
                         }
                     }
                     else if (type == "taiKhoan") {
-                        loadDataAccount(obj.currentPage,search)
+                        loadDataAccount(obj.currentPage, search)
                         $(".crud").css("display", "flex");
                         $(".create").css("display", "none");
                     }
@@ -68,7 +68,7 @@
                         $(".update").css("display", "none");
                     }
                     else if (type == "phanQuyen") {
-                        loadAuthoryze(obj.currentPage,search)
+                        loadAuthoryze(obj.currentPage, search)
                         $(".crud").css("display", "flex");
                     }
                     if (obj.currentPage == obj.totalPage || obj.totalPage == 0) {
@@ -117,13 +117,12 @@
                 $(".list-item").append(item)
             }
         }
-        function loadDataProduct(page,search) {
+        function loadDataProduct(page, search) {
             $.ajax({
                 type: "GET",
-                url: "./database/getDataAdmin.php?type=sanPham&item=" + obj.items + "&page=" + page+"&search="+search,
+                url: "./database/getDataAdmin.php?type=sanPham&item=" + obj.items + "&page=" + page + "&search=" + search,
                 dataType: "json",
                 success: function (data) {
-                    console.log(data)
                     if (page == 1 || obj.currentPage == 0) {
                         var title = `
                             <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
@@ -223,7 +222,7 @@
                         document.querySelector(".show-more button").style.visibility = "visible"
                     }
 
-                    $(".select-size").change(function (e) {
+                    $(".list-item .item.row").on("change", ".select-size", function (e) {
                         e.preventDefault();
                         val = $(this).find(":selected")
                         price = val.data("price")
@@ -237,10 +236,10 @@
             });
         }
 
-        function loadDataUser(page,search) {
+        function loadDataUser(page, search) {
             $.ajax({
                 type: "GET",
-                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page+"&search="+search,
+                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page + "&search=" + search,
                 dataType: "json",
                 success: function (data) {
                     if (page == 1 || page == 0) {
@@ -283,13 +282,12 @@
             });
         }
 
-        function loadDataAccount(page,search) {
+        function loadDataAccount(page, search) {
             $.ajax({
                 type: "GET",
-                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page+"&search="+search,
+                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page + "&search=" + search,
                 dataType: "json",
                 success: function (data) {
-                    console.log(data)
                     if (page == 1) {
                         var title = `
                             <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
@@ -476,10 +474,10 @@
             });
         }
 
-        function loadAuthoryze(page,search) {
+        function loadAuthoryze(page, search) {
             $.ajax({
                 type: "GET",
-                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page +"&search="+search,
+                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page + "&search=" + search,
                 dataType: "json",
                 success: function (data) {
                     if (page == 1 || page == 0) {

@@ -16,8 +16,47 @@ if (isset($_GET['action']) && $_GET['action'] == 'get_categories') {
     $categories = getCategories();
     echo json_encode($categories);
 }
+if (isset($_GET['action']) && $_GET['action'] == 'get_sales') {
+    $month = isset($_GET['month']) ? (int)$_GET['month'] : date('m');
+
+    // Truy vấn SQL để lấy doanh thu của tháng hiện tại và tháng trước đó
+    $sql = "SELECT 
+                MONTH(b.DATE_BILL) AS month,
+                SUM(b.TOTAL_BILL) AS revenue
+            FROM 
+                bills b
+            WHERE 
+                b.STATUS_BILL IN (3, 4) 
+                AND (MONTH(b.DATE_BILL) = $month OR MONTH(b.DATE_BILL) = ($month - 1))
+            GROUP BY 
+                MONTH(b.DATE_BILL)";
+
+    // Thực hiện truy vấn SQL
+    $result = mysqli_query($connect, $sql);
+
+    // Khởi tạo mảng để lưu trữ dữ liệu
+    $data = array();
+
+    // Lặp qua các hàng kết quả và thêm chúng vào mảng dữ liệu
+    while ($row = mysqli_fetch_assoc($result)) {
+        $data[] = $row;
+    }
+
+    // Trả về dữ liệu dưới dạng JSON
+    echo json_encode($data);
+}
+
+
 if (isset($_GET['action']) && $_GET['action'] == 'get_chart') {
-    // Thực hiện truy vấn SQL để lấy dữ liệu doanh thu theo tháng
+    $startDate = isset($_GET['startDate']) ? $_GET['startDate'] : null;
+    $endDate = isset($_GET['endDate']) ? $_GET['endDate'] : null;
+
+    // Xây dựng điều kiện cho truy vấn SQL dựa trên khoảng thời gian
+    $condition = "";
+    if ($startDate && $endDate) {
+        $condition = "AND b.DATE_BILL BETWEEN '$startDate' AND '$endDate'";
+    }
+
     $sql = "SELECT 
                 MONTH(b.DATE_BILL) AS month,
                 SUM(b.TOTAL_BILL) AS revenue
@@ -25,9 +64,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'get_chart') {
                 bills b
             WHERE 
                 b.STATUS_BILL IN (3, 4)
+                $condition
             GROUP BY 
                 MONTH(b.DATE_BILL)";
-    
+
     // Thực hiện truy vấn SQL
     $result = mysqli_query($connect, $sql);
 
@@ -48,6 +88,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'get_chart') {
         echo "Lỗi truy vấn: " . mysqli_error($connect);
     }
 }
+
 // Hàm lấy thông tin thống kê
 function getStatistics($productType = '', $startDate = '', $endDate = '', $orderBy = '', $sortOrder = '')
 {

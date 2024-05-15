@@ -25,6 +25,8 @@ function encodeStatus($status)
 }
 function changeState($connect, $idBill, $status)
 {
+    session_start();
+    $idUser = $_SESSION["accountCurrent"]["idUser"];
     $sql = " UPDATE bills SET STATUS_BILL=$status WHERE  ID_BILL=$idBill";   
     return mysqli_query($connect, $sql);
 }
@@ -39,10 +41,13 @@ if (isset($_GET['status'])) {
     // Nếu mã hóa thành công, tiếp tục xử lý
     if ($status != "unknown") {
         // tất cả
+        session_start();
+        $idUser = $_SESSION["accountCurrent"]["idUser"];
         if ($status == 5) {
             $sql = "SELECT b.ID_BILL, b.STATUS_BILL, b.TOTAL_BILL, COUNT(pb.ID_PRODUCT) AS TOTAL_PRODUCTS
                     FROM bills b
                     LEFT JOIN particular_bills pb ON b.ID_BILL = pb.ID_BILL
+                    WHERE b.ID_CUSTOMER = $idUser
                     GROUP BY b.ID_BILL, b.TOTAL_BILL;";
         }
         // hoàn thành
@@ -51,6 +56,7 @@ if (isset($_GET['status'])) {
                     FROM bills b
                     LEFT JOIN particular_bills pb ON b.ID_BILL = pb.ID_BILL
                     WHERE b.STATUS_BILL = '3' OR b.STATUS_BILL = '4'
+                    AND b.ID_CUSTOMER = $idUser
                     GROUP BY b.ID_BILL, b.TOTAL_BILL;";
         } else {
             // Viết truy vấn SQL để lấy các đơn hàng có trạng thái tương ứng
@@ -58,6 +64,7 @@ if (isset($_GET['status'])) {
                     FROM bills b
                     LEFT JOIN particular_bills pb ON b.ID_BILL = pb.ID_BILL
                     WHERE b.STATUS_BILL = '$status'
+                    and b.ID_CUSTOMER = $idUser
                     GROUP BY b.ID_BILL, b.TOTAL_BILL; ";
         }
 

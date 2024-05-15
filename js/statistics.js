@@ -1,7 +1,10 @@
 $(document).ready(function () {
     // Gọi hàm AJAX khi trang được tải
     getCategories();
-
+    fetchChart(null, null);
+    var currentDate = new Date();
+    month = currentDate.getMonth() + 1;
+    fectchSales(month);
 });
 
 function getCategories() {
@@ -63,6 +66,9 @@ $(document).ready(function () {
 
         // Gọi hàm fetchStatistics để gửi yêu cầu AJAX
         fetchStatistics(selectedCategory, startDate, endDate, clickedColumn, sortOrder);
+
+        fetchChart(startDate, endDate);
+
     });
 });
 var sortOrder = 'DESC'; // Mặc định sắp xếp giảm dần
@@ -196,20 +202,89 @@ function displayStatistics(data) {
         });
     }
 }
-$.ajax({
-    url: './database/statisticsDAO.php', // Đường dẫn đến file xử lý yêu cầu AJAX
-    type: 'GET',
-    dataType: 'json',
-    data: {
-        action: 'get_chart', // Hành động cần thực hiện trong file statisticsDAO.php
-    },
-    success: function (data) {
-        drawChart(data);
-    },
-    error: function (xhr, status, error) {
-        console.error('Error fetching data:', error);
+function fetchChart(startDate, endDate) {
+    $.ajax({
+        url: './database/statisticsDAO.php', // Đường dẫn đến file xử lý yêu cầu AJAX
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            action: 'get_chart', // Hành động cần thực hiện trong file statisticsDAO.php
+            startDate: startDate,
+            endDate: endDate
+        },
+        success: function (data) {
+            $('#myChart').remove();
+            // Thêm một canvas mới vào phần tử cha của canvas cũ
+            $('#chart-container').append('<canvas id="myChart"></canvas>');
+            // Vẽ biểu đồ mới
+            drawChart(data);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
+function fectchSales(month) {
+    $.ajax({
+        url: './database/statisticsDAO.php',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            action: 'get_sales',
+            month: month
+        },
+        success: function (data) {
+            displaySales(data);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
+function displaySales(data) {
+    // Kiểm tra và gán giá trị cho tháng hiện tại và tháng trước đó
+    var currentMonthRevenue = 0;
+    var lastMonthRevenue = 0;
+
+    if (data.length > 0) {
+        data.forEach(function(item) {
+            var monthNumber = parseInt(item.month);
+            var revenue = parseInt(item.revenue);
+
+            if (monthNumber === new Date().getMonth() + 1) {
+                currentMonthRevenue = revenue;
+            } else if (monthNumber === new Date().getMonth()) {
+                lastMonthRevenue = revenue;
+            }
+        });
     }
-});
+
+    // Cập nhật doanh thu của tháng hiện tại
+    $('#current-revenue').text(currentMonthRevenue.toLocaleString() + 'đ');
+
+    // Tính toán và cập nhật thông tin so với tháng trước
+    var revenueChangeElement = $('#revenue-change');
+    if (lastMonthRevenue) {
+        var revenueChange = currentMonthRevenue - lastMonthRevenue;
+        var changePercentage = (revenueChange / lastMonthRevenue) * 100;
+        revenueChangeElement.text(formatNumber(revenueChange) + 'đ (' + changePercentage.toFixed(2) + '%) ');
+        
+        // Đổi màu văn bản nếu doanh thu giảm
+        if (revenueChange < 0) {
+            revenueChangeElement.css('color', 'red');
+        } else {
+            revenueChangeElement.css('color', 'green'); // Màu xanh nếu tăng
+        }
+    } else {
+        revenueChangeElement.text('N/A');
+        revenueChangeElement.css('color', 'black'); // Reset màu nếu không có dữ liệu
+    }
+}
+function formatNumber(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 var monthNames = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"];
 

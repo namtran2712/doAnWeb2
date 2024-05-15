@@ -48,7 +48,8 @@
                 $sql = "SELECT * 
                 FROM USERS JOIN ACCOUNTS 
                 ON USERS.ID_USER = ACCOUNTS.ID_USER
-                WHERE ID_AUTHORIZE = 1 ";
+                WHERE ID_AUTHORIZE = 1 AND
+                ACCOUNTS.STATUS_ACCOUNT <> 2";
 
                 foreach ($arrSearch as $key => $value) {
                         $sql=$sql . " AND FULLNAME like '%$value%' ";
@@ -74,7 +75,8 @@
                 FROM USERS JOIN ACCOUNTS 
                 ON USERS.ID_USER = ACCOUNTS.ID_USER
                 WHERE ID_AUTHORIZE <> 1
-                AND USERS.ID_USER <> $id ";
+                AND USERS.ID_USER <> $id 
+                AND ACCOUNTS.STATUS_ACCOUNT <> 2";
                 foreach ($arrSearch as $key => $value) {
                     $sql=$sql . " AND FULLNAME like '%$value%' ";
                 }

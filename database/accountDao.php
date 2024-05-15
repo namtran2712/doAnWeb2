@@ -99,7 +99,10 @@
     }
     function selectAccountById ($connect, $id) {
         $sql = "SELECT *
-        FROM ACCOUNTS
+        FROM ACCOUNTS JOIN USERS
+        ON ACCOUNTS.ID_USER = USERS.ID_USER
+        JOIN AUTHORIZES
+        ON ACCOUNTS.ID_AUTHORIZE = AUTHORIZES.ID_AUTHORIZE
         WHERE ID_ACCOUNT = $id";
         $result = mysqli_query($connect, $sql);
         if (mysqli_num_rows($result) > 0) {

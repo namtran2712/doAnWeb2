@@ -6,10 +6,14 @@ $(document).ready(function () {
 
     $(".delete").click(function () {
         var itemsId = $('.list-item .item input:checked').siblings(".id-item")
+        console.log(itemsId)
+        var itemNeedRemove = [];
         var id = []
         $.each(itemsId, function (i, val) {
             id.push($(val).text())
+            itemNeedRemove.push($(val).parent())
         });
+        console.log(itemNeedRemove)
         var table = $(".sidebar ul li a.active").parents().attr("id")
         Swal.fire({
             title: "Bạn chắc chắn muốn xóa?",
@@ -35,12 +39,9 @@ $(document).ready(function () {
                         },
                         dataType: "html",
                         success: function (data) {
-                            console.log(data)
-                            var type = $(".list-group-item.list-group-item-action.active").parent().attr("id");
-
-                            $(".list-item").find(".item.row").remove();
-                            var obj = {}
-                            $(".list-item").Paging(obj, type,'');
+                            $.each(itemNeedRemove, function (i, val) {
+                                $(val).remove();
+                            });
                         }
                     });
                     Swal.fire("Đã xóa thành công!", "", "success");

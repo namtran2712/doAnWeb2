@@ -4,7 +4,8 @@
 
     function deleteData ($id, $table,$connect) {
         if ($table == "khachHang" || $table == "nhanVien") {
-            $sql = "DELETE FROM USERS WHERE ID_USER=";
+            // $sql = "DELETE FROM USERS WHERE ID_USER=";
+            $sql = "UPDATE ACCOUNTS SET STATUS_ACCOUNT = 2 WHERE ID_USER=";
             $i = 0;
             while (count($id) > $i) {
                 $tmp = (int) $id[$i];
