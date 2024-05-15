@@ -10,28 +10,36 @@ window.addEventListener("scroll", function () {
 })
 $(".navbar-brand").click(function () {
     window.location.href = "./index.php"
-    
+
 })
 $(document).ready(function () {
-    $(".navbar-nav .nav-item a").click(function (e) {
+    var categoryName = new URLSearchParams(window.location.search).get("data-name")
+    $(".nav-link.active").removeClass("active")
 
-        $(".active").removeClass("active")
-        $(this).addClass("active")
+    if (categoryName == "sản phẩm") {
+        $(".nav-link").eq(1).addClass("active")
+    }
+    else if (categoryName == null) {
+        $(".nav-link").eq(0).addClass("active")
+    }
+    var navLink = $(".nav-link")
+    $.each(navLink, function (i, val) {
+        if ($(val).text() == categoryName) {
+            $(val).addClass("active");
+        }
+    });
 
-    })
-    $(".cart").click(function (e) { 
+    $(".cart").click(function (e) {
         e.preventDefault();
         $.ajax({
             type: "GET",
             url: "database/accountDao.php?type=2",
             dataType: "text",
             success: function (response) {
-                if(response)
-                {
-                    window.location.href="shoping_cart.php"
+                if (response) {
+                    window.location.href = "shoping_cart.php"
                 }
-                else
-                {
+                else {
                     alert("Vui lòng đăng nhập để xem giỏ hàng !!!")
                 }
             }

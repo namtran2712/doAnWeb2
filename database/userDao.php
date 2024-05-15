@@ -44,11 +44,10 @@ function getUserByID($connect, $id)
 }
 function getAddressUser($connect, $idUser)
 {
-    $sql = "        
-    SELECT * 
+    $sql = "SELECT * 
     FROM user_shipping_address adr , accounts 
     WHERE adr.ID_ACCOUNT =accounts.ID_Account and accounts.ID_Account = $idUser    
-    ";
+    ORDER BY STATUS_ADDRESS DESC";
     $result = mysqli_query($connect, $sql);
     $address = [];
     while ($row = mysqli_fetch_assoc($result)) {
@@ -59,10 +58,23 @@ function getAddressUser($connect, $idUser)
 
 }
 
-function insertAddress($connect, $idUser, $address)
-{
-    $sql = "INSERT INTO user_shipping_address (ID_ACCOUNT,SHIPPING_ADDRESS)
-    VALUES ($idUser,'$address')";
+function getCountAddress($connect, $idAccount){
+    $sql = "SELECT COUNT(*)
+    FROM user_shipping_address
+    WHERE user_shipping_address.ID_ACCOUNT = $idAccount";
+    $result = mysqli_query($connect, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        return (int)$row["COUNT(*)"];
+    }
+    
+}
+
+function insertAddress ($connect, $idAccount, $address) {
+    $count = getCountAddress($connect, $idAccount);
+    $status = ($count == 0) ? 1 : 0;
+    $sql = "INSERT INTO user_shipping_address (ID_ACCOUNT, SHIPPING_ADDRESS, STATUS_ADDRESS)
+    VALUES ($idAccount, '$address',$status)";
     return mysqli_query($connect, $sql);
 }
 
@@ -101,6 +113,29 @@ function updateAddressUser ($connect,$idAddress,$address)
     return mysqli_query($connect,$sql);
 }
 
+function setDefaultAddress ($connect, $idAddress) {
+    session_start();
+    if (isset($_SESSION["accountCurrent"])) {
+        $idAcc = $_SESSION["accountCurrent"]["idAccount"];
+        $sql = "UPDATE user_shipping_address SET STATUS_ADDRESS = 0
+        WHERE ID_ACCOUNT = $idAcc";
+        if (mysqli_query($connect, $sql)) {
+            $sql = "UPDATE user_shipping_address SET STATUS_ADDRESS = 1
+            WHERE ID_USER_SHIPPING_ADDRESS = $idAddress";
+            return mysqli_query($connect, $sql);
+        }
+    }
+}
+function insertAddressLevelUp($connect,$address)
+{
+    $id= $_SESSION["accountCurrent"]["idAccount"];
+    $count = getCountAddress($connect, $id);
+    $status = ($count == 0) ? 1 : 0;
+    $sql = "INSERT INTO user_shipping_address (ID_ACCOUNT, SHIPPING_ADDRESS, STATUS_ADDRESS)
+    VALUES ($id, '$address',$status)";
+    return mysqli_query($connect, $sql);
+}
+
 session_start();
 if ($_GET["type"] == 200) {
     getUserByID($connect, $_SESSION["accountCurrent"]["idUser"]);
@@ -116,4 +151,10 @@ if ($_GET["type"] == 200) {
     echo getAddressById($connect,$_GET["idAddress"]);
 }else if ($_GET["type"]==188){
     echo updateAddressUser($connect,$_POST["idAddress"],$_POST["address"]);
+}
+else if ($_GET["type"]==100){
+    echo insertAddressLevelUp($connect,$_GET["address"]);
+}
+else if ($_GET["type"] == 1) {
+    echo setDefaultAddress($connect, $_GET["id"]);
 }

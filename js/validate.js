@@ -46,6 +46,10 @@
         return result
     }
 
+    function checkAddress(address)
+    {
+        return address.trim().length>10
+    }
     function checkAge(birthday) {
         var year = parseInt(birthday.substring(0, 4))
         // var month = parseInt(birthday.substring(5, 7))
@@ -75,7 +79,7 @@
     }
 
     if (typeof module !== 'undefined' && module.exports) {
-        module.exports = { checkEmpty, checkPhone, checkName, checkAge, checkPrice, checkUsername, checkPassword };
+        module.exports = { checkEmpty, checkPhone, checkName, checkAge, checkPrice, checkUsername, checkPassword ,checkAddress};
     }
     else {
         window.checkEmpty = checkEmpty;
@@ -85,5 +89,6 @@
         window.checkPrice = checkPrice;
         window.checkPassword = checkPassword;
         window.checkUsername = checkUsername;
+        window.checkAddress = checkAddress;
     }
 })();

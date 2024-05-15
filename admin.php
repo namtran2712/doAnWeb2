@@ -2,7 +2,35 @@
     require "./database/connect.php";
 
     session_start();
-    
+    if(isset( $_SESSION["accountCurrent"]))
+    {
+
+        $idAccount=$_SESSION["accountCurrent"]['idAccount'];
+        $sql="SELECT *
+        FROM ACCOUNTS 
+        WHERE ID_ACCOUNT =$idAccount";
+        $result=mysqli_query($connect,$sql);
+        if(mysqli_num_rows($result)>0)
+        {
+            $account=mysqli_fetch_assoc($result);
+            $idAu=$account['ID_AUTHORIZE'];
+            $sql="SELECT * 
+            FROM AUTHORIZES
+            WHERE ID_AUTHORIZE=$idAu";
+            $result=mysqli_query($connect,$sql);
+            if(mysqli_num_rows($result)>0)
+            {
+                $author=mysqli_fetch_assoc($result);
+                if($author['AUTHORIZE_NAME']=="Khách hàng")
+                {
+                    header("Location: ./index.php");
+                }
+            }
+        }
+    }
+    else {
+        header("Location: ./index.php");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -31,6 +59,8 @@
     <!-- css -->
     <link rel="stylesheet" href="./css/admin.css" />
     <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/statistics.css">
+
     <link rel="stylesheet" href="./css/nhapHang.css">
     <title>document</title>
 </head>
@@ -96,19 +126,40 @@
             <li id="phanQuyen" data-id="1"><a href="#"
                     class="list-group-item list-group-item-action py-3 fw-bold fs-7 text-right">
                     <i class="fas fa-solid fa-user-gear mx-2"></i> Phân quyền</a></li>
-            <li id="logout" data-id="10" style="display: block;"><a href="#"
+            <!-- <li id="logout" data-id="10" style="display: block;"><a href="#"
                     class="list-group-item list-group-item-action py-3 fw-bold fs-7 text-danger text-right">
-                    <i class="fas fa-solid fa-right-from-bracket mx-2"></i> Đăng xuất</a></li>
+                    <i class="fas fa-solid fa-right-from-bracket mx-2"></i> Đăng xuất</a></li> -->
         </ul>
 
     </div>
 
     <div class="container-fluid">
-        <div class="header d-flex justify-content-center align-items-center">
-            <div class="btn-show-sidebar">
-                <i class="fas fa-solid fa-bars bg-white p-2"></i>
-            </div>
-            <img src="./img/vongtay/mimg-40.png" alt="" class="img-fluid">
+        <div class="container-fluid row header">
+                <div class ="col-sm-6 col-md-6 col-lg-6">
+                    <div class="btn-show-sidebar">
+                        <i class="fas fa-solid fa-bars bg-white p-2"></i>
+                    </div>
+                </div>
+                <div class ="col-sm-6 col-md-6 col-lg-6 row">
+                    <div class ="col-sm-2 col-md-2 col-lg-2 ">
+                        <img src="./img/vongtay/mimg-40.png" alt="" class="img-fluid">
+                    </div>
+                    <div class ="col-sm-8 col-md-8 col-lg-8 mt-4">
+                        <form class="d-flex">
+                            <input
+                            class="form-control me-2"
+                            type="search"
+                            placeholder="Hãy nhập vào tôi !"
+                            aria-label="Search"
+                            id="search-admin"
+                            />
+                            <button class="btn btn-outline-success btn-search-admin" type="submit">Search</button>
+                        </form>
+                    </div>
+                    <div class ="col-sm-2 col-md-2 col-lg-2 mt-4">
+                        <button class="btn btn-danger" id="logout">Đăng xuất</button>
+                    </div>
+                </div>
         </div>
 
         <div class="content">
@@ -133,8 +184,12 @@
                 </div>
             </div>
 
-            <div class="crud">
+            <div class="crud-fake">
+                
+            </div>
 
+            <div class="crud">
+                
             </div>
 
             <div class="list-item">
@@ -145,13 +200,14 @@
 
             </div>
 
-
-
             <div class="show-more">
 
             </div>
             <div class="nhapHang" style="display : none;">
                 <?php require "nhapHang.php"?>
+            </div>
+            <div class="thongKe" style="display : none;">
+                <?php require "statistics.php"?>
             </div>
         </div>
     </div>
@@ -161,7 +217,9 @@
     <script src="./js/updateData.js"></script>
     <script src="./js/deleteData.js"></script>
     <script src="./js/addData.js"></script>
-
+    <script src="./js/searchAdmin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/statistics.js"></script>
     <!-- js bootstrap -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"
         integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="

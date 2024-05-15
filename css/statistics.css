@@ -1,0 +1,108 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filters label {
+    margin-right: 10px;
+}
+
+.filters select,
+.filters input[type="date"],
+.filters button {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+/* Màu sắc chính cho bảng */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng shadow */
+    border-radius: 10px;
+}
+
+/* Header của bảng */
+.table th {
+    background-color: #FBA1B7; /* Màu hồng đậm */
+    color: #fff; /* Màu chữ trắng */
+    padding: 10px;
+
+}
+/* Bo góc cho thanh tiêu đề */
+.table th:first-child {
+    border-top-left-radius: 10px; /* Bo góc trên trái */
+}
+
+.table th:last-child {
+    border-top-right-radius: 10px; /* Bo góc trên phải */
+}
+/* Các hàng trong bảng */
+.table td {
+    padding: 10px;
+}
+.product-img img {
+    width: 100px; /* Độ rộng của hình ảnh */
+    height: auto; /* Chiều cao tự động dựa trên tỉ lệ */
+    border-radius: 50%; /* Bo tròn góc của hình ảnh */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+}
+.product-name {
+    text-transform: capitalize;
+}
+.numeric-cell {
+    white-space: nowrap;
+}
+.total-quantity {
+    text-align: center;
+}
+/* Màu cho hàng chẵn */
+.table tbody tr:nth-child(even) {
+    background-color: #FFF0F5; /* Màu hồng nhạt cho hàng chẵn */
+}
+/* Bo góc cho hàng cuối cùng */
+.table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 10px; /* Bo góc dưới trái */
+}
+
+.table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 10px; /* Bo góc dưới phải */
+}
+/* Định dạng hình ảnh trong các dòng chẵn */
+.even-row .product-img img {
+    background-color: #FFF0F5; /* Màu nền cho dòng chẵn */
+}
+
+/* Định dạng hình ảnh trong các dòng lẻ */
+.odd-row .product-img img {
+    background-color: #fff; /* Màu nền cho dòng lẻ */
+}
+
+
+
+

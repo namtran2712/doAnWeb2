@@ -1,3 +1,41 @@
+<?php
+    require "./database/connect.php";
+
+    session_start();
+    if(isset( $_SESSION["accountCurrent"]))
+    {
+
+        $idAccount=$_SESSION["accountCurrent"]['idAccount'];
+        $sql="SELECT *
+        FROM ACCOUNTS 
+        WHERE ID_ACCOUNT =$idAccount";
+        $result=mysqli_query($connect,$sql);
+        if(mysqli_num_rows($result)>0)
+        {
+            $account=mysqli_fetch_assoc($result);
+            $idAu=$account['ID_AUTHORIZE'];
+            $sql="SELECT * 
+            FROM AUTHORIZES
+            WHERE ID_AUTHORIZE=$idAu";
+            $result=mysqli_query($connect,$sql);
+            if(mysqli_num_rows($result)>0)
+            {
+                $author=mysqli_fetch_assoc($result);
+                if($author['AUTHORIZE_NAME']!="Khách hàng")
+                {
+                    // header("Location: ./admin.php");
+                }
+            }
+        }
+    }
+    // else {
+    //     header("Location: ./index.php");
+    // }
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,17 +45,17 @@
     <title>Trang chủ</title>
 
     <!-- Latest compiled and minified CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" media="all">
     <link rel="stylesheet" href="css/slick.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
-    <link rel="stylesheet" href="css/product.css">
     <link rel="stylesheet" href="css/login.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="css/userAddress.css">
 </head>
@@ -85,7 +123,8 @@
                                 <p>
                                     <small>
                                         <i>
-                                            Cuộc đời đó có bao lâu mà hững hờ, hãy cứ đeo trang sức như chưa từng được đeo.
+                                            Cuộc đời đó có bao lâu mà hững hờ, hãy cứ đeo trang sức như chưa từng được
+                                            đeo.
                                         </i>
                                     </small>
                                 </p>
@@ -156,24 +195,24 @@
             </div>
         </div>
         <script>
-            $(".navbar-nav .nav-item a").click(function(e) {
-                var href = $(this).attr("href")
-                var link = href.substring(1, href.length)
-                var name = $(this).data("name");
-                var id = $(this).data("id");
-                $.ajax({
-                    type: "GET",
-                    url: "./database/categoryDao.php?type=2&name=" + name + "&id=" + id,
-                    dataType: "html",
-                    success: function(data) {
-                        if (link == "")
-                            window.location.href = "http://localhost/Doan"
-                        else
-                            $("#wrapper").load(link)
-                    }
-                });
+        $(".navbar-nav .nav-item a").click(function(e) {
+            var href = $(this).attr("href")
+            var link = href.substring(1, href.length)
+            var name = $(this).data("name");
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url: "./database/categoryDao.php?type=2&name=" + name + "&id=" + id,
+                dataType: "html",
+                success: function(data) {
+                    if (link == "")
+                        window.location.href = "http://localhost/Doan"
+                    else
+                        $("#wrapper").load(link)
+                }
+            });
 
-            })
+        })
         </script>
 
     </div>
@@ -226,8 +265,12 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
+    </script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="js/slickslider.js"></script>
     <script src="js/navmenu.js"></script>

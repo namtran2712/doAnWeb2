@@ -1,5 +1,5 @@
 .navbar .container-fluid {
-    padding: 0 70px;
+    padding: 0 65px;
 }
 
 .formSearch {
@@ -178,6 +178,8 @@
 
 }
 
-.offcanvas.hiding, .offcanvas.show, .offcanvas.showing {
+.offcanvas.hiding,
+.offcanvas.show,
+.offcanvas.showing {
     height: 100vh;
 }

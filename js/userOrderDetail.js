@@ -15,7 +15,7 @@ function displayDeliveryInfo(idBill) {
         data: {
             idBill: idBill
         },
-        
+
         success: function (response) {
             if (Array.isArray(response) && response.length === 1) {
                 appendInfo(response[0]);
@@ -110,7 +110,7 @@ function appendInfo(info) {
         var div2 = document.getElementById("cancel-info");
         div2.style.display = "block";
         var title = $('<p class="title">Đã hủy đơn hàng</p>');
-        var time = $('<p class="cancelTime">vào '+ info.CANCEL_TIME +'</p>');
+        var time = $('<p class="cancelTime">vào ' + info.CANCEL_TIME + '</p>');
         cancelInfo.append(title);
         cancelInfo.append(time);
     }
@@ -291,11 +291,142 @@ document.getElementById('receive').addEventListener('click', function () {
 });
 
 
-document.querySelector (".back-button").addEventListener ("click",function()
-{
+document.querySelector(".back-button").addEventListener("click", function () {
     window.location.href = ("user.php#userOrder.php")
-    
 });
 
+$(document).ready(function () {
+    $("#rate").click(function (e) {
+        e.preventDefault();
+        var content = `
+        <div class="row">
+            <label class="col-sm-12 col-md-12 col-lg-12">Số sao đánh giá <span style="color: red;">*</span></label>
+            <div class="star-wrap">
+                <input type="radio" name="rate">
+                <input type="radio" name="rate">
+                <input type="radio" name="rate">
+                <input type="radio" name="rate">
+                <input type="radio" name="rate">
+            </div>
+
+            <label for="content-rate" class="col-sm-12 col-md-12 col-lg-12">Nội dung đánh
+                giá</label>
+            <textarea name="content-rate" placeholder="Tối đa 150 ký tự" class="form-control col-sm-12 col-md-12 col-lg-12"
+                id="content-rate"></textarea>
+        </div>
+        `
+        var btn = `
+        <button class="submit-feedback btn btn-primary" data-id=${idBill}>Đánh giá</button>
+        `
+        $(".modal-body").empty()
+        $(".modal-body").append(content)
+
+        $(".modal-footer").empty()
+        $(".modal-footer").append(btn)
+        $(".my-modal").modal("show")
+
+        $('textarea').on('input', function () {
+            if ($(this).val().length > 150) {
+                $(this).val($(this).val().substring(0, 150));
+            }
+        });
+
+        $(".submit-feedback").off("click")
+        $(".submit-feedback").click(function (e) {
+            e.preventDefault();
+            var star = $(".star-wrap").find("input[type=radio]:checked").index("input[type=radio]") + 1
+            switch (star) {
+                case 1:
+                    star = 5
+                    break;
+                case 2:
+                    star = 4
+                    break;
+                case 4:
+                    star = 2
+                    break;
+                case 5:
+                    star = 1
+                    break;
+            }
+            if (star == 0) {
+                Swal.fire({
+                    title: "Vui lòng đánh giá số sao",
+                    text: "",
+                    icon: "warning"
+                });
+            }
+            else {
+                var content = $("#content-rate").val();
+                $.ajax({
+                    type: "POST",
+                    url: "./database/feedbackDao.php?type=1",
+                    data: {
+                        id: idBill,
+                        star: star,
+                        content: content
+                    },
+                    dataType: "html",
+                    success: function (response) {
+                        if (response) {
+                            Swal.fire({
+                                title: "Đánh giá thành công",
+                                text: "",
+                                icon: "success"
+                            });
+                            setTimeout(() => {
+                                window.location.reload()
+                            }, 1000);
+                        }
+                    }
+                });
+            }
+        });
+
+    });
+
+    $("#rated").click(function (e) {
+        e.preventDefault()
+        $.get("./database/feedbackDao.php?type=2&id=" + idBill,
+            function (data) {
+                console.log(data)
+                var modalHead = `
+                <div class="row">
+                    <label class="col-sm-12 col-md-12 col-lg-12">Số sao đánh giá <span style="color: red;">*</span></label>
+                `
+                var modalStar = `
+                    <div style="flex-direction: row;" class="star-wrap">
+                        
+                `
+
+                var i = 1;
+                while (data["STAR"] >= i) {
+                    modalStar += `<i style="color: gold;" class="fa-solid fa-star"></i>`
+                    i++;
+                }
+                while (i <= 5) {
+                    modalStar += `<i style="color: gold;" class="fa-regular fa-star"></i>`
+                    i++;
+                }
+                modalStar += `</div>`
+
+                var modalContent = `
+                    <label for="content-rate" class="col-sm-12 col-md-12 col-lg-12">Nội dung đánh
+                        giá</label>
+                    <textarea name="content-rate" placeholder="Tối đa 150 ký tự" class="form-control col-sm-12 col-md-12 col-lg-12"
+                        id="content-rate" readonly></textarea>
+                </div>
+                `
+                var content = modalHead + modalStar + modalContent;
+                $(".modal-body").empty()
+                $(".modal-body").append(content)
+                $("#content-rate").text(data["CONTENT"]);
+                $(".my-modal").modal("show")
+            },
+            "json"
+        );
 
 
+    })
+
+});

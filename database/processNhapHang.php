@@ -72,5 +72,19 @@
             echo 0;
         }
     }
+    elseif($type=="deleteItem")
+    {
+        session_start();
+        $id=$_GET['id'];
+        if(count($_SESSION['receipt'])>1)
+        {
+            unset($_SESSION['receipt'][$id]);
+        }
+        else
+        {
+            unset($_SESSION['receipt']);
+        }
+
+    }
 
 

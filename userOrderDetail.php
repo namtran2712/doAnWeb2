@@ -1,25 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi tiết đơn hàng</title>
     <link rel="stylesheet" href="./css/userOrderDetail.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/cd0f90628a.js" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
     <header>
-        
         <nav>
             <button class="back-button">Quay lại</button>
             <p class="idBill" id="idBill">Mã đơn hàng: </p>
         </nav>
     </header>
     <main>
+        <div class="modal fade my-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form action="">
+                        <div class="modal-header">
+                            <h5 class="text-animation text-gradient modal-title" id="myModalLabel">Đánh giá sản phẩm
+                            </h5>
+                        </div>
+
+                        <div class="modal-body">
+
+                        </div>
+
+                        <div class="modal-footer">
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         <div class="content-wrapper">
             <div class="order-progress" id="order-progress">
                 <div class="steps-container">
@@ -77,7 +100,7 @@
             </div>
         </div>
         <div class="cancel-info" id="cancel-info">
-            
+
         </div>
         <div class="feedback" id="feedback">
             <button class="fb-button" id="rate">Đánh giá</button>
@@ -113,6 +136,10 @@
 
     </main>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
+</script>
+
 <script src="./js/userOrderDetail.js"></script>
 
 </html>

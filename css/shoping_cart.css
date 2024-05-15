@@ -6,7 +6,7 @@
 }
 
 a {
-    text-decoration: none;
+    text-decoration: none !important;
     outline: none;
     cursor: pointer;
     font-size: 14px;

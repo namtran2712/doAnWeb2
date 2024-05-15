@@ -1,6 +1,6 @@
 
 (function ($) {
-    $.fn.dataProduct = function (options) {
+    $.fn.dataProduct = function (options, type) {
         //====================================================
         // cac gia tri mac dinh cua options
         //====================================================
@@ -31,7 +31,7 @@
 
         function init() {
             $.ajax({
-                url: "database/productDao.php?type=0&items=" + options.items,
+                url: "database/productDao.php?type=0&items=" + options.items + "&category=" + type,
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
@@ -106,7 +106,7 @@
                     valueText = parseInt(valueText)
                     if (valueText < 1 || valueText > options.totalPage || isNaN(valueText)) {
                         Swal.fire({
-                            title: "Vui lòng nhập > 0 và bé hơn hoặc bằng " + options.totalPage,
+                            title: "Vui lòng nhập > 0 và <= " + options.totalPage,
                             width: 600,
                             padding: "3em",
                             color: "#716add",
@@ -261,7 +261,7 @@
         function loadData(page) {
             $.ajax({
                 type: "GET",
-                url: "./database/productDao.php?type=2&items=" + options.items + "&currentPage=" + page,
+                url: "./database/productDao.php?type=2&items=" + options.items + "&currentPage=" + page + "&category=" + type,
                 dataType: "json",
                 success: function (data) {
                     showArea.empty()
@@ -402,10 +402,7 @@
 
 
 $(document).ready(function () {
-    $options = {}
-    $(".list-product").dataProduct($options)
-
-
+    var categoryName = new URLSearchParams(window.location.search).get("data-name")
+    var options = {}
+    $(".list-product").dataProduct(options, categoryName)
 })
-
-

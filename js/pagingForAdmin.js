@@ -1,30 +1,29 @@
 
 
 (function ($) {
-    $.fn.Paging = function (obj, type) {
+    $.fn.Paging = function (obj, type,search) {
         var Default = {
             currentPage: 1,
             totalPage: 0,
             items: 10,
         }
-
         obj = Default;
         var showMore = `
         <button class="btn btn-outline-dark m-2">Xem thêm nội dung</button>
         `
         $(".content .show-more").empty();
         $(".content .show-more").append(showMore);
+        $(".list-item").find(".item.row").remove()
 
         $(".content .show-more").children('button').click(function (e) {
             e.preventDefault();
             obj.currentPage++
             if (type == "sanPham")
-                loadDataProduct(obj.currentPage)
+                loadDataProduct(obj.currentPage,search)
             else if (type == "khachHang" || type == "nhanVien")
-                loadDataUser(obj.currentPage)
+                loadDataUser(obj.currentPage,search)
             else if (type == "taiKhoan")
-                loadDataAccount(obj.currentPage)
-            console.log(obj)
+                loadDataAccount(obj.currentPage,search)
             if (obj.currentPage == obj.totalPage) {
                 $(".content .show-more").children('button').css('display', 'none');
             }
@@ -35,23 +34,25 @@
         function getPage() {
             $.ajax({
                 type: "GET",
-                url: "./database/getDataAdmin.php?type=countPage&item=" + obj.items + "&loai=" + type,
+                url: "./database/getDataAdmin.php?type=countPage&item=" + obj.items + "&loai=" + type +"&search="+search,
                 dataType: "html",
                 success: function (data) {
                     obj.totalPage = data
+                    $(".thongKe").css("display", 'none');
+                    $(".content").css("display", "block");
                     if (type == "sanPham") {
-                        loadDataProduct(obj.currentPage)
+                        loadDataProduct(obj.currentPage,search)
                         $(".crud").css("display", "flex");
                     }
                     else if (type == "khachHang" || type == "nhanVien") {
-                        loadDataUser(obj.currentPage)
+                        loadDataUser(obj.currentPage,search)
                         $(".crud").css("display", "flex");
                         if (type == "khachHang") {
                             $(".create").css("display", "none");
                         }
                     }
                     else if (type == "taiKhoan") {
-                        loadDataAccount(obj.currentPage)
+                        loadDataAccount(obj.currentPage,search)
                         $(".crud").css("display", "flex");
                         $(".create").css("display", "none");
                     }
@@ -67,17 +68,8 @@
                         $(".update").css("display", "none");
                     }
                     else if (type == "phanQuyen") {
-                        loadAuthoryze(obj.currentPage)
+                        loadAuthoryze(obj.currentPage,search)
                         $(".crud").css("display", "flex");
-                    }
-
-                    else if (type == "nhapHang") {
-                        $(".list-item").children().first().empty();
-                        $(".nhapHang").css('display', 'flex');
-                        $(".crud").css("display", "none");
-                    }
-                    if (type != "nhapHang") {
-                        $(".nhapHang").css('display', 'none');
                     }
                     if (obj.currentPage == obj.totalPage || obj.totalPage == 0) {
                         $(".content .show-more").children('button').css('display', 'none');
@@ -97,6 +89,19 @@
                     else {
                         $(".crud").css("display", "flex")
                     }
+                    if (type == "thongKe") {
+                        $(".thongKe").css("display", 'block');
+                        $(".content").css("display", "none")
+                    }
+                    else if (type == "nhapHang") {
+                        $(".list-item").children().first().empty();
+                        $(".nhapHang").css('display', 'flex');
+                        $(".crud").css("display", "none");
+                        console.log(type)
+                    }
+                    if (type != "nhapHang") {
+                        $(".nhapHang").css('display', 'none');
+                    }
                 }
             });
         }
@@ -112,12 +117,13 @@
                 $(".list-item").append(item)
             }
         }
-        function loadDataProduct(page) {
+        function loadDataProduct(page,search) {
             $.ajax({
                 type: "GET",
-                url: "./database/getDataAdmin.php?type=sanPham&item=" + obj.items + "&page=" + page,
+                url: "./database/getDataAdmin.php?type=sanPham&item=" + obj.items + "&page=" + page+"&search="+search,
                 dataType: "json",
                 success: function (data) {
+                    console.log(data)
                     if (page == 1 || obj.currentPage == 0) {
                         var title = `
                             <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
@@ -231,13 +237,12 @@
             });
         }
 
-        function loadDataUser(page) {
+        function loadDataUser(page,search) {
             $.ajax({
                 type: "GET",
-                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page,
+                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page+"&search="+search,
                 dataType: "json",
                 success: function (data) {
-                    console.log(data)
                     if (page == 1 || page == 0) {
                         if (type == "khachHang") {
                             var title = `
@@ -278,12 +283,13 @@
             });
         }
 
-        function loadDataAccount(page) {
+        function loadDataAccount(page,search) {
             $.ajax({
                 type: "GET",
-                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page,
+                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page+"&search="+search,
                 dataType: "json",
                 success: function (data) {
+                    console.log(data)
                     if (page == 1) {
                         var title = `
                             <span class="col-sm-1 col-md-1 col-lg-1">ID</span>
@@ -350,6 +356,10 @@
                         var button = "";
 
                         switch (val["STATUS_BILL"]) {
+                            case "-1":
+                                status = "Đã hủy đơn hàng"
+                                button = "btn-danger"
+                                break;
                             case "0":
                                 status = "Đang chờ xác nhận";
                                 button = "btn-warning";
@@ -466,10 +476,10 @@
             });
         }
 
-        function loadAuthoryze(page) {
+        function loadAuthoryze(page,search) {
             $.ajax({
                 type: "GET",
-                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page,
+                url: "./database/getDataAdmin.php?type=" + type + "&item=" + obj.items + "&page=" + page +"&search="+search,
                 dataType: "json",
                 success: function (data) {
                     if (page == 1 || page == 0) {
@@ -493,13 +503,11 @@
                             url: "./database/userDao.php?type=200&id=" + val['ID_ADMIN_ADD'],
                             dataType: "json",
                             success: function (admin) {
-                                console.log(admin)
                                 $.ajax({
                                     type: "GET",
                                     url: "./database/userDao.php?type=200&id=" + val['ID_ADMIN_UPDATE'],
                                     dataType: "json",
                                     success: function (response) {
-                                        console.log(response)
                                         var item = `
                                         <div class="item row">
                                                 <span class="id-item col-sm-1 col-md-1 col-lg-1">${val['ID_AUTHORIZE']}</span>

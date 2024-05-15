@@ -5,6 +5,7 @@
     {
         $idAccount=$_POST['account_id'];
         $total=$_POST['total'];
+        $address=$_POST['address'];
         session_start(); // Bắt đầu session
 
         $sql="SELECT * 
@@ -40,8 +41,8 @@
             $idBill=1; 
         }
 
-        $sql="INSERT INTO BILLS(ID_BILL,ID_CUSTOMER,TOTAL_BILL,STATUS_BILL) 
-        VALUES ($idBill,$idAccount,$total,0)";
+        $sql="INSERT INTO BILLS(ID_BILL,ID_CUSTOMER,TOTAL_BILL,STATUS_BILL,SHIPPING_ADDRESS) 
+        VALUES ($idBill,$idAccount,$total,0,'$address')";
         mysqli_query($connect,$sql);
 
         foreach ($_SESSION['cart'] as $key => $item) {

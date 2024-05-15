@@ -11,7 +11,6 @@ $(document).ready(function () {
             id.push($(val).text())
         });
         var table = $(".sidebar ul li a.active").parents().attr("id")
-
         Swal.fire({
             title: "Bạn chắc chắn muốn xóa?",
             showDenyButton: true,
@@ -41,7 +40,7 @@ $(document).ready(function () {
 
                             $(".list-item").find(".item.row").remove();
                             var obj = {}
-                            $(".list-item").Paging(obj, type);
+                            $(".list-item").Paging(obj, type,'');
                         }
                     });
                     Swal.fire("Đã xóa thành công!", "", "success");

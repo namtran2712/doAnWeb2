@@ -12,7 +12,7 @@ $(document).ready(function () {
                 .done(function (data) {
                     $(".list-item").find(".item.row").remove();
                     var obj = null
-                    $(".list-item").Paging(obj, type);
+                    $(".list-item").Paging(obj, type,"");
                     $(".crud").empty();
                     var check = false
                     $.each(data, function (i, val) {
@@ -74,6 +74,7 @@ $(document).ready(function () {
                 dataType: "json",
             })
         ).done(function (data) {
+
             var li = $(".list-group li")
             $.each(li, function (i, val) {
                 var check = false
@@ -87,9 +88,11 @@ $(document).ready(function () {
                     $(val).remove();
                 }
             });
+
             $(".list-group li").eq(0).find("a").attr("class", "list-group-item list-group-item-action py-3 fw-bold fs-7 text-right active");
 
             var type = $("a.active").parent().attr("id");
+
             loadCrud($(".list-group li").eq(0).data("id"), type)
 
             $(".btn-show-sidebar").click(function (e) {
@@ -108,12 +111,18 @@ $(document).ready(function () {
 
             const header = document.querySelector(".header");
             const crud = document.querySelector(".crud")
+            const crudFake = document.querySelector(".crud-fake")
             const observer = new IntersectionObserver(entries => {
                 entries.forEach(entry => {
                     if (!entry.isIntersecting) {
                         crud.classList.add('fixed');
+                        crudFake.classList.add('fixed')
+                        const height = crud.offsetHeight;
+                        crudFake.style.height = height + 'px';
                     } else {
                         crud.classList.remove('fixed');
+                        crudFake.classList.remove('fixed')
+                        crudFake.style.height = 0 + 'px';
                     }
                 });
             }, {
@@ -121,7 +130,17 @@ $(document).ready(function () {
             });
             observer.observe(header);
 
-
+            $("#logout").click(function (e) {
+                e.preventDefault();
+                $.get("./database/accountDao.php?type=3",
+                    function (data) {
+                        if (data) {
+                            window.location.href = "./index.php"
+                        }
+                    },
+                    "html"
+                );
+            });
 
             $(".list-group-item.list-group-item-action").click(function (e) {
                 e.preventDefault();
@@ -150,6 +169,4 @@ $(document).ready(function () {
             });
         })
     })
-
-
 });
