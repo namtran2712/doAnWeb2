@@ -23,7 +23,7 @@
                 $author=mysqli_fetch_assoc($result);
                 if($author['AUTHORIZE_NAME']!="Khách hàng")
                 {
-                    // header("Location: ./admin.php");
+                    header("Location: ./admin.php");
                 }
             }
         }

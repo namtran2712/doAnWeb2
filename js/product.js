@@ -50,8 +50,7 @@
             })
 
             var querycondition = ""
-            var queryconditionPrice = ""
-            var queryconditionQuantity = ""
+         
             $.each(query, function (indexInArray, valueOfElement) {
                 $(valueOfElement).change(function () {
 
