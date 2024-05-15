@@ -495,8 +495,6 @@ $(document).ready(function () {
                     dataType: "json",
                 })
             ).done(function (dataAccount, dataAuthor) {
-                console.log(dataAccount)
-                console.log(dataAuthor[0])
 
                 var statusAccount;
                 var backgroundStatus;
@@ -629,7 +627,6 @@ $(document).ready(function () {
                     dataType: "json",
                 })
             ).done(function (data) {
-                // console.log (data)
                 var modal = `
                 <div class="container-fluid header-list-receipt row my-2">
                     <div class="col-sm-6 col-md-7 col-lg-6 text-center"><span class=" fs-6 fw-bold">Tên sản phẩm</span></div>

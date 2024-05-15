@@ -24,6 +24,7 @@ h1 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .filters label {
@@ -103,6 +104,80 @@ h1 {
     background-color: #fff; /* Màu nền cho dòng lẻ */
 }
 
+.sale-container {
+    display: flex;
+    justify-content: center;
+}
+ /* Kiểu cho phần tử chứa thông tin doanh thu */
+#revenue-info {
+    position: relative; 
+    margin-top: 20px;
+    margin-right: 20px;
+    padding: 25px;
+    border-radius: 8px;
+    width: 250px; /* Điều chỉnh kích thước cho phù hợp với nội dung */
+    color: rgb(52, 71, 103);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Kiểu cho phần tử chứa tiêu đề "Sales" */
+#revenue-info > p {
+    font-size: 18px;
+    color: rgb(103, 116, 142);
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Kiểu cho phần tử chứa doanh thu của tháng hiện tại và biểu tượng */
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Kiểu cho phần tử hiển thị doanh thu của tháng hiện tại */
+#current-revenue {
+    font-size: 20px;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Kiểu cho phần tử chứa icon */
+.icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(310deg, rgb(251, 99, 64), rgb(251, 177, 64));
+    border-radius: 50%;
+    position: absolute; /* Kích hoạt vị trí tuyệt đối */
+    top: 15%; /* Đặt top về 0 */
+    right: -10%; /* Đặt right về 0 */
+    transform: translate(-100%, 0); /* Dịch chuyển về bên trái 100% của phần tử cha */
+    display: flex; /* Sử dụng flexbox để căn giữa biểu tượng */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+/* Kiểu cho icon */
+.icon i {
+    color: #fff; /* Màu biểu tượng */
+    font-size: 20px; /* Kích thước biểu tượng */
+}
 
 
-
+/* Kiểu cho phần tử chứa phần trăm tăng/giảm và tiêu đề "so với tháng trước" */
+.bottom {
+    /* display: flex;
+    align-items: center; */
+}
+.bottom p {
+    color: rgb(103, 116, 142);
+    margin: 0;
+    font-size: 13px;
+}
+/* Kiểu cho phần tử hiển thị phần trăm tăng/giảm */
+#revenue-change {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
+}

@@ -5,8 +5,10 @@ require("./connect.php");
 function InsertUser($connect, $name, $phone, $birthday)
 {
     $sql = "SELECT *
-        FROM USERS
-        WHERE PHONE_NUMBER = $phone";
+        FROM USERS JOIN ACCOUNTS
+        ON USERS.ID_USER = ACCOUNTS.ID_USER
+        WHERE PHONE_NUMBER = '$phone'
+        AND STATUS_ACCOUNT <> 2";
     $result = mysqli_query($connect, $sql);
     if (mysqli_num_rows($result) > 0) {
         return false;
@@ -136,6 +138,19 @@ function insertAddressLevelUp($connect,$address)
     return mysqli_query($connect, $sql);
 }
 
+function getStaffLast ($connect) {
+    $sql = "SELECT *
+    FROM users
+    WHERE ID_USER = (SELECT MAX(ID_USER) FROM users)";
+    $result = mysqli_query($connect,$sql);
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            return json_encode($row);
+        }
+    }
+    return null;
+}
+
 session_start();
 if ($_GET["type"] == 200) {
     getUserByID($connect, $_SESSION["accountCurrent"]["idUser"]);
@@ -157,4 +172,7 @@ else if ($_GET["type"]==100){
 }
 else if ($_GET["type"] == 1) {
     echo setDefaultAddress($connect, $_GET["id"]);
+}
+else if ($_GET["type"] == 2) {
+    echo getStaffLast($connect);
 }

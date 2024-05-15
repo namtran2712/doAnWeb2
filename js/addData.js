@@ -4,7 +4,8 @@ $(document).ready(function () {
         $.getScript("js\\validate.js"),
         $.getScript("js\\modal.js"),
         $.getScript("js\\pagingForAdmin.js"),
-        $.getScript("js\\eventAdmin.js")
+        $.getScript("js\\eventAdmin.js"),
+        $.getScript("js\\appendRowData.js")
     ).done(function () {
     })
 
@@ -66,10 +67,9 @@ $(document).ready(function () {
                                                 timer: 1500
                                             });
                                             $(".my-modal").modal('hide')
-                                            $(".list-item").find(".item.row").remove();
-                                            var type = $(".list-group-item.list-group-item-action.active").parent().attr("id");
-                                            var obj = null
-                                            $(".list-item").Paging(obj, type,"");
+                                            appendStaff().then(function (item) {
+                                                $(".title.row").after(item);
+                                            })
                                         }
                                         else {
                                             Swal.fire({
@@ -222,10 +222,13 @@ $(document).ready(function () {
                                         icon: "success"
                                     });
                                     $(".my-modal").modal('hide')
-                                    var type = $(".list-group-item.list-group-item-action.active").parent().attr("id");
-                                    $(".list-item").find(".item.row").remove();
-                                    var obj = null
-                                    $(".list-item").Paging(obj, type,'');
+                                    appendProduct().then(function (item) {
+                                        $(".title.row").after(item);
+                                    })
+                                    // var type = $(".list-group-item.list-group-item-action.active").parent().attr("id");
+                                    // $(".list-item").find(".item.row").remove();
+                                    // var obj = null
+                                    // $(".list-item").Paging(obj, type, '');
                                 }
                             });
                         }
@@ -286,7 +289,7 @@ $(document).ready(function () {
                                                                 var type = $(".list-group-item.list-group-item-action.active").parent().attr("id");
                                                                 $(".list-item").find(".item.row").remove();
                                                                 var obj = null
-                                                                $(".list-item").Paging(obj, type,'');
+                                                                $(".list-item").Paging(obj, type, '');
 
                                                             },
                                                             "html"

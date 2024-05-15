@@ -1,4 +1,3 @@
-
 // Dữ liệu các thành phố và quận
 var cityData = {
     "Hà Nội": [
@@ -1370,14 +1369,23 @@ addAddressButton.addEventListener('click', function () {
     // Hiển thị overlay và form khi nút được click
     overlay.style.display = 'block';
     centeredForm.style.display = 'block';
-    $(".btnRepair").hide();
-    $(".btnAdd").show();
-
 });
 
 // Xử lý sự kiện submit của form
+var addAddressForm = document.getElementById('addAddressForm');
+addAddressForm.addEventListener('submit', function (event) {
+    // Ngăn chặn hành vi mặc định của form
+    event.preventDefault();
 
+    // Xử lý logic khi form được submit ở đây, ví dụ: lưu thông tin địa chỉ vào cơ sở dữ liệu
+    // Sau khi xử lý xong, có thể ẩn form và overlay
+    // ở đây, chúng ta chỉ hiển thị thông báo
+    alert('Địa chỉ mới đã được thêm!');
 
+    // Ẩn form và overlay sau khi thông báo được hiển thị
+    overlay.style.display = 'none';
+    centeredForm.style.display = 'none';
+});
 
 // Thêm sự kiện click vào nút "Trở lại"
 backButton.addEventListener('click', function () {
@@ -1402,6 +1410,100 @@ window.addEventListener("click", function (event) {
     }
 });
 
+
+
+
+
+// Thêm các thành phố vào dropdown khi tải trang
+window.onload = function () {
+    var cityList = document.getElementById("cityList");
+    Object.keys(cityData).forEach(function (city) {
+        var listItem = document.createElement("li");
+        listItem.textContent = city;
+        listItem.onclick = function () {
+            showDistricts(city);
+        };
+        cityList.appendChild(listItem);
+    });
+};
+
+// Hiển thị danh sách quận khi người dùng chọn một thành phố
+function showDistricts(city) {
+    var districtList = document.getElementById("districtList");
+    districtList.innerHTML = ""; // Xóa danh sách quận cũ
+
+    cityData[city].forEach(function (district) {
+        var listItem = document.createElement("li");
+        listItem.textContent = district;
+        // Thêm sự kiện onclick cho mỗi quận/huyện để cập nhật giá trị input
+        listItem.onclick = function () {
+            showWards(district);
+            updateAddress(city, district);
+        };
+        districtList.appendChild(listItem);
+    });
+    
+    // Cập nhật giá trị của input "address" với tên thành phố đã chọn
+    var addressInput = document.getElementById("address");
+    addressInput.value = city;
+
+    // Mở tab quận/huyện
+    var districtTab = document.getElementById("district");
+    openTab(event, 'district');
+}
+
+// Hiển thị danh sách phường/xã khi người dùng chọn một quận/huyện
+function showWards(district) {
+    var wardList = document.getElementById("wardList");
+    wardList.innerHTML = ""; // Xóa danh sách phường/xã cũ
+
+    districtData[district].forEach(function (ward) {
+        var listItem = document.createElement("li");
+        listItem.textContent = ward;
+        // Thêm sự kiện onclick cho mỗi phường/xã để cập nhật giá trị input
+        listItem.onclick = function () {
+            updateAddressWard(district, ward);
+        };
+        wardList.appendChild(listItem);
+    });
+
+    // Mở tab phường/xã
+    var wardTab = document.getElementById("ward");
+    openTab(event, 'ward');
+}
+
+// Hàm cập nhật giá trị của input "address" khi người dùng click vào một phường/xã
+function updateAddressWard(district, ward) {
+    var addressInput = document.getElementById("address");
+    var currentValue = addressInput.value;
+    // Kiểm tra xem đã có giá trị trước đó trong input hay không
+    if (currentValue) {
+        addressInput.value = currentValue + ", " + ward;
+    } else {
+        addressInput.value = ward;
+    }
+}
+
+// Hàm cập nhật giá trị của input "address" khi người dùng click vào một quận/huyện
+function updateAddress(city, district) {
+    var addressInput = document.getElementById("address");
+    addressInput.value = city + ", " + district;
+}
+
+// Hàm mở tab và hiển thị phần ul tương ứng
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
 
 function loadDataAddress() {
     $.ajax({
@@ -1525,84 +1627,6 @@ function loadDataAddress() {
     });
 }
 
-function showDistricts(city) {
-    var districtList = document.getElementById("districtList");
-    districtList.innerHTML = ""; // Xóa danh sách quận cũ
-
-    cityData[city].forEach(function (district) {
-        var listItem = document.createElement("li");
-        listItem.textContent = district;
-        // Thêm sự kiện onclick cho mỗi quận/huyện để cập nhật giá trị input
-        listItem.onclick = function () {
-            showWards(district);
-            updateAddress(city, district);
-        };
-        districtList.appendChild(listItem);
-    });
-
-    // Cập nhật giá trị của input "address" với tên thành phố đã chọn
-    var addressInput = document.getElementById("address");
-    addressInput.value = city;
-
-    // Mở tab quận/huyện
-    var districtTab = document.getElementById("district");
-    openTab(event, 'district');
-}
-
-// Hiển thị danh sách phường/xã khi người dùng chọn một quận/huyện
-function showWards(district) {
-    var wardList = document.getElementById("wardList");
-    wardList.innerHTML = ""; // Xóa danh sách phường/xã cũ
-
-    districtData[district].forEach(function (ward) {
-        var listItem = document.createElement("li");
-        listItem.textContent = ward;
-        // Thêm sự kiện onclick cho mỗi phường/xã để cập nhật giá trị input
-        listItem.onclick = function () {
-            updateAddressWard(district, ward);
-        };
-        wardList.appendChild(listItem);
-    });
-
-    // Mở tab phường/xã
-    var wardTab = document.getElementById("ward");
-    openTab(event, 'ward');
-}
-
-// Hàm cập nhật giá trị của input "address" khi người dùng click vào một phường/xã
-function updateAddressWard(district, ward) {
-    var addressInput = document.getElementById("address");
-    var currentValue = addressInput.value;
-    // Kiểm tra xem đã có giá trị trước đó trong input hay không
-    if (currentValue) {
-        addressInput.value = currentValue + ", " + ward;
-    } else {
-        addressInput.value = ward;
-    }
-}
-
-// Hàm cập nhật giá trị của input "address" khi người dùng click vào một quận/huyện
-function updateAddress(city, district) {
-    var addressInput = document.getElementById("address");
-    addressInput.value = city + ", " + district;
-}
-
-// Hàm mở tab và hiển thị phần ul tương ứng
-function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("#addressDropdown tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
-}
-
-
 $(document).ready(function () {
     $idAccount = -1;
     $fullname = ""
@@ -1666,8 +1690,5 @@ $(document).ready(function () {
             });
         }
     })
-
-
-
 });
 
