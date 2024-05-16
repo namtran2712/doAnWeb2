@@ -17,20 +17,27 @@ if (!empty($_SESSION["serializedProduct"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <!-- boostrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
     <!-- jquery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.js"
-        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    
+    <!-- thu vien _ -->
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 
-    <!-- font awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
+    </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
+    </script>
+    </script>
     <!-- css -->
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/detailProduct.css">
@@ -75,9 +82,9 @@ if (!empty($_SESSION["serializedProduct"])) {
                 <ul class="sub-img">
                     <?php foreach ($sub_img as $key => $value) { ?>
 
-                    <li class="col-md-3 col-sm-3 col-lg-3">
-                        <img src="<?php echo $value["LINK_IMAGE"] ?>" class="img-fluid" alt="">
-                    </li>
+                        <li class="col-md-3 col-sm-3 col-lg-3">
+                            <img src="<?php echo $value["LINK_IMAGE"] ?>" class="img-fluid" alt="">
+                        </li>
                     <?php  } ?>
                 </ul>
             </div>
@@ -96,21 +103,20 @@ if (!empty($_SESSION["serializedProduct"])) {
                     <span>Đánh giá(
                         <span class="evaluate">
                             <?php
-                                require ("./database/connect.php");
-                                $idProduct = $product[0]["ID_PRODUCT"];
-                                $sql = "SELECT COUNT(*)
+                            require("./database/connect.php");
+                            $idProduct = $product[0]["ID_PRODUCT"];
+                            $sql = "SELECT COUNT(*)
                                 FROM feedbacks JOIN particular_bills
                                 ON feedbacks.ID_BILL = particular_bills.ID_BILL
                                 WHERE particular_bills.ID_PRODUCT = $idProduct";
-                                $result = mysqli_query($connect,$sql);
-                                if (mysqli_num_rows($result) > 0) {
-                                    while ($row = mysqli_fetch_assoc($result)) {
-                                        echo $row["COUNT(*)"];
-                                    }
+                            $result = mysqli_query($connect, $sql);
+                            if (mysqli_num_rows($result) > 0) {
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    echo $row["COUNT(*)"];
                                 }
-                                else {
-                                    echo 0;
-                                }
+                            } else {
+                                echo 0;
+                            }
                             ?>
                         </span>)
                     </span>
@@ -139,8 +145,7 @@ if (!empty($_SESSION["serializedProduct"])) {
                     <div class="group-btn-size">
                         <?php foreach ($product as $key => $value) { ?>
 
-                        <button class="btn-size"
-                            data-price="<?php echo $value["PRICE"] ?>"><?php echo $value["SIZE"] ?></button>
+                            <button class="btn-size" data-price="<?php echo $value["PRICE"] ?>"><?php echo $value["SIZE"] ?></button>
 
                         <?php } ?>
                     </div>
@@ -163,50 +168,49 @@ if (!empty($_SESSION["serializedProduct"])) {
             <div class="list-comment row">
                 <div class="comment">
                     <?php
-                        $idProduct = $product[0]["ID_PRODUCT"];
-                        $sql = "SELECT *
+                    $idProduct = $product[0]["ID_PRODUCT"];
+                    $sql = "SELECT *
                         FROM feedbacks JOIN particular_bills
                         ON feedbacks.ID_BILL = particular_bills.ID_BILL
                         JOIN accounts ON accounts.ID_ACCOUNT = feedbacks.ID_ACCOUNT
                         WHERE particular_bills.ID_PRODUCT = $idProduct";
-                        $result = mysqli_query($connect, $sql);
-                        if (mysqli_num_rows($result) > 0) {
-                            $feedbacks = [];
-                            while ($row = mysqli_fetch_assoc($result)) {
-                            ?>
+                    $result = mysqli_query($connect, $sql);
+                    if (mysqli_num_rows($result) > 0) {
+                        $feedbacks = [];
+                        while ($row = mysqli_fetch_assoc($result)) {
+                    ?>
 
-                    <div class="user-and-evaluate">
-                        <span class="user"><?php echo $row["USERNAME"] ?></span>
-                        <div class="star">
-                            <?php
-                                for ($i = 1;$i<=$row["STAR"];$i++) {
-                                    echo '<i class="fa-solid fa-star"></i>';
-                                }
-                                for ($i = 1;$i <= 5-$row["STAR"];$i ++) {
-                                    echo '<i class="fa-regular fa-star"></i>';      
-                                }
-                            ?>
-                        </div>
-                    </div>
-                    <div class="content-product">
-                        <p> <?php echo $row["CONTENT"] ?> </p>
-                    </div>
-                    <?php   
-                            }
+                            <div class="user-and-evaluate">
+                                <span class="user"><?php echo $row["USERNAME"] ?></span>
+                                <div class="star">
+                                    <?php
+                                    for ($i = 1; $i <= $row["STAR"]; $i++) {
+                                        echo '<i class="fa-solid fa-star"></i>';
+                                    }
+                                    for ($i = 1; $i <= 5 - $row["STAR"]; $i++) {
+                                        echo '<i class="fa-regular fa-star"></i>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="content-product">
+                                <p> <?php echo $row["CONTENT"] ?> </p>
+                            </div>
+                    <?php
                         }
-                        else {
-                            echo "<span style='display: block;text-align: center;font-size: 20px'>Hiện không có bất cứ đánh giá nào về sản phẩm này</span>";
-                        }
-                        ?>
+                    } else {
+                        echo "<span style='display: block;text-align: center;font-size: 20px'>Hiện không có bất cứ đánh giá nào về sản phẩm này</span>";
+                    }
+                    ?>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
     </script>
+    <script src="./js/product.js"></script>
 
     <script src="./js/detailProduct.js"></script>
     <script src="./js/login.js"></script>

@@ -80,7 +80,7 @@ if (!isset($_SESSION["accountCurrent"])) {
                                     <a href="#userAddress.php?type=199" class="nav-link">Địa chỉ</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#?type=198" class="nav-link">Đổi mật khẩu</a>
+                                    <a href="#doipass.php" class="nav-link">Đổi mật khẩu</a>
                                 </li>
                                 <li class="nav-item"></li>
                             </ul>
