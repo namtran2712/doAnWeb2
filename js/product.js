@@ -14,7 +14,6 @@
             goNext: ".go-next",
             goPrevious: ".go-previous",
             searchBar: "#search-bar"
-
         };
         $.extend(options, defaults);
         var showArea = $(options.showArea)
@@ -49,7 +48,7 @@
 
             var queryconditionPrice = ""
             var queryconditionMaterial = ""
-            var queryconditionSort = "price asc"
+            var queryconditionSort = ""
             $("#sortSelection").change(function () {
                 queryconditionSort = $(this).children("option:selected").val()
             })
@@ -86,14 +85,12 @@
                     }
                     if (queryconditionMaterial.trim() != "") {
                         querycondition += " and (" + queryconditionMaterial.substring(0, queryconditionMaterial.length - 3) + ")"
-
                     }
-                    getPageByCondition(querycondition)
-                    filter(querycondition, options.currentPage, queryconditionSort)
-                    console.log(querycondition)
+                    getPageByCondition(querycondition).then(function () {
+                        options.currentPage = 1
+                        filter(querycondition, options.currentPage, queryconditionSort)
+                    })
                 })
-
-
             });
 
             txtCurrentPage.keyup(function (e) {
@@ -133,28 +130,40 @@
             infoPage.text("Page " + options.currentPage + " of " + options.totalPage)
         }
         function getPageByCondition(query) {
-
-            $.ajax({
-                url: "database/productDao.php?type=197&items=" + options.items,
-                type: "POST",
-                dataType: "json",
-                data: {
-                    query: query,
-                    category: type,
-                },
-                success: function (data) {
+            return new Promise(function (resolve, reject) {
+                $.when(
+                    $.ajax({
+                        url: "database/productDao.php?type=197&items=" + options.items,
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            query: query,
+                            category: type,
+                        },
+                    })
+                ).done(function (data) {
                     console.log(data)
+                    if (data == 0) {
+                        $(".group-btn-page").css("display", "none");
+                        $(".infoPage").css("display", "none");
+                    }
+                    else {
+                        $(".group-btn-page").css("display", "block");
+                        $(".infoPage").css("display", "block");
+                    }
                     options.totalPage = data
-                    setInfoPage(options)
-                }
+                    resolve()
+                })
             })
         }
         function filter(querycondition, currentPage, queryconditionSort) {
-            if (querycondition.trim() == "" && queryconditionSort ==""){
+            if (querycondition.trim() == "" && queryconditionSort == "") {
                 init();
+                options.currentPage = 1
                 loadData(options.currentPage)
                 return;
             }
+
             $.ajax({
                 type: "POST",
                 url: "./database/productDao.php?type=200&items=" + options.items + "&currentPage=" + currentPage,
@@ -165,7 +174,6 @@
                 },
                 dataType: "json",
                 success: function (data) {
-                    console.log(data)
                     if (data == null) {
                         showArea.empty()
                         var li = `
@@ -174,7 +182,6 @@
                         </div>
                         `
                         showArea.append(li)
-
                     }
                     else {
                         showArea.empty()
@@ -198,9 +205,11 @@
                         });
 
                     }
-                    setCurrentPage(1)
+                    setCurrentPage(options.currentPage)
+                    setInfoPage(options)
                     btnGoNext.off("click")
                     btnGoPrevious.off("click")
+                    // console.log(options)
                     btnGoNext.click(function (e) {
                         if (options.totalPage == 0)
                             return;
@@ -212,9 +221,11 @@
                             behavior: "instant"
                         });
                         options.currentPage++;
+                        console.log(options)
                         setCurrentPage(options.currentPage);
                         filter(querycondition, options.currentPage, queryconditionSort);
                         setInfoPage(options)
+                        console.log(options)
                     })
 
                     btnGoPrevious.click(function () {
@@ -229,10 +240,7 @@
                         setCurrentPage(options.currentPage);
                         filter(querycondition, options.currentPage, queryconditionSort);
                         setInfoPage(options)
-
                     })
-
-
                 }
             });
         }
@@ -253,8 +261,8 @@
                 `
                 showArea.append(li);
             });
-
         }
+
         function loadData(page) {
             $.ajax({
                 type: "GET",
@@ -312,8 +320,6 @@
             setCurrentPage(options.currentPage);
             loadData(options.currentPage);
             setInfoPage(options)
-
-
         }
 
         function goPrevious() {
@@ -333,7 +339,6 @@
     function returnResultSearch(result) {
         var holederResult = document.querySelector(".searchHolder ul")
 
-        console.log(holederResult)
         holederResult.innerHTML = ""
         $.each(result, function (indexInArray, valueOfElement) {
             var li = document.createElement("li");

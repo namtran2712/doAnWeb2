@@ -87,11 +87,27 @@ if (!empty($_SESSION["serializedProduct"])) {
                 </div>
                 <div class="rating">
                     <div class="star">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
+
+                        <?php
+                            $idProduct = $product[0]["ID_PRODUCT"];
+                            $sql = "SELECT STAR
+                            FROM feedbacks
+                            JOIN particular_bills ON feedbacks.ID_BILL = particular_bills.ID_BILL
+                            JOIN products ON products.ID_PRODUCT = particular_bills.ID_PRODUCT
+                            WHERE particular_bills.ID_PRODUCT = $idProduct";
+                            $result = mysqli_query($connect, $sql);
+                            if (mysqli_num_rows($result) > 0) {
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    $star = (int)$row["STAR"];
+                                    for ($i = 1;$i <= $star;$i++) {
+                                        echo '<i class="fa-solid fa-star"></i>';
+                                    }
+                                    for ($i = 1;$i <= 5-$star;$i++) {
+                                        echo '<i class="fa-regular fa-star"></i>';
+                                    }
+                                }
+                            }
+                        ?>
                     </div>
                     <span>Đánh giá(
                         <span class="evaluate">

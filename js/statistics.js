@@ -26,6 +26,8 @@ function getCategories() {
     });
 }
 
+
+
 function displayCategories(categories) {
     // Lặp qua mỗi loại sản phẩm và hiển thị chúng trên trang web
     var categorySelect = $('#category-select');
@@ -37,6 +39,7 @@ function displayCategories(categories) {
             text: category.CATEGORY_NAME
         }));
     });
+    console.log(categories);
 }
 
 $(document).ready(function () {
@@ -249,7 +252,7 @@ function displaySales(data) {
     var lastMonthRevenue = 0;
 
     if (data.length > 0) {
-        data.forEach(function(item) {
+        data.forEach(function (item) {
             var monthNumber = parseInt(item.month);
             var revenue = parseInt(item.revenue);
 
@@ -270,7 +273,7 @@ function displaySales(data) {
         var revenueChange = currentMonthRevenue - lastMonthRevenue;
         var changePercentage = (revenueChange / lastMonthRevenue) * 100;
         revenueChangeElement.text(formatNumber(revenueChange) + 'đ (' + changePercentage.toFixed(2) + '%) ');
-        
+
         // Đổi màu văn bản nếu doanh thu giảm
         if (revenueChange < 0) {
             revenueChangeElement.css('color', 'red');

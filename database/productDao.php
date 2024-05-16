@@ -375,21 +375,35 @@ function getProductbyCondition($connect, $items, $currentPage, $query, $orderby,
     // echo $sql ;
 }
 
-function getTotalPageFilter($connect, $items, $condition)
+function getTotalPageFilter($connect, $items, $condition,$category)
 {
-    $sql = "SELECT COUNT(*)
-    FROM PRODUCTS JOIN PARTICULAR_PRODUCTS ON PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT 
-    JOIN material ON material.ID_MATERIAL = products.ID_MATERIAL
-      WHERE PRICE <= ALL (
-        SELECT PRICE
-        FROM particular_products
-        WHERE PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT )
-        $condition; ";
+    // echo $category;
+    if ($category == "sản phẩm") {
+        $sql = "SELECT COUNT(*)
+        FROM PRODUCTS JOIN PARTICULAR_PRODUCTS ON PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT 
+        JOIN material ON material.ID_MATERIAL = products.ID_MATERIAL
+        WHERE PRICE <= ALL (
+            SELECT PRICE
+            FROM particular_products
+            WHERE PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT)
+            $condition; ";
+    }
+    else {
+        $sql = "SELECT COUNT(*)
+        FROM PRODUCTS JOIN PARTICULAR_PRODUCTS ON PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT 
+        JOIN material ON material.ID_MATERIAL = products.ID_MATERIAL
+        JOIN CATEGORY ON CATEGORY.ID_CATEGORY = PRODUCTS.ID_CATEGORY
+        WHERE PRICE <= ALL (
+            SELECT PRICE
+            FROM particular_products
+            WHERE PRODUCTS.ID_PRODUCT = PARTICULAR_PRODUCTS.ID_PRODUCT)
+            $condition AND (CATEGORY_NAME = '$category'); ";
+    }
+    // echo $sql;
     $result = mysqli_query($connect, $sql);
     $totalProduct = (int) mysqli_fetch_array($result)[0];
     $totalPage = ceil($totalProduct / $items);
     echo json_encode($totalPage);
-    // echo $sql;
 }
 
 function getProductNotPaging($connect)
@@ -451,7 +465,7 @@ else if ($_GET["type"] == 7) {
 else if ($_GET["type"] == 200) {
     getProductbyCondition($connect, 12, $_GET["currentPage"], $_POST["query"], $_POST["orderby"],$_POST["category"]);
 } else if ($_GET["type"] == 197) {
-    getTotalPageFilter($connect, 12, $_POST["query"]);
+    getTotalPageFilter($connect, 12, $_POST["query"],$_POST["category"]);
 }
 else if ($_GET["type"] == 196) {
     getProductNotPaging($connect);

@@ -2,10 +2,8 @@
 $(document).ready(function () {
 
     $.getScript("./js/validate.js", function (script, textStatus, jqXHR) {
-        console.log("Tải thành công validate trong login.js")
     });
     $.getScript("./js/modal.js", function (script, textStatus, jqXHR) {
-        console.log("Tải thành công modal trong login.js")
     });
 
     checkCurrentAccount()
@@ -78,7 +76,7 @@ $(document).ready(function () {
                             showConfirmButton: false,
                             timer: 1500
                         });
-                        
+
                     }
                     else if (data == 0) {
                         Swal.fire({
@@ -106,7 +104,6 @@ $(document).ready(function () {
                             window.location.href = "admin.php"
                         }, 1600);
                     }
-                    console.log (data)
                 }
             });
         }
@@ -130,7 +127,6 @@ $(document).ready(function () {
                             <a href="user.php" data-id=${data.idUser} >${data.username}</a>
                             `
                             $(".info").append(a)
-                            console.log(data);
                         }
                     });
                     $(".btn-logout").click(function (e) {
@@ -213,7 +209,6 @@ $(document).ready(function () {
                     },
                     dataType: "html",
                     success: function (data) {
-                        console.log(data)
                         if (data != 0) {
                             Swal.fire({
                                 position: "top-end",
