@@ -83,3 +83,14 @@
     </div>
 </div>
 <script src="./js/userAddress.js"></script>
+<style>
+    p{
+        font-size: 18px;
+    }
+    .btnDefault ,.btnUpdate ,.btnDelete {
+        font-size: 15px;
+    }
+    span {
+        padding: 5px !important
+    }
+</style>

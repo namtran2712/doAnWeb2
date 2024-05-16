@@ -1369,6 +1369,9 @@ addAddressButton.addEventListener('click', function () {
     // Hiển thị overlay và form khi nút được click
     overlay.style.display = 'block';
     centeredForm.style.display = 'block';
+    $(".btnRepair").hide();
+    $(".btnAdd").show();
+
 });
 
 // Xử lý sự kiện submit của form
@@ -1390,6 +1393,10 @@ addAddressForm.addEventListener('submit', function (event) {
 // Thêm sự kiện click vào nút "Trở lại"
 backButton.addEventListener('click', function () {
     // Ẩn form và overlay khi nút "Trở lại" được click
+    $("#addressNote").val ("")
+    $("#address").val ("")
+    $("#addressNote").removeClass("border border-danger");
+    $("#address ").removeClass("border border-danger");
     overlay.style.display = 'none';
     centeredForm.style.display = 'none';
 });
@@ -1442,7 +1449,7 @@ function showDistricts(city) {
         };
         districtList.appendChild(listItem);
     });
-    
+
     // Cập nhật giá trị của input "address" với tên thành phố đã chọn
     var addressInput = document.getElementById("address");
     addressInput.value = city;
@@ -1601,6 +1608,8 @@ function loadDataAddress() {
                 });
                 $(".btnRepair").show();
                 $(".btnAdd").hide();
+
+
                 $(".btnRepair").click(function () {
                     if (checkEmpty(["#addressNote"])) {
                         $("#addressNote").addClass("border border-danger")
@@ -1618,6 +1627,14 @@ function loadDataAddress() {
                         },
                         dataType: "html",
                         success: function (response) {
+                            if (response == 1) {
+                                alert('Sửa địa chỉ thành công!');
+                                overlay.style.display = 'none';
+                                centeredForm.style.display = 'none';
+                                $("#addressNote").val("");
+                                $("#address").val("");
+                                loadDataAddress()
+                            }
                         }
                     });
                 })
@@ -1661,6 +1678,9 @@ $(document).ready(function () {
 
     $(".btnAdd").click(function (event) {
         event.preventDefault();
+        $(".btnRepair").hide();
+        $(".btnAdd").show();
+       
         if (checkEmpty(["#addressNote"])) {
             $("#addressNote").addClass("border border-danger")
         }
